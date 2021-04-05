@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="../../Autocoders/Python/schema/ISF/component_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <component name="PingReceiver" kind="active" namespace="Ref">
-    <import_port_type>Svc/Ping/PingPortAi.xml</import_port_type>
     <comment>A rate group active component with input and output ping ports</comment>
+
+    <import_port_type>Svc/Ping/PingPortAi.xml</import_port_type>
+    
     <ports>
         <!-- Output ping port -->
         <port name="PingIn" data_type="Svc::Ping" kind="async_input" max_number="1">
