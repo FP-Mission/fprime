@@ -108,6 +108,10 @@ namespace Svc {
 
     void ActiveLoggerImpl::loqQueue_internalInterfaceHandler(FwEventIdType id, Fw::Time &timeTag, QueueLogSeverity severity, Fw::LogBuffer &args) {
 
+        // @todo remove - Only downlink PingReceived event
+        if(id != 0x1f5) 
+            return;
+
         // Serialize event
         this->m_logPacket.setId(id);
         this->m_logPacket.setTimeTag(timeTag);
