@@ -18,7 +18,7 @@ enum {
     FILTER_COMMAND_DEFAULT = true, //!< COMMAND events are filtered at input
     FILTER_ACTIVITY_HI_DEFAULT = true, //!< ACTIVITY HI events are filtered at input
     FILTER_ACTIVITY_LO_DEFAULT = true, //!< ACTIVITY LO  events are filtered at input
-    FILTER_DIAGNOSTIC_DEFAULT = false, //!< DIAGNOSTIC events are filtered at input
+    FILTER_DIAGNOSTIC_DEFAULT = true, //!< DIAGNOSTIC events are filtered at input
 };
 
 

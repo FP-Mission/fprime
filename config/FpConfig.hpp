@@ -55,33 +55,34 @@
 // *** NOTE *** Changes here MUST match GSE in order to decode the values correctly
 
 #ifndef FwPacketDescriptorType
-#define FwPacketDescriptorType U32          //!< Type representation for a packet descriptor
+#define FwPacketDescriptorType U8           //!< Type representation for a packet descriptor
 #endif
 
 #ifndef FwOpcodeType
-#define FwOpcodeType U32                    //!< Type representation for a command opcode
+#define FwOpcodeType U8                     //!< Type representation for a command opcode
 #endif
 
 #ifndef FwChanIdType
-#define FwChanIdType U32                    //!< Type representation for a channel id
+#define FwChanIdType U8                     //!< Type representation for a channel id
 #endif
 
 #ifndef FwEventIdType
-#define FwEventIdType U32                   //!< Type representation for a event id
+#define FwEventIdType U8                    //!< Type representation for a event id
 #endif
 
 #ifndef FwPrmIdType
-#define FwPrmIdType U32                     //!< Type representation for a parameter id
+#define FwPrmIdType U8                      //!< Type representation for a parameter id
 #endif
 
 // How big the size of a buffer (or string) representation is
 #ifndef FwBuffSizeType
-#define FwBuffSizeType U16                  //!< Type representation for storing a buffer or string size
+#define FwBuffSizeType U8                  //!< Type representation for storing a buffer or string size 
+// @todo define
 #endif
 
 // How many bits are used to store an enumeration defined in XML during serialization.
 #ifndef FwEnumStoreType
-#define FwEnumStoreType I32                 //!< Type representation for an enumeration value
+#define FwEnumStoreType I8                  //!< Type representation for an enumeration value
 #endif
 
 // Object facilities
@@ -217,7 +218,7 @@
 
 // Specifies the size of the buffer that contains a communications packet.
 #ifndef FW_COM_BUFFER_MAX_SIZE
-#define FW_COM_BUFFER_MAX_SIZE               128   //!< Max size of Fw::Com buffer
+#define FW_COM_BUFFER_MAX_SIZE               32   //!< Max size of Fw::Com buffer
 #endif
 
 // Specifies the size of the buffer that contains the serialized command arguments.
@@ -228,7 +229,7 @@
 
 // Specifies the maximum size of a string in a command argument
 #ifndef FW_CMD_STRING_MAX_SIZE
-#define FW_CMD_STRING_MAX_SIZE           40   //!< Max character size of command string arguments
+#define FW_CMD_STRING_MAX_SIZE           10   //!< Max character size of command string arguments
 #endif
 
 // Normally when a command is deserialized, the handler checks to see if there any any leftover
@@ -248,7 +249,7 @@
 
 // Specifies the maximum size of a string in a log event
 #ifndef FW_LOG_STRING_MAX_SIZE
-#define FW_LOG_STRING_MAX_SIZE           100   //!< Max size of log string parameter type
+#define FW_LOG_STRING_MAX_SIZE           20   //!< Max size of log string parameter type
 #endif
 
 // Specifies the size of the buffer that contains the serialized telemetry value.
@@ -258,7 +259,7 @@
 
 // Specifies the maximum size of a string in a telemetry channel
 #ifndef FW_TLM_STRING_MAX_SIZE
-#define FW_TLM_STRING_MAX_SIZE           40  //!< Max size of channelized telemetry string type
+#define FW_TLM_STRING_MAX_SIZE           20  //!< Max size of channelized telemetry string type
 #endif
 
 // Specifies the size of the buffer that contains the serialized parameter value.
@@ -268,7 +269,7 @@
 
 // Specifies the maximum size of a string in a parameter
 #ifndef FW_PARAM_STRING_MAX_SIZE
-#define FW_PARAM_STRING_MAX_SIZE           40  //!< Max size of parameter string type
+#define FW_PARAM_STRING_MAX_SIZE           20  //!< Max size of parameter string type
 #endif
 
 // Specifies the maximum size of a file upload chunk
@@ -341,11 +342,11 @@ enum TimeBase {
 // class are used. Some systems may not use or need those fields
 
 #ifndef FW_USE_TIME_BASE
-#define FW_USE_TIME_BASE                1 //!< Whether or not to use the time base
+#define FW_USE_TIME_BASE                0 //!< Whether or not to use the time base
 #endif
 
 #ifndef FW_USE_TIME_CONTEXT
-#define FW_USE_TIME_CONTEXT             1 //!< Whether or not to serialize the time context
+#define FW_USE_TIME_CONTEXT             0 //!< Whether or not to serialize the time context
 #endif
 //
 //These defines used for the FilepathCharString type
