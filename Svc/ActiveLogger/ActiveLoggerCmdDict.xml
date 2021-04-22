@@ -24,7 +24,7 @@
                 </arg>
              </args>
         </command>
-        <command kind="async" opcode="2" mnemonic="SET_ID_FILTER">
+        <command kind="async" opcode="1" mnemonic="SET_ID_FILTER">
             <comment>
             Filter a particular ID 
             </comment>
@@ -40,7 +40,7 @@
                 </arg>
             </args>
         </command>
-        <command kind="async" opcode="3" mnemonic="DUMP_FILTER_STATE">
+        <command kind="async" opcode="2" mnemonic="DUMP_FILTER_STATE">
             <comment>
             Dump the filter states via events
             </comment>
