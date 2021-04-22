@@ -320,7 +320,6 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
         static_cast<LinuxSerialDriverComponentImpl*>(ptr);
 
     Fw::Buffer buff;
-    U16 totalReadSize = 0;
 
     while (1) {
         // wait for data
@@ -361,7 +360,6 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
             }
 
             stat = ::read(comp->m_fd, buff.getData(), buff.getSize());
-            printf("stat %u \n", stat);
 
             if (stat == -1 ) {
                 Fw::LogStringArg _arg = comp->m_device;
@@ -369,18 +367,11 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
                 serReadStat = Drv::SER_OTHER_ERR;
                 break;
             } else if (stat == 0) { // no data
-                if(totalReadSize != 0) {
-                    printf("Send %u\n", totalReadSize);
-                    serReadStat = Drv::SER_OK;
-                    buff.setSize(4);
-                    comp->serialRecv_out(0, buff, serReadStat);  
-                }
-                totalReadSize = 0;
                 continue;   // retry
             } else {    // stat > 0 -> data read
-                printf("Rx %u\n", stat);
-                totalReadSize += stat;
-                buff.setSize(totalReadSize);
+                buff.setSize(stat);
+                serReadStat = Drv::SER_OK;
+                comp->serialRecv_out(0, buff, serReadStat);  
 
                 break;  // allocate new buffer for next try
             }
