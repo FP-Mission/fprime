@@ -302,6 +302,8 @@ void LinuxSerialDriverComponentImpl ::serialSend_handler(
     unsigned char* data = serBuffer.getData();
     NATIVE_INT_TYPE xferSize = serBuffer.getSize();
 
+    //printf("LinuxSerialDriver buffer size %u\n", xferSize);
+
     NATIVE_INT_TYPE stat = ::write(this->m_fd, data, xferSize);
 
     // TODO no need to delay for writes b/c the write blocks
@@ -334,6 +336,7 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
             if (comp->m_buffSet[entry].available) {
                 comp->m_buffSet[entry].available = false;
                 buff = comp->m_buffSet[entry].readBuffer;
+                buff.setSize(0);
                 entryFound = true;
                 break;
             }
@@ -358,8 +361,9 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
             if (comp->m_quitReadThread) {
                 return;
             }
+            char temp[8];   // @todo read more that 8 char
+            stat = ::read(comp->m_fd, temp, 8);
 
-            stat = ::read(comp->m_fd, buff.getData(), buff.getSize());
 
             if (stat == -1 ) {
                 Fw::LogStringArg _arg = comp->m_device;
@@ -369,11 +373,27 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
             } else if (stat == 0) { // no data
                 continue;   // retry
             } else {    // stat > 0 -> data read
-                buff.setSize(stat);
-                serReadStat = Drv::SER_OK;
-                comp->serialRecv_out(0, buff, serReadStat);  
+                printf("recv %u\n", stat);
+                // Copy current read data in allocated buffer
 
-                break;  // allocate new buffer for next try
+                // @todo text max buffer size !!!!
+                // @todo understand why it works but printf do not
+
+                char* ptr = reinterpret_cast<char *>(buff.getData());
+                ptr += buff.getSize();      // append data
+                printf("Append data to %lu\n", buff.getSize());
+                memcpy(ptr, temp, stat);
+                buff.setSize(buff.getSize() + stat);        // increment size
+                printf("Set new size to %lu\n", buff.getSize() + stat);
+                // If end of received data, send it out
+                if(temp[stat-1] == '\n') {  // remove \n ?
+                    serReadStat = Drv::SER_OK;
+                    comp->serialRecv_out(0, buff, serReadStat = Drv::SER_OK);  
+                    printf("send %lu\n", buff.getSize());
+                    break; // Allocate new buffer for next data
+                } else { // Else csontinue to read
+                    continue;
+                }
             }
         }
     }
