@@ -383,7 +383,8 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
                     DEBUG_PRINT("Set new size to %lu\n", buff.getSize() + stat);
                     buff.setSize(buff.getSize() + stat);        // increment size
                     // If end of received data, send it out
-                    if(temp[stat-1] == '\n') {  // remove \n ?
+                    // @todo Improve. Sometimes multiples responses are read by ::read() and '\n' is not at the end
+                    if(temp[stat-1] == '\n') {  
                         serReadStat = Drv::SER_OK;
                         DEBUG_PRINT("Send %lu\n", buff.getSize());
                         comp->serialRecv_out(0, buff, serReadStat);  
