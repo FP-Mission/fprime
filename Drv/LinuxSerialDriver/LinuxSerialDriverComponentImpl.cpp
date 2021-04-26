@@ -373,27 +373,33 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
             } else if (stat == 0) { // no data
                 continue;   // retry
             } else {    // stat > 0 -> data read
-                printf("recv %u\n", stat);
+                DEBUG_PRINT("Data received %u\n", stat);
                 // Copy current read data in allocated buffer
-
-                // @todo text max buffer size !!!!
-                // @todo understand why it works but printf do not
-
                 char* ptr = reinterpret_cast<char *>(buff.getData());
-                ptr += buff.getSize();      // append data
-                printf("Append data to %lu\n", buff.getSize());
-                memcpy(ptr, temp, stat);
-                buff.setSize(buff.getSize() + stat);        // increment size
-                printf("Set new size to %lu\n", buff.getSize() + stat);
-                // If end of received data, send it out
-                if(temp[stat-1] == '\n') {  // remove \n ?
-                    serReadStat = Drv::SER_OK;
-                    comp->serialRecv_out(0, buff, serReadStat = Drv::SER_OK);  
-                    printf("send %lu\n", buff.getSize());
-                    break; // Allocate new buffer for next data
-                } else { // Else csontinue to read
-                    continue;
-                }
+                if(buff.getSize() + stat <= UART_READ_BUFF_SIZE) { // check buffer capacity
+                    ptr += buff.getSize();      // append data
+                    DEBUG_PRINT("Append data to %lu\n", buff.getSize());
+                    memcpy(ptr, temp, stat);
+                    DEBUG_PRINT("Set new size to %lu\n", buff.getSize() + stat);
+                    buff.setSize(buff.getSize() + stat);        // increment size
+                    // If end of received data, send it out
+                    if(temp[stat-1] == '\n') {  // remove \n ?
+                        serReadStat = Drv::SER_OK;
+                        DEBUG_PRINT("Send %lu\n", buff.getSize());
+                        comp->serialRecv_out(0, buff, serReadStat);  
+                        break; // Allocate new buffer for next data
+                    } else { // Else csontinue to read
+                        continue;
+                    }
+                } else {
+                    // Not enough place in buffer, end character not found
+                    // Throw error
+                    Fw::LogStringArg deviceName(comp->m_device);
+                    DEBUG_PRINT("End of received sequence not found\n");
+                    comp->log_WARNING_HI_DR_BufferTooSmall(deviceName, buff.getSize(), stat);
+                    serReadStat = Drv::SER_BUFFER_TOO_SMALL;
+                    comp->serialRecv_out(0, buff, serReadStat);  
+                }               
             }
         }
     }

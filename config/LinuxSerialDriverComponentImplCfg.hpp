@@ -10,6 +10,7 @@
 
 enum {
     DR_MAX_NUM_BUFFERS = 20,		// Increasing this from 10 b/c RceAdapter couldn't always keep up with just 10 for reads
+    UART_READ_BUFF_SIZE = 500
 };
 
 #endif /* LINUXSERIALDRIVER_BLSPSERIALDRIVERCOMPONENTIMPLCFG_HPP_ */
