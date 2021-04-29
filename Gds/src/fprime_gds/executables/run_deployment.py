@@ -7,6 +7,7 @@ import os
 import sys
 import platform
 import webbrowser
+
 from pathlib import Path
 from fprime.fbuild.settings import (
     IniSettings,
@@ -147,7 +148,7 @@ def parse_args():
     return args
 
 
-def launch_process(cmd, logfile=None, name=None, env=None, launch_time=5):
+def launch_process(cmd, logfile=None, name=None, env=None, launch_time=1):
     """
     Launch a child subprocess. This subprocess will allow the child to run outside of the memory context of Python.
 

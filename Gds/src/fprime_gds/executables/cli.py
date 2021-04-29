@@ -183,6 +183,7 @@ class CommParser(ParserBase):
         adapters = (
             fprime_gds.common.communication.adapters.base.BaseAdapter.get_adapters().keys()
         )
+
         adapter_parents = []
         for adapter_name in adapters:
             adapter = fprime_gds.common.communication.adapters.base.BaseAdapter.get_adapters()[

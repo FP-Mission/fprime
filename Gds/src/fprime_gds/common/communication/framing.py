@@ -14,6 +14,7 @@ that implement this pattern. The current list of implementation classes are:
 import abc
 import copy
 import struct
+import re
 
 
 def CHECKSUM_CALC(_):
@@ -244,3 +245,80 @@ class TcpServerFramerDeframer(FramerDeframer):
         packet = data[8 : data_len + 8]
         data = data[data_len + 8 :]
         return packet, data
+
+class LoRaGoFramerDeframer(FramerDeframer):
+    """
+
+    """
+
+    def frame(self, data):
+        """
+        Frames outgoing data
+
+        :param data: bytes to frame
+        :return: array of raw bytes representing a framed packet. Should be ready for uplink.
+        """
+        print("LoRaGo can not uplink data for now")
+        exit(-1)
+        return data
+
+    def deframe(self, data, no_copy=False):
+        """
+        Deframes the incoming data from the F prime standard format. Produces exactly one packet, and leftover bytes.
+        Users wanting all packets to be deframed should call "deframe_all". If no full packet is available, this method
+        returns None. Expects incoming raw bytes to deframe, and returns a deframed packet or None, and the leftover
+        bytes that were unused. Will search and discard data up until a start token is found. Note: data will be
+        consumed up to the first start token found.
+
+        :param data: framed data bytes
+        :param no_copy: (optional) will prevent extra copy if True, but "data" input will be destroyed.
+        :return: (packet as array of bytes or None, leftover bytes)
+        """
+        if not no_copy:
+            data = copy.copy(data)
+
+        # print(data)
+
+        # Detect frame comming from LoRaGo 
+        # Frame format: <label> = <value>
+        # Existing label: CurrentRSSI, Hex, Message, CRC, ...
+        # In our case, we are looking for Hex that corresponds to binary data representing a FPrime frame
+
+        # Example: BEEF\r\nCurrentRSSI=-107\r\nHex=CAFECAFE04537DEADBEEF\r\nCurre
+        # frames = [(b'CurrentRSSI=-107\r\n', b'CurrentRSSI', b'-107'), (b'Hex=CAFECAFE04537DEADBEEF\r\n', b'Hex', b'CAFECAFE04537DEADBEEF']
+        frames = re.findall(b"((\w*)=(.*?)\r\n)", data, re.DOTALL)
+
+        # Replace found frames to keep only leftover data
+        # Result: BEEF\r\nCurre
+        for f in frames:
+            data = data.replace(f[0], b"")
+
+        # Remove potential incomplete frame at the beginning
+        # Result: Curre 
+        data = re.sub(b"^.*?\r\n", b"", data, 1)
+
+        # Extrat Hex packets from received frames
+        hexPackets = None
+        if len(frames) > 0 :
+
+            print(frames)
+            #print("DATA: ")
+            #print(data)
+
+            df = FpFramerDeframer()
+            df.set_constants()
+            packets = []
+            for f in frames:
+                
+                # Faking received message
+                f = (b'Hex=DEADBEEF00011247020608AD93200835D00119CAFECAFE', b'Hex', b'DEADBEEF00011247020608AD93200835D00119CAFECAFE')
+
+                if f[1] == b'Hex' :
+                    packet = df.deframe(f[2])
+                    print(packet)
+                    packets.append(packet)
+                else:
+                    print("{} is {}".format(f[1], f[2]))
+
+        # Return frames and extra leftover data
+        return None, data

@@ -130,6 +130,7 @@ class SerialAdapter(fprime_gds.common.communication.adapters.base.BaseAdapter):
         except serial.serialutil.SerialException as exc:
             LOGGER.warning("Serial exception caught: %s. Reconnecting.", (str(exc)))
             self.close()
+
         return data
 
     @classmethod
@@ -139,10 +140,11 @@ class SerialAdapter(fprime_gds.common.communication.adapters.base.BaseAdapter):
 
         :return: dictionary of flag to argparse arguments for use with argparse
         """
-        available = list(
-            map(lambda info: info.device, list_ports.comports(include_links=True))
-        )
-        default = "/dev/ttyACM0" if not available else available[-1]
+        #available = list(
+        #    map(lambda info: info.device, list_ports.comports(include_links=True))
+        #)
+        #default = "/dev/ttyS8" if not available else available[-1]
+        default = "/dev/ttyS8"
         return {
             ("--uart-device",): {
                 "dest": "device",
@@ -153,7 +155,7 @@ class SerialAdapter(fprime_gds.common.communication.adapters.base.BaseAdapter):
             ("--uart-baud",): {
                 "dest": "baud",
                 "type": int,
-                "default": 9600,
+                "default": 57600,
                 "help": "Baud rate of the serial device. Default: %(default)s",
             },
         }
