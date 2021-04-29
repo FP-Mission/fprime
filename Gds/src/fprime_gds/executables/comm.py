@@ -26,6 +26,7 @@ import signal
 import fprime_gds.common.communication.adapters.base
 import fprime_gds.common.communication.ground
 import fprime_gds.common.communication.adapters.ip
+#import fprime_gds.common.communication.adapters.uart
 import fprime_gds.common.logger
 import fprime_gds.executables.cli
 
@@ -61,6 +62,7 @@ def main():
     ground = fprime_gds.common.communication.ground.TCPGround(
         args.tts_addr, args.tts_port
     )
+    # @todo Change here
     adapter = args.comm_adapter
 
     # Set the framing class used and pass it to the uplink and downlink component constructions giving each a separate

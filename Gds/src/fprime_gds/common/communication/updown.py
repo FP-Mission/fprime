@@ -36,7 +36,10 @@ class Downlinker:
     """
 
     def __init__(
-        self, adapter: BaseAdapter, ground: GroundHandler, deframer: FramerDeframer
+        self,
+        adapter: BaseAdapter,
+        ground: GroundHandler,
+        deframer: FramerDeframer
     ):
         """Initialize the downlinker
 

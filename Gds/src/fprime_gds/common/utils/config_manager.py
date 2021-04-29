@@ -118,7 +118,7 @@ class ConfigManager(configparser.ConfigParser):
             return U16Type()
         elif type_str == "U32":
             return U32Type()
-        elif type_str == "u64":
+        elif type_str == "U64":
             return U64Type()
         elif type_str == "I8":
             return I8Type()
@@ -157,15 +157,16 @@ class ConfigManager(configparser.ConfigParser):
         # These configs give the types of fields in the binary data
 
         self.__prop["types"] = dict()
-
-        self.__prop["types"]["msg_len"] = "U32"
-        self.__prop["types"]["msg_desc"] = "U32"
-        self.__prop["types"]["ch_id"] = "U32"
-        self.__prop["types"]["event_id"] = "U32"
-        self.__prop["types"]["op_code"] = "U32"
-        self.__prop["types"]["pkt_id"] = "U16"
-        self.__prop["types"]["key_val"] = "U16"
-        self._set_section_defaults("types")
+                                                    # fprime/config/FpConfig.hpp
+        self.__prop["types"]["msg_len"] = "U32"     # 
+        self.__prop["types"]["msg_desc"] = "U8"     # FwPacketDescriptorType (?)
+        self.__prop["types"]["op_code"] = "U8"      # FwOpcodeType
+        self.__prop["types"]["ch_id"] = "U8"        # FwChanIdType
+        self.__prop["types"]["event_id"] = "U8"     # FwEventIdType
+        self.__prop["types"]["pkt_id"] = "U16"      #  
+        self.__prop["types"]["key_val"] = "U16"     # 
+        self._set_section_defaults("types")         # Missing: FwPrmIdType, FwBuffSizeType, FwEnumStoreType
+                                                    # FwTimeBaseStoreType, FwTimeContextStoreType
 
         ######################### COLORS ###########################
         # Colors are hex codes in BGR format
