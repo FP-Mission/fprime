@@ -110,6 +110,7 @@ namespace Svc {
         // @todo remove - Only downlink PingReceived event
         if(id != 0x47) 
             return;
+        //*/
 
         // Serialize event
         this->m_logPacket.setId(id);
