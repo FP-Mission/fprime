@@ -62,12 +62,19 @@ class FramerDeframer(abc.ABC):
         :return:
         """
         packets = []
+        #print(data)
         if not no_copy:
             data = copy.copy(data)
         while True:
+            # print("\t{}".format(data))
             # Deframe and return only on None
             (packet, data) = self.deframe(data, no_copy=True)
+            # print("\t\tFound {}".format(len(packets)))
+            # print("\t\tpackets {}".format(packets))
+            # print("\t\tleftOver {}".format(data))
+            # print("\n")
             if packet is None:
+                # print("Return {} {}".format(packets, data))
                 return packets, data
             packets.append(packet)
 
@@ -150,7 +157,7 @@ class FpFramerDeframer(FramerDeframer):
         :param data: framed data bytes
         :param no_copy: (optional) will prevent extra copy if True, but "data" input will be destroyed.
         :return: (packet as array of bytes or None, leftover bytes)
-        """
+        """ 
         if not no_copy:
             data = copy.copy(data)
         # Continue until there is not enough data for the header, or until a packet is found (return)
@@ -277,48 +284,60 @@ class LoRaGoFramerDeframer(FramerDeframer):
         if not no_copy:
             data = copy.copy(data)
 
-        # print(data)
-
         # Detect frame comming from LoRaGo 
-        # Frame format: <label> = <value>
+        # LoRaGo frame format: <label> = <value>
         # Existing label: CurrentRSSI, Hex, Message, CRC, ...
-        # In our case, we are looking for Hex that corresponds to binary data representing a FPrime frame
+        # In our case, we are looking for 'Hex' that corresponds to binary data representing a FPrime frame
 
         # Example: BEEF\r\nCurrentRSSI=-107\r\nHex=CAFECAFE04537DEADBEEF\r\nCurre
         # frames = [(b'CurrentRSSI=-107\r\n', b'CurrentRSSI', b'-107'), (b'Hex=CAFECAFE04537DEADBEEF\r\n', b'Hex', b'CAFECAFE04537DEADBEEF']
-        frames = re.findall(b"((\w*)=(.*?)\r\n)", data, re.DOTALL)
+        loRaGoFrames = re.findall(b"((\w*)=(.*?)\r\n)", data, re.DOTALL)
+
+        # print("\tLoRaGoFrames {}".format(len(loRaGoFrames)))
 
         # Replace found frames to keep only leftover data
         # Result: BEEF\r\nCurre
-        for f in frames:
-            data = data.replace(f[0], b"")
+        for f in loRaGoFrames:
+            data = data.replace(f[0], b"", )
 
         # Remove potential incomplete frame at the beginning
         # Result: Curre 
         data = re.sub(b"^.*?\r\n", b"", data, 1)
 
-        # Extrat Hex packets from received frames
-        hexPackets = None
-        if len(frames) > 0 :
+        leftOver = b''
+        fpFrameFound = False
+        fpFrameContent = None
 
-            print(frames)
-            #print("DATA: ")
-            #print(data)
+        if len(loRaGoFrames) > 0 :
 
             df = FpFramerDeframer()
             df.set_constants()
-            packets = []
-            for f in frames:
+
+            for f in loRaGoFrames:
                 
                 # Faking received message
-                f = (b'Hex=DEADBEEF00011247020608AD93200835D00119CAFECAFE', b'Hex', b'DEADBEEF00011247020608AD93200835D00119CAFECAFE')
+                #f = (b'Hex=DEADBEEF00011247020608AD93200835D00119CAFECAFE', b'Hex', b'DEADBEEF00011247020608AD93200835D00119CAFECAFE')
 
-                if f[1] == b'Hex' :
-                    packet = df.deframe(f[2])
-                    print(packet)
-                    packets.append(packet)
+                # Process 'Hex' frame for LoRaGo with FpFramerDeframer to obtain FP frame
+                if f[1] == b'Hex' and fpFrameFound is False:
+                    # Deframe packet
+                    # Is formated as hex chain but deframe() requires a binary format
+                    # b'DEADBEEF' -> b'\xde\xad\xbe\xef'
+                    (packet, data) = df.deframe(bytearray.fromhex(f[2].decode()))
+
+                    # If FP frame is found
+                    if packet is not None:
+                        fpFrameContent = packet
+                        fpFrameFound = True
+
+                elif f[1] == b'Hex':    # Append potential other Hex frame from LoRaGo for future processing
+                    leftOver += (f[0])
                 else:
-                    print("{} is {}".format(f[1], f[2]))
+                    # print("Ignored {}".format(f[1]))
+                    pass
+
+        # Append potential imcomplete LoRaGo frame for future processing 
+        leftOver += data
 
         # Return frames and extra leftover data
-        return None, data
+        return fpFrameContent, leftOver

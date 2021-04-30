@@ -25,8 +25,10 @@ import fprime_gds.common.utils.config_manager
 
 try:
     import fprime_gds.common.communication.adapters.uart
-except ImportError:
-    pass
+except ImportError as e:
+    print("cli.py:29 {}".format(e))
+    exit()
+
 # Try to import each GUI type, and if it can be imported
 # it will be provided to the user as an option
 GUIS = ["none", "html"]

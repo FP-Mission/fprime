@@ -37,6 +37,8 @@ from fprime_gds.common.communication.updown import Downlinker, Uplinker
 try:
     import fprime_gds.common.communication.adapters.uart
 except ImportError:
+    print("comm.py:40 {}".format(e))
+    exit()
     pass
 
 
@@ -69,7 +71,7 @@ def main():
 
     # Set the framing class used and pass it to the uplink and downlink component constructions giving each a separate
     # instantiation
-    framer_class = FpFramerDeframer
+    framer_class = LoRaGoFramerDeframer
     downlinker = Downlinker(adapter, ground, framer_class())
     uplinker = Uplinker(adapter, ground, framer_class(), downlinker)
 

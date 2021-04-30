@@ -13,8 +13,6 @@ import logging
 import fprime_gds.common.communication.adapters.base
 
 import serial
-from serial.tools import list_ports
-
 
 LOGGER = logging.getLogger("serial_adapter")
 
@@ -140,10 +138,6 @@ class SerialAdapter(fprime_gds.common.communication.adapters.base.BaseAdapter):
 
         :return: dictionary of flag to argparse arguments for use with argparse
         """
-        #available = list(
-        #    map(lambda info: info.device, list_ports.comports(include_links=True))
-        #)
-        #default = "/dev/ttyS8" if not available else available[-1]
         default = "/dev/ttyS8"
         return {
             ("--uart-device",): {
