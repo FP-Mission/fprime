@@ -82,7 +82,7 @@
 
 // How many bits are used to store an enumeration defined in XML during serialization.
 #ifndef FwEnumStoreType
-#define FwEnumStoreType I8                  //!< Type representation for an enumeration value
+#define FwEnumStoreType I32                  //!< Type representation for an enumeration value
 #endif
 
 // Object facilities
