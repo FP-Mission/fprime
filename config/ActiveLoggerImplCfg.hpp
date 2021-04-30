@@ -23,7 +23,7 @@ enum {
 
 
 enum {
-    TELEM_ID_FILTER_SIZE = 25, //!< Size of telemetry ID filter
+    TELEM_ID_FILTER_SIZE = 255, //!< Size of telemetry ID filter
 };
 
 #endif /* ACTIVELOGGER_ACTIVELOGGERIMPLCFG_HPP_ */

@@ -30,6 +30,14 @@ namespace Svc {
 
         memset(m_filteredIDs,0,sizeof(m_filteredIDs));
 
+        // Custom behaviour when TELEM_ID_FILTER_SIZE is 255 length
+        // All possible event (eventCode is U8) are filtered by default
+        if (TELEM_ID_FILTER_SIZE == 255) {
+            for(int i = 0; i < TELEM_ID_FILTER_SIZE; i++) {
+                this->m_filteredIDs[i] = i+1;
+            }
+            //this->m_filteredIDs[0x47 - 1] = 0;  // Remove filter for 0x47 (PingReceived) - Debugging purpose
+        }
     }
 
     ActiveLoggerImpl::~ActiveLoggerImpl() {
@@ -107,23 +115,6 @@ namespace Svc {
     }
 
     void ActiveLoggerImpl::loqQueue_internalInterfaceHandler(FwEventIdType id, Fw::Time &timeTag, QueueLogSeverity severity, Fw::LogBuffer &args) {
-        // @todo remove - Only downlink PingReceived event
-        if(id != 0x47)
-            return;
-        /*/
-        U8 ids[] = {0x02, 0x03, 0x47}; // 0x02, 0x03, 0x08, 0x47
-
-        bool found = false;
-        for(int i = 0; i < 3; i++) {
-            if(id == ids[i]) {
-                found = true;
-                break;
-            }
-        }
-        if(!found) 
-            return;
-        //*/
-
         // Serialize event
         this->m_logPacket.setId(id);
         this->m_logPacket.setTimeTag(timeTag);
@@ -155,13 +146,13 @@ namespace Svc {
             U32 ID,
             IdFilterEnabled IdFilterEnable //!< ID filter state
         ) {
-
         // check parameter
         switch (IdFilterEnable) {
             case ID_ENABLED:
             case ID_DISABLED:
                 break;
             default:
+                printf("Invalid enum\n");
                 this->cmdResponse_out(opCode,cmdSeq,Fw::COMMAND_VALIDATION_ERROR);
                 return;
         }
