@@ -66,7 +66,7 @@ def main():
     )
 
 
-    # Ip or LoRa adapter changed here when setting --comm-adapter uart
+    # Ip or uart (LoRaGo) adapter changed here when setting '--comm-adapter uart/ip'
     adapter = args.comm_adapter
 
     # Set the framing class used and pass it to the uplink and downlink component constructions giving each a separate
@@ -74,15 +74,23 @@ def main():
     # If IpAdapter is used for uplink/downlink through F' SocketIpDriver, uses FpFramerDeframer
     # If SerialAdapter is used with LoRaGo module and FlexTrak, uses LoRaGoFramerDeframer
     framer_class = FpFramerDeframer
+    uplink_adapter = None
     if(isinstance(adapter, fprime_gds.common.communication.adapters.uart.SerialAdapter)) :
         framer_class = LoRaGoFramerDeframer
+        uplink_adapter = fprime_gds.common.communication.adapters.base.BaseAdapter.construct_adapter('ip', args)
+
+
+
+    # Temp adapter and framerDeframer for uplink with Ip
 
     downlinker = Downlinker(adapter, ground, framer_class())
-    uplinker = Uplinker(adapter, ground, framer_class(), downlinker)
+    uplinker = Uplinker(uplink_adapter if uplink_adapter is not None else adapter, ground, framer_class(), downlinker)
 
     # Open resources for the handlers on either side, this prepares the resources needed for reading/writing data
     ground.open()
     adapter.open()
+    if uplink_adapter is not None:
+        uplink_adapter.open()
 
     # Finally start the processing of uplink and downlink
     downlinker.start()
@@ -96,6 +104,8 @@ def main():
         downlinker.stop()
         ground.close()
         adapter.close()
+        if uplink_adapter is not None:
+            uplink_adapter.close()
 
     signal.signal(signal.SIGTERM, shutdown)
     signal.signal(signal.SIGINT, shutdown)

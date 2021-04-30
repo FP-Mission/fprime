@@ -265,9 +265,10 @@ class LoRaGoFramerDeframer(FramerDeframer):
         :param data: bytes to frame
         :return: array of raw bytes representing a framed packet. Should be ready for uplink.
         """
-        print("LoRaGo can not uplink data for now")
-        exit(-1)
-        return data
+        print("LoRaGo can not uplink data for now - Data are send through IP")
+        df = FpFramerDeframer()
+        df.set_constants()
+        return df.frame(data)
 
     def deframe(self, data, no_copy=False):
         """

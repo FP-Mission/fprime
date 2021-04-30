@@ -108,7 +108,19 @@ namespace Svc {
 
     void ActiveLoggerImpl::loqQueue_internalInterfaceHandler(FwEventIdType id, Fw::Time &timeTag, QueueLogSeverity severity, Fw::LogBuffer &args) {
         // @todo remove - Only downlink PingReceived event
-        if(id != 0x47) 
+        if(id != 0x47)
+            return;
+        /*/
+        U8 ids[] = {0x02, 0x03, 0x47}; // 0x02, 0x03, 0x08, 0x47
+
+        bool found = false;
+        for(int i = 0; i < 3; i++) {
+            if(id == ids[i]) {
+                found = true;
+                break;
+            }
+        }
+        if(!found) 
             return;
         //*/
 

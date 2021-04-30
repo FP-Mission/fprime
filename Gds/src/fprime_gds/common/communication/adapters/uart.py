@@ -72,7 +72,7 @@ class SerialAdapter(fprime_gds.common.communication.adapters.base.BaseAdapter):
         self.serial = serial.Serial(self.device, self.baud)
         if self.serial is not None:
             self.sendLoRaGoCommand("F434.225")
-            self.sendLoRaGoCommand("M1")
+            self.sendLoRaGoCommand("M0")
             self.sendLoRaGoCommand("D")
             self.sendLoRaGoCommand("V")
 
