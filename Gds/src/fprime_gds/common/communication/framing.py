@@ -332,8 +332,11 @@ class LoRaGoFramerDeframer(FramerDeframer):
 
                 elif f[1] == b'Hex':    # Append potential other Hex frame from LoRaGo for future processing
                     leftOver += (f[0])
+                elif f[1] == b'Device' or f[1] == b'Version':
+                    print("[LoRaGo] {}={}".format(f[1].decode(), f[2].decode()))
+                    pass
                 else:
-                    # print("Ignored {}".format(f[1]))
+                    # print("[LoRaGo] Received {}".format(f[0]))
                     pass
 
         # Append potential imcomplete LoRaGo frame for future processing 

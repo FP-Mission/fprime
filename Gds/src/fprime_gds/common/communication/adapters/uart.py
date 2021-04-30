@@ -8,14 +8,12 @@ drivers.
 @author lestarch
 """
 
+import serial
 import logging
 
 import fprime_gds.common.communication.adapters.base
 
-import serial
-
 LOGGER = logging.getLogger("serial_adapter")
-
 
 class SerialAdapter(fprime_gds.common.communication.adapters.base.BaseAdapter):
     """
@@ -72,6 +70,12 @@ class SerialAdapter(fprime_gds.common.communication.adapters.base.BaseAdapter):
         """
         self.close()
         self.serial = serial.Serial(self.device, self.baud)
+        if self.serial is not None:
+            self.sendLoRaGoCommand("F434.225")
+            self.sendLoRaGoCommand("M1")
+            self.sendLoRaGoCommand("D")
+            self.sendLoRaGoCommand("V")
+
         return self.serial is not None
 
     def close(self):
@@ -103,6 +107,10 @@ class SerialAdapter(fprime_gds.common.communication.adapters.base.BaseAdapter):
             LOGGER.warning("Serial exception caught: %s. Reconnecting.", (str(exc)))
             self.close()
         return False
+
+    def sendLoRaGoCommand(self, command):
+        print("[LoRaGo] ~" + command)
+        self.write(("~" + command + "\r\n").encode())
 
     def read(self, timeout=0.500):
         """
