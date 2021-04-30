@@ -92,7 +92,7 @@
             Op code registered event
             </comment>
             <args>
-                <arg name="Opcode" type="U32">
+                <arg name="Opcode" type="U8">
                     <comment>The opcode to register</comment>
                 </arg>          
                 <arg name="port" type="I32">
@@ -108,7 +108,7 @@
             Op code dispatched event
             </comment>
             <args>
-                <arg name="Opcode" type="U32">
+                <arg name="Opcode" type="U8">
                     <comment>The opcode dispatched</comment>
                 </arg>          
                 <arg name="port" type="I32">
@@ -121,7 +121,7 @@
             Op code completed event
             </comment>
             <args>
-                <arg name="Opcode" type="U32">
+                <arg name="Opcode" type="U8">
                     <comment>The I32 command argument</comment>
                 </arg>          
             </args>
@@ -131,7 +131,7 @@
             Op code completed with error event
             </comment>
             <args>
-                <arg name="Opcode" type="U32">
+                <arg name="Opcode" type="U8">
                     <comment>The opcode with the error</comment>
                 </arg>
                 <!-- These need to match CmdResponsePortAi.xml -->          
@@ -171,7 +171,7 @@
             Received an invalid opcode
             </comment>
             <args>
-                <arg name="Opcode" type="U32">
+                <arg name="Opcode" type="U8">
                     <comment>Invalid opcode</comment>
                 </arg>          
             </args>
@@ -181,7 +181,7 @@
             Exceeded the number of commands that can be simultaneously executed
             </comment>
             <args>
-                <arg name="Opcode" type="U32">
+                <arg name="Opcode" type="U8">
                     <comment>The opcode that overflowed the list</comment>
                 </arg>          
             </args>
