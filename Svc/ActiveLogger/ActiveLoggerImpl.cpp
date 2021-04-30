@@ -37,6 +37,7 @@ namespace Svc {
                 this->m_filteredIDs[i] = i+1;
             }
             //this->m_filteredIDs[0x47 - 1] = 0;  // Remove filter for 0x47 (PingReceived) - Debugging purpose
+            //this->m_filteredIDs[0x08 - 1] = 0;  // Remove filter for 0x47 (PingReceived) - Debugging purpose
         }
     }
 

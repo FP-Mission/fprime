@@ -229,7 +229,7 @@
 
 // Specifies the maximum size of a string in a command argument
 #ifndef FW_CMD_STRING_MAX_SIZE
-#define FW_CMD_STRING_MAX_SIZE           10   //!< Max character size of command string arguments
+#define FW_CMD_STRING_MAX_SIZE           16   //!< Max character size of command string arguments
 #endif
 
 // Normally when a command is deserialized, the handler checks to see if there any any leftover
@@ -249,7 +249,7 @@
 
 // Specifies the maximum size of a string in a log event
 #ifndef FW_LOG_STRING_MAX_SIZE
-#define FW_LOG_STRING_MAX_SIZE           20   //!< Max size of log string parameter type
+#define FW_LOG_STRING_MAX_SIZE           16   //!< Max size of log string parameter type
 #endif
 
 // Specifies the size of the buffer that contains the serialized telemetry value.
@@ -259,7 +259,7 @@
 
 // Specifies the maximum size of a string in a telemetry channel
 #ifndef FW_TLM_STRING_MAX_SIZE
-#define FW_TLM_STRING_MAX_SIZE           20  //!< Max size of channelized telemetry string type
+#define FW_TLM_STRING_MAX_SIZE           16  //!< Max size of channelized telemetry string type
 #endif
 
 // Specifies the size of the buffer that contains the serialized parameter value.
@@ -269,7 +269,7 @@
 
 // Specifies the maximum size of a string in a parameter
 #ifndef FW_PARAM_STRING_MAX_SIZE
-#define FW_PARAM_STRING_MAX_SIZE           20  //!< Max size of parameter string type
+#define FW_PARAM_STRING_MAX_SIZE           16  //!< Max size of parameter string type
 #endif
 
 // Specifies the maximum size of a file upload chunk
