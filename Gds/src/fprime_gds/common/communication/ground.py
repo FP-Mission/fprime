@@ -61,7 +61,7 @@ class TCPGround(GroundHandler):
         Initialize this interface with the address and port needed to connect to the GDS.
 
         :param address: Address of the tcp server. Default 127.0.0.1
-        :param port: port of the tcp server. Default: 50000
+        :param port: port of the tcp server. Default: 50050
         """
         self.tcp = TcpHandler(
             address, port, False, LOGGER, post_connect=b"Register FSW\n"
