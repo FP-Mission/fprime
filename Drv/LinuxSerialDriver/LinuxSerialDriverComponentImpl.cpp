@@ -321,13 +321,13 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
     LinuxSerialDriverComponentImpl* comp =
         static_cast<LinuxSerialDriverComponentImpl*>(ptr);
 
-    Fw::Buffer buff;
 
-    while (1) {
-        // wait for data
+    while(1) {
+        Fw::Buffer buff;
         int stat = 0;
+        char c;
 
-        // find open buffer
+        // Allocate new buffer
 
         comp->m_readBuffMutex.lock();
         // search for open entry
@@ -353,56 +353,53 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
             Os::Task::delay(50);
             continue;
         }
-        //*/
 
-        while (true) {
-
+        while(true) {
             // End loop if thread has to stop
             if (comp->m_quitReadThread) {
                 return;
             }
-            char temp[8];   // @todo read more that 8 char
-            stat = ::read(comp->m_fd, temp, 8);
 
+            stat = ::read(comp->m_fd, &c, 1);
 
-            if (stat == -1 ) {
+            if (stat == -1) {
                 Fw::LogStringArg _arg = comp->m_device;
                 comp->log_WARNING_HI_DR_ReadError(_arg, errno);
                 serReadStat = Drv::SER_OTHER_ERR;
                 break;
             } else if (stat == 0) { // no data
                 continue;   // retry
-            } else {    // stat > 0 -> data read
-                DEBUG_PRINT("Data received %u\n", stat);
-                // Copy current read data in allocated buffer
-                char* ptr = reinterpret_cast<char *>(buff.getData());
-                if(buff.getSize() + stat <= UART_READ_BUFF_SIZE) { // check buffer capacity
+            } else if(stat == 1) {    // 1 data read
+
+                if(buff.getSize() + 1 <= UART_READ_BUFF_SIZE) {
+                    char* ptr = reinterpret_cast<char *>(buff.getData());
+
                     ptr += buff.getSize();      // append data
                     DEBUG_PRINT("Append data to %lu\n", buff.getSize());
-                    memcpy(ptr, temp, stat);
-                    DEBUG_PRINT("Set new size to %lu\n", buff.getSize() + stat);
-                    buff.setSize(buff.getSize() + stat);        // increment size
-                    // If end of received data, send it out
-                    // @todo Improve. Sometimes multiples responses are read by ::read() and '\n' is not at the end
-                    if(temp[stat-1] == '\n') {  
+                    memcpy(ptr, &c, 1);
+                    buff.setSize(buff.getSize() + 1);        // increment size
+
+                    if(c == '\n') {
                         serReadStat = Drv::SER_OK;
-                        DEBUG_PRINT("Send %lu\n", buff.getSize());
+                        DEBUG_PRINT("Send %s\n", buff.getData());
                         comp->serialRecv_out(0, buff, serReadStat);  
                         break; // Allocate new buffer for next data
-                    } else { // Else csontinue to read
-                        continue;
                     }
                 } else {
                     // Not enough place in buffer, end character not found
                     // Throw error
                     Fw::LogStringArg deviceName(comp->m_device);
-                    DEBUG_PRINT("End of received sequence not found\n");
+                    DEBUG_PRINT("End of received sequence never found\n");
                     comp->log_WARNING_HI_DR_BufferTooSmall(deviceName, buff.getSize(), stat);
                     serReadStat = Drv::SER_BUFFER_TOO_SMALL;
                     comp->serialRecv_out(0, buff, serReadStat);  
-                }               
+                }
+            } else { // stat > 1
+                printf("SERIAL ERROR - Should read 1 character only \n");
             }
+
         }
+
     }
 }
 
