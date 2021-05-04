@@ -25,11 +25,11 @@ TEST(TestErrors, LogFileWrite) {
   Svc::Errors::Tester tester;
   tester.LogFileWrite();
 }
-
+/*
 TEST(TestErrors, LogFileValidation) {
   Svc::Errors::Tester tester;
   tester.LogFileValidation();
-}
+}*/
 
 // ----------------------------------------------------------------------
 // Test Logging
