@@ -34,7 +34,7 @@ namespace Svc {
         // All possible event (eventCode is U8) are filtered by default
         if (TELEM_ID_FILTER_SIZE == 255) {
             for(int i = 0; i < TELEM_ID_FILTER_SIZE; i++) {
-                this->m_filteredIDs[i] = i+1;
+                this->m_filteredIDs[i] = 0;
             }
             this->m_filteredIDs[0x47 - 1] = 0;  // Remove filter for 0x47 (PingReceived) - Debugging purpose
             this->m_filteredIDs[0x6e - 1] = 0;  // Remove filter for 0x6e (PiCam_PictureTaken) - Debugging purpose
