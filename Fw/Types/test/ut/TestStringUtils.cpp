@@ -32,7 +32,7 @@ TEST(Nominal, string_copy) {
 }
 
 TEST(OffNominal, string_copy) {
-    const char* copy_string = "abc123\n";  // Length of 7
+    const char copy_string[8] = "abc123\n";  // Length of 7
     char buffer_out_test[sizeof(copy_string) - 1];
     char buffer_out_truth[sizeof(copy_string) - 1];
 

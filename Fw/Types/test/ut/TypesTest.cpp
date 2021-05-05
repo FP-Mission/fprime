@@ -691,8 +691,8 @@ TEST(PerformanceTest, ClassCopyTest) {
 }
 
 void printSizes(void) {
-    printf("Sizeof TestStruct: %lu\n", sizeof(TestStruct));
-    printf("Sizeof MySerializable: %lu\n", sizeof(MySerializable));
+    printf("Sizeof TestStruct: %lud\n", sizeof(TestStruct));
+    printf("Sizeof MySerializable: %lud\n", sizeof(MySerializable));
 }
 
 void AssertTest(void) {
