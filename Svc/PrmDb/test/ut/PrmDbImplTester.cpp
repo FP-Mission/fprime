@@ -178,10 +178,10 @@ namespace Svc {
         // ask for ID that isn't present
         this->clearEvents();
         Fw::ParamBuffer pBuff;
-        EXPECT_EQ(Fw::PARAM_INVALID,this->invoke_to_getPrm(0,0x1000,pBuff));
+        EXPECT_EQ(Fw::PARAM_INVALID,this->invoke_to_getPrm(0,0x70,pBuff));
         ASSERT_EVENTS_SIZE(1);
         ASSERT_EVENTS_PrmIdNotFound_SIZE(1);
-        ASSERT_EVENTS_PrmIdNotFound(0,0x1000);
+        ASSERT_EVENTS_PrmIdNotFound(0,0x70);
 
         // clear database
         this->m_impl.clearDb();
@@ -206,9 +206,9 @@ namespace Svc {
     void PrmDbImplTester::runRefPrmFile(void) {
 
         {
-            // ID = 00x1000
+            // ID = 0x70
             U32 val = 14;
-            FwPrmIdType id = 0x1000;
+            FwPrmIdType id = 0x70;
 
             Fw::ParamBuffer pBuff;
 
@@ -236,9 +236,9 @@ namespace Svc {
         }
 
         {
-            // ID = 0x1001
+            // ID = 0x71
             I16 val = 15;
-            FwPrmIdType id = 0x1001;
+            FwPrmIdType id = 0x71;
 
             Fw::ParamBuffer pBuff;
 
@@ -266,9 +266,9 @@ namespace Svc {
         }
 
         {
-            // ID = 0x1100
+            // ID = 0x80
             U8 val = 32;
-            FwPrmIdType id = 0x1100;
+            FwPrmIdType id = 0x80;
 
             Fw::ParamBuffer pBuff;
 
@@ -296,9 +296,9 @@ namespace Svc {
         }
 
         {
-            // ID = 0x1101
+            // ID = 0x81
             F32 val = 33.34;
-            FwPrmIdType id = 0x1101;
+            FwPrmIdType id = 0x81;
 
             Fw::ParamBuffer pBuff;
 
