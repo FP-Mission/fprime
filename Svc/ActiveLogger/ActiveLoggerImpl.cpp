@@ -124,6 +124,12 @@ namespace Svc {
         Fw::SerializeStatus stat = this->m_logPacket.serialize(this->m_comBuffer);
         FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
 
+        /*/ Deserialization example for fun
+        Fw::LogPacket logPacket; //!< packet buffer for assembling log packets
+        stat = logPacket.deserialize(this->m_comBuffer);
+        FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
+        //*/
+
         if (this->isConnected_PktSend_OutputPort(0)) {
             this->PktSend_out(0, this->m_comBuffer,0);
         }
