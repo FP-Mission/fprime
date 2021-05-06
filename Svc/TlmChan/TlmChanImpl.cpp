@@ -44,8 +44,6 @@ namespace Svc {
         // clear free index
         this->m_tlmEntries[0].free = 0;
         this->m_tlmEntries[1].free = 0;
-
-
     }
 
     TlmChanImpl::~TlmChanImpl() {
