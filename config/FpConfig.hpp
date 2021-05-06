@@ -113,7 +113,7 @@
 // Adds the ability for all component related objects to register
 // centrally.
 #ifndef FW_OBJECT_REGISTRATION
-#define FW_OBJECT_REGISTRATION              1   //!< Indicates whether or not objects can register themselves (more code, more object tracking)
+#define FW_OBJECT_REGISTRATION              0   //!< Indicates whether or not objects can register themselves (more code, more object tracking)
 #endif
 
 #ifndef FW_QUEUE_REGISTRATION
@@ -176,7 +176,7 @@
 // The size of the object name stored in the object base class. Larger names will be truncated.
 #if FW_OBJECT_NAMES
  #ifndef FW_OBJ_NAME_MAX_SIZE
- #define FW_OBJ_NAME_MAX_SIZE                80  //!< Size of object name (if object names enabled). AC Limits to 80, truncation occurs above 80.
+ #define FW_OBJ_NAME_MAX_SIZE                20  //!< Size of object name (if object names enabled). AC Limits to 80, truncation occurs above 80.
  #endif
 #endif
 
@@ -208,12 +208,12 @@
 
 // Specifies the size of the string holding the queue name for queues
 #ifndef FW_QUEUE_NAME_MAX_SIZE
-#define FW_QUEUE_NAME_MAX_SIZE               80   //!< Max size of message queue name
+#define FW_QUEUE_NAME_MAX_SIZE               20   //!< Max size of message queue name
 #endif
 
 // Specifies the size of the string holding the task name for active components and tasks
 #ifndef FW_TASK_NAME_MAX_SIZE
-#define FW_TASK_NAME_MAX_SIZE               80    //!< Max size of task name
+#define FW_TASK_NAME_MAX_SIZE               20    //!< Max size of task name
 #endif
 
 // Specifies the size of the buffer that contains a communications packet.
@@ -274,7 +274,7 @@
 
 // Specifies the maximum size of a file upload chunk
 #ifndef FW_FILE_BUFFER_MAX_SIZE
-#define FW_FILE_BUFFER_MAX_SIZE             255   //!< Max size of file buffer (i.e. chunk of file)
+#define FW_FILE_BUFFER_MAX_SIZE             20   //!< Max size of file buffer (i.e. chunk of file)
 #endif
 
 // Specifies the maximum size of a string in an interface call
@@ -289,7 +289,7 @@
 
  // Define the size of the text log string buffer. Should be large enough for format string and arguments
 #ifndef FW_LOG_TEXT_BUFFER_SIZE
-#define FW_LOG_TEXT_BUFFER_SIZE              256   //!< Max size of string for text log message
+#define FW_LOG_TEXT_BUFFER_SIZE              128   //!< Max size of string for text log message
 #endif
 
 // Define if serializables have toString() method. Turning off will save code space and
@@ -300,7 +300,7 @@
 
 #if FW_SERIALIZABLE_TO_STRING
 #ifndef FW_SERIALIZABLE_TO_STRING_BUFFER_SIZE
-#define FW_SERIALIZABLE_TO_STRING_BUFFER_SIZE 255   //!< Size of string to store toString() string output
+#define FW_SERIALIZABLE_TO_STRING_BUFFER_SIZE 128   //!< Size of string to store toString() string output
 #endif
 #endif
 
@@ -311,7 +311,7 @@
 
 #if FW_ARRAY_TO_STRING
 #ifndef FW_ARRAY_TO_STRING_BUFFER_SIZE
-#define FW_ARRAY_TO_STRING_BUFFER_SIZE 256  //!< Size of string to store toString() string output
+#define FW_ARRAY_TO_STRING_BUFFER_SIZE 128  //!< Size of string to store toString() string output
 #endif
 #endif
 
