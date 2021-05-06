@@ -22,7 +22,7 @@ set(CMAKE_SYSTEM_NAME "arm-linux-gnueabihf")
 # Location of pi toolchain
 set(RPI_TOOLCHAIN "$ENV{RPI_TOOLCHAIN_DIR}")
 if ("${RPI_TOOLCHAIN}" STREQUAL "")
-    set(RPI_TOOLCHAIN "/opt/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf")
+    set(RPI_TOOLCHAIN "/opt/riscv")
 endif()
 # Check toolchain directory exists
 IF(NOT EXISTS "${RPI_TOOLCHAIN}")
@@ -30,8 +30,8 @@ IF(NOT EXISTS "${RPI_TOOLCHAIN}")
 endif()
 message(STATUS "Using RPI toolchain at: ${RPI_TOOLCHAIN}")
 # specify the cross compiler
-set(CMAKE_C_COMPILER "${RPI_TOOLCHAIN}/bin/arm-linux-gnueabihf-gcc")
-set(CMAKE_CXX_COMPILER "${RPI_TOOLCHAIN}/bin/arm-linux-gnueabihf-g++")
+set(CMAKE_C_COMPILER "${RPI_TOOLCHAIN}/bin/riscv64-unknown-elf-gcc")
+set(CMAKE_CXX_COMPILER "${RPI_TOOLCHAIN}/bin/riscv64-unknown-elf-g++")
 
 # where is the target environment
 set(CMAKE_FIND_ROOT_PATH  "${RPI_TOOLCHAIN}")

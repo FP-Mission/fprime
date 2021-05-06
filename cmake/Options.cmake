@@ -92,6 +92,8 @@ endif()
 #
 # e.g. `-DCMAKE_TOOLCHAIN_FILE=/path/to/cmake/toolchain`
 ####
+#set(CMAKE_TOOLCHAIN_FILE toolchain/riscv.cmake)
+#set(CMAKE_TOOLCHAIN_FILE toolchain/raspberrypi.cmake)
 
 ####
 # `PLATFORM:`
@@ -101,7 +103,7 @@ endif()
 #
 # e.g. `-DPLATFORM=/path/to/platform/cmake`
 ####
-
+#set(PLATFORM platform/riscv64-unknown-elf.cmake)
 
 ####
 # Locations `FPRIME_FRAMEWORK_PATH`, `FPRIME_PROJECT_ROOT`, `FPRIME_LIBRARY_LOCATIONS`
