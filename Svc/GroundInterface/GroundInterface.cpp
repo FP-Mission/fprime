@@ -120,29 +120,27 @@ namespace Svc {
       buffer.setSize(buffer_wrapper.getBuffLength());
       FW_ASSERT(buffer.getSize() == total_size, buffer.getSize(), total_size);
 
-        // Deserialization example for fun
-        U8 buffer_data[GND_BUFFER_SIZE];
-        Fw::Buffer buffer2(buffer_data, GND_BUFFER_SIZE);
-        Fw::SerializeBufferBase& buffer_wrapper2 = buffer.getSerializeRepr();
-        buffer_wrapper.resetDeser();
-        buffer_wrapper.setBuffLen(buffer.getSize());
+        /* Deserialization example for fun
+        Fw::SerializeBufferBase& deserBufferWrapper = buffer.getSerializeRepr();
+        deserBufferWrapper.resetDeser();
+        deserBufferWrapper.setBuffLen(buffer.getSize());
 
         TOKEN_TYPE token;
-        Fw::SerializeStatus stat = buffer_wrapper.deserialize(token);
+        Fw::SerializeStatus stat = deserBufferWrapper.deserialize(token);
         FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
         FW_ASSERT(token == START_WORD);
 
         TOKEN_TYPE dataSize;
         FwPacketDescriptorType packetType;
 
-        stat = buffer_wrapper.deserialize(dataSize);
+        stat = deserBufferWrapper.deserialize(dataSize);
         FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
 
-        stat = buffer_wrapper.deserialize(packetType);
+        stat = deserBufferWrapper.deserialize(packetType);
         FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
 
         if(packetType == Fw::ComPacket::FW_PACKET_LOG && dataSize == 17) {
-            Fw::ComBuffer comBuffer(buffer_wrapper.getBuffAddrLeft(), dataSize-1);
+            Fw::ComBuffer comBuffer(deserBufferWrapper.getBuffAddrLeft(), dataSize-1);
             comBuffer.resetDeser();
 
             Fw::LogPacket logPacket;
@@ -151,25 +149,21 @@ namespace Svc {
             FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
             
             // Skip Com packet
-            stat = buffer_wrapper.deserializeSkip(dataSize - 1);
+            stat = deserBufferWrapper.deserializeSkip(dataSize - 1);
             FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
 
             // Deserialize END_WORD
-            stat = buffer_wrapper.deserialize(token);
+            stat = deserBufferWrapper.deserialize(token);
             FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
             FW_ASSERT(token == END_WORD);
 
+            // ?? logPacket.getId() does not work :(
             printf("Received LogPacket of size %u for event 0x%.2x\n", dataSize, logPacket.getId());
 
         } else {
             printf("PacketType %u of size %u\n", packetType, dataSize);
         }
-
-
         //*/
-
-
-      return;
 
       write_out(0, buffer);
   }

@@ -49,7 +49,7 @@ namespace Svc {
                 Fw::SerializeStatus stat = this->m_tlmPacket.serialize(this->m_comBuffer);
                 FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
                 p_entry->updated = false;
-                //this->PktSend_out(0,this->m_comBuffer,0);
+                this->PktSend_out(0,this->m_comBuffer,0);
             }
         }
     }
