@@ -141,9 +141,7 @@ namespace Svc {
         stat = buffer_wrapper.deserialize(packetType);
         FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
 
-        if(packetType == Fw::ComPacket::FW_PACKET_LOG) {
-            FW_ASSERT(dataSize == 17,static_cast<NATIVE_INT_TYPE>(dataSize));
-
+        if(packetType == Fw::ComPacket::FW_PACKET_LOG && dataSize == 17) {
             Fw::ComBuffer comBuffer(buffer_wrapper.getBuffAddrLeft(), dataSize-1);
             comBuffer.resetDeser();
 
