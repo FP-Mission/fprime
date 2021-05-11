@@ -36,8 +36,8 @@ namespace Svc {
             for(int i = 0; i < TELEM_ID_FILTER_SIZE; i++) {
                 this->m_filteredIDs[i] = 0;
             }
-            this->m_filteredIDs[0x47 - 1] = 0;  // Remove filter for 0x47 (PingReceived) - Debugging purpose
-            this->m_filteredIDs[0x6e - 1] = 0;  // Remove filter for 0x6e (PiCam_PictureTaken) - Debugging purpose
+            this->m_filteredIDs[0x4D - 1] = 0;  // Remove filter for PR_PingReceived - Debugging purpose
+            this->m_filteredIDs[0x74 - 1] = 0;  // Remove filter for PiCam_PictureTaken - Debugging purpose
         }
     }
 
@@ -125,9 +125,19 @@ namespace Svc {
         FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
 
         /*/ Deserialization example for fun
-        Fw::LogPacket logPacket; //!< packet buffer for assembling log packets
-        stat = logPacket.deserialize(this->m_comBuffer);
+        Fw::LogPacket logPacketDeser;
+        stat = logPacketDeser.deserialize(this->m_comBuffer);
         FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
+        FwEventIdType logIdDeser = logPacketDeser.getId();
+        printf("Log id: 0x%.2X\n", logIdDeser);
+        if(logIdDeser == 0x4D) {    // PR_PingReceived
+            U32 code;
+            Fw::LogBuffer logBufferDeser(logPacketDeser.getLogBuffer());
+            logBufferDeser.resetDeser();
+            stat = logBufferDeser.deserialize(code);
+            FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
+            printf("PR_PingReceived core : %u\n", code);
+        }
         //*/
 
         if (this->isConnected_PktSend_OutputPort(0)) {

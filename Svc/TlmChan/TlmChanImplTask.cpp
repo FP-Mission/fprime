@@ -37,8 +37,33 @@ namespace Svc {
         }
         this->unLock();
 
-        // go through each entry and send a packet if it has been updated
-
+        // Generate TlmReportPacket
+        U32 u32Val;
+        for (U32 entry = 0; entry < TLMCHAN_HASH_BUCKETS; entry++) {
+            TlmEntry* p_entry = &this->m_tlmEntries[1-this->m_activeBuffer].buckets[entry];
+            if (p_entry->used) {
+                p_entry->buffer.resetDeser();
+                switch (p_entry->id) {
+                case 0x4C:  // PR_NumPings
+                    p_entry->buffer.deserialize(u32Val);
+                    m_tlmReportPacket.value = u32Val;
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+        // @todo Get current time
+        Fw::Time time(1,2);
+        this->m_tlmPacket.setTimeTag(time);
+        this->m_comBuffer.resetSer();
+        Fw::SerializeStatus stat = this->m_tlmReportPacket.serialize(this->m_comBuffer);
+        FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
+        this->PktSend_out(0,this->m_comBuffer,0);
+        //*/
+        
+        
+        /*/ go through each entry and send a TlmPacket if it has been updated
         for (U32 entry = 0; entry < TLMCHAN_HASH_BUCKETS; entry++) {
             TlmEntry* p_entry = &this->m_tlmEntries[1-this->m_activeBuffer].buckets[entry];
             if ((p_entry->updated) && (p_entry->used)) {
@@ -52,6 +77,7 @@ namespace Svc {
                 this->PktSend_out(0,this->m_comBuffer,0);
             }
         }
+        //*/
     }
 
 }

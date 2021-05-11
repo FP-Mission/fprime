@@ -120,7 +120,7 @@ namespace Svc {
       buffer.setSize(buffer_wrapper.getBuffLength());
       FW_ASSERT(buffer.getSize() == total_size, buffer.getSize(), total_size);
 
-        /* Deserialization example for fun
+        /*/ Deserialization example for fun
         Fw::SerializeBufferBase& deserBufferWrapper = buffer.getSerializeRepr();
         deserBufferWrapper.resetDeser();
         deserBufferWrapper.setBuffLen(buffer.getSize());
@@ -159,7 +159,7 @@ namespace Svc {
 
             // ?? logPacket.getId() does not work :(
             printf("Received LogPacket of size %u for event 0x%.2x\n", dataSize, logPacket.getId());
-
+            return;
         } else {
             printf("PacketType %u of size %u\n", packetType, dataSize);
         }
