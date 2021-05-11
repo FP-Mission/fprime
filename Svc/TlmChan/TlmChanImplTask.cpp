@@ -54,8 +54,8 @@ namespace Svc {
             }
         }
         // @todo Get current time
-        Fw::Time time(0xABCDABCD, 0x12345678);
-        this->m_tlmReportPacket.setId(0xFF);
+        Fw::Time time(0xABCDABCD, 0x7A7A7);
+        this->m_tlmReportPacket.setId(0x69);
         this->m_tlmReportPacket.setTimeTag(time);
         this->m_comBuffer.resetSer();
         Fw::SerializeStatus stat = this->m_tlmReportPacket.serialize(this->m_comBuffer);

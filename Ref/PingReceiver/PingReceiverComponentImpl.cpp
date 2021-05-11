@@ -57,7 +57,7 @@ namespace Ref {
     if (not this->m_inhibitPings) {
         PingOut_out(0,key);
     }
-    this->log_DIAGNOSTIC_PR_PingReceived(key);
+    //this->log_DIAGNOSTIC_PR_PingReceived(key);
   }
 
   void PingReceiverComponentImpl::PR_StopPings_cmdHandler(
