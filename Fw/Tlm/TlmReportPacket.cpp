@@ -31,18 +31,13 @@ namespace Fw {
         }
 
 #if !FW_AMPCS_COMPATIBLE
-        //stat = buffer.serialize(this->m_timeTag);
-        //if (stat != FW_SERIALIZE_OK) {
-        //    return stat;
-        //}
-#endif
-
-        stat = buffer.serialize(this->value);
+        stat = buffer.serialize(this->m_timeTag);
         if (stat != FW_SERIALIZE_OK) {
             return stat;
         }
+#endif
 
-        stat = buffer.serialize(this->value + 1);
+        stat = buffer.serialize(this->value);
         if (stat != FW_SERIALIZE_OK) {
             return stat;
         }
