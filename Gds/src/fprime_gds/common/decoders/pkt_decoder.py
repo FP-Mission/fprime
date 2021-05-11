@@ -8,8 +8,9 @@ binary data after removing any length and descriptor headers.
 
 Example data that would be sent to a decoder that parses events or channels:
     +-------------------+---------------------+------------ - - -
-    | ID (2 bytes) | Time Tag (11 bytes) | Data....
+    | ID (2 bytes) | Time Tag (x bytes) | Data....
     +-------------------+---------------------+------------ - - -
+                        depends on time context and base enabling
 
 @date Created July 12, 2018
 @author R. Joseph Paetz

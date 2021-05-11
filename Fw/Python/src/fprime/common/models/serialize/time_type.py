@@ -25,6 +25,7 @@ from enum import Enum
 import fprime.common.models.serialize.numerical_types
 from fprime.common.models.serialize import type_base
 from fprime.common.models.serialize.type_exceptions import TypeRangeException
+from fprime_gds.common.utils import config_manager
 
 TimeBase = Enum(
     "TimeBase",
@@ -57,7 +58,7 @@ class TimeType(type_base.BaseType):
     a description of this behavior.  See comparison functions at the end.
     """
 
-    def __init__(self, time_base=0, time_context=0, seconds=0, useconds=0):
+    def __init__(self, time_base=2, time_context=0, seconds=0, useconds=0):
         """
         Constructor
 
@@ -72,16 +73,23 @@ class TimeType(type_base.BaseType):
         Returns:
             An initialized TimeType object
         """
+
+        config = config_manager.ConfigManager().get_instance()
+        self.isTimeBaseEnabled = config.getboolean("time", "base")
+        self.isTimeContextEnabled = config.getboolean("time", "context")
+
         # Layout of time tag:
         #
         # START (LSB)
         # |  2 bytes  |    1 byte    | 4 bytes |   4 bytes    |
         # |-----------|--------------|---------|--------------|
         # | Time Base | Time Context | Seconds | Microseconds |
+        # TimeBase and TimeContext can be deactivated in config_manager$
         super().__init__()
-        self._check_time_base(time_base)
+        if self.isTimeBaseEnabled:
+            self._check_time_base(time_base)
         self._check_useconds(useconds)
-
+        
         self.__timeBase = fprime.common.models.serialize.numerical_types.U16Type(
             time_base
         )
@@ -174,8 +182,13 @@ class TimeType(type_base.BaseType):
             Byte array containing serialized time type
         """
         buf = b""
-        buf += self.__timeBase.serialize()
-        buf += self.__timeContext.serialize()
+
+        if self.isTimeBaseEnabled:
+            buf += self.__timeBase.serialize()
+
+        if self.isTimeContextEnabled:
+            buf += self.__timeContext.serialize()
+
         buf += self.__secs.serialize()
         buf += self.__usecs.serialize()
         return buf
@@ -192,12 +205,14 @@ class TimeType(type_base.BaseType):
         """
 
         # Decode Time Base
-        self.__timeBase.deserialize(data, offset)
-        offset += self.__timeBase.getSize()
+        if self.isTimeBaseEnabled:
+            self.__timeBase.deserialize(data, offset)
+            offset += self.__timeBase.getSize()
 
         # Decode Time Context
-        self.__timeContext.deserialize(data, offset)
-        offset += self.__timeContext.getSize()
+        if self.isTimeContextEnabled:
+            self.__timeContext.deserialize(data, offset)
+            offset += self.__timeContext.getSize()
 
         # Decode Seconds
         self.__secs.deserialize(data, offset)
@@ -214,12 +229,10 @@ class TimeType(type_base.BaseType):
         Returns:
             The size of the time type object when serialized
         """
-        return (
-            self.__timeBase.getSize()
-            + self.__timeContext.getSize()
-            + self.__secs.getSize()
-            + self.__usecs.getSize()
-        )
+        size = self.__secs.getSize() + self.__usecs.getSize()
+        size += self.__timeBase.getSize() if self.isTimeBaseEnabled else 0
+        size += self.__timeContext.getSize() if self.isTimeContextEnabled else 0
+        return size
 
     @staticmethod
     def compare(t1, t2):

@@ -342,11 +342,11 @@ enum TimeBase {
 // class are used. Some systems may not use or need those fields
 
 #ifndef FW_USE_TIME_BASE
-#define FW_USE_TIME_BASE                1 //!< Whether or not to use the time base
+#define FW_USE_TIME_BASE                0 //!< Whether or not to use the time base
 #endif
 
 #ifndef FW_USE_TIME_CONTEXT
-#define FW_USE_TIME_CONTEXT             1 //!< Whether or not to serialize the time context
+#define FW_USE_TIME_CONTEXT             0 //!< Whether or not to serialize the time context
 #endif
 //
 //These defines used for the FilepathCharString type
