@@ -44,7 +44,7 @@ namespace Svc {
             if (p_entry->used) {
                 p_entry->buffer.resetDeser();
                 switch (p_entry->id) {
-                case 0x4C:  // PR_NumPings
+                case 0x4E:  // BD_Cycles
                     p_entry->buffer.deserialize(u32Val);
                     m_tlmReportPacket.value = u32Val;
                     break;
