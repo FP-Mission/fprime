@@ -6,8 +6,12 @@
     <import_port_type>Fw/Com/ComPortAi.xml</import_port_type>
     <import_port_type>Svc/Sched/SchedPortAi.xml</import_port_type>
     <import_port_type>Svc/Ping/PingPortAi.xml</import_port_type>
+    <import_port_type>Fw/Time/TimePortAi.xml</import_port_type>
+    <import_port_type>Fw/Time/TimePortAi.xml</import_port_type>
+
     <comment>A component for storing telemetry</comment>
     <ports>
+        <port name="Time" kind="output" data_type="Fw::Time" max_number="1" role="TimeGet"/>
         <port name="TlmRecv" data_type="Fw::Tlm" kind="guarded_input" >
             <comment>
             Telemetry input port

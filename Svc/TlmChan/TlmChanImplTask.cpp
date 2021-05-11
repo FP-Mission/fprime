@@ -54,7 +54,7 @@ namespace Svc {
             }
         }
         // @todo Get current time
-        Fw::Time time(0xABCDABCD, 0x7A7A7);
+        Fw::Time time = getTime();
         this->m_tlmReportPacket.setId(0x69);
         this->m_tlmReportPacket.setTimeTag(time);
         this->m_comBuffer.resetSer();

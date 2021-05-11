@@ -32,7 +32,7 @@ namespace Fw {
             U32 value;  // test variable to store random u32 in report
             
         PROTECTED:
-            FwChanIdType m_id; // !< Channel id
+            FwChanIdType m_id; // !< Telemtetry report id (unused for now)
             Fw::Time m_timeTag; // !< time tag
     };
 
