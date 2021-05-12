@@ -88,8 +88,20 @@ class TlmReportDecoder(Decoder):
 
             return [PR_NumPings, BD_Cycles]
         elif report_id == ReportIds.FP1_MISSION_REPORT: 
-            print("Decode FP1_MISSION TlmReport")
-            # @todo
+            (ptr, CommandErrors) = self.decode_ch(0x4c, data, ptr, report_time)
+            (ptr, PR_NumPings) = self.decode_ch(0x4c, data, ptr, report_time)
+            (ptr, BD_Cycles) = self.decode_ch(0x4c, data, ptr, report_time)
+            (ptr, Eps_BatteryVoltage) = self.decode_ch(0x4c, data, ptr, report_time)
+            (ptr, TempProb_InternalTemperature) = self.decode_ch(0x4c, data, ptr, report_time)
+            (ptr, TempProb_ExternalTemperature) = self.decode_ch(0x4c, data, ptr, report_time)
+            (ptr, THERMOMETER_TEMP) = self.decode_ch(0x4c, data, ptr, report_time)
+            (ptr, THERMOMETER_HUMI) = self.decode_ch(0x4c, data, ptr, report_time)
+            (ptr, BAROMETER_TEMP) = self.decode_ch(0x4c, data, ptr, report_time)
+            (ptr, BAROMETER_PRESS) = self.decode_ch(0x4c, data, ptr, report_time)
+            (ptr, BAROMETER_ALT) = self.decode_ch(0x4c, data, ptr, report_time)
+
+            return [CommandErrors, PR_NumPings, BD_Cycles, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature, THERMOMETER_TEMP, THERMOMETER_HUMI, BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT]
+            
         else:
             print("TlmReport id 0x{:02X} does not exist".format(report_id))
             return None

@@ -38,13 +38,19 @@ namespace Svc {
         this->unLock();
 
         // Update data for TlmReportPacket
-        // @todo Find a cleaner way to do this
+        // @todo Find a cleaner way/better place to do this
         U32 u32Val;
+        U16 u16Val;
+        F32 f32Val;
         for (U32 entry = 0; entry < TLMCHAN_HASH_BUCKETS; entry++) {
             TlmEntry* p_entry = &this->m_tlmEntries[1-this->m_activeBuffer].buckets[entry];
             if (p_entry->used) {
                 p_entry->buffer.resetDeser();
                 switch (p_entry->id) {
+                case 0x4:       // CommandErrors
+                    p_entry->buffer.deserialize(u32Val);
+                    m_tlmReportPacket.data.CommandErrors = u32Val;
+                    break;
                 case 0x4C:      // PR_NumPings
                     p_entry->buffer.deserialize(u32Val);
                     m_tlmReportPacket.data.PR_NumPings = u32Val;
@@ -52,6 +58,38 @@ namespace Svc {
                 case 0x4E:      // BD_Cycles
                     p_entry->buffer.deserialize(u32Val);
                     m_tlmReportPacket.data.BD_Cycles = u32Val;
+                    break;
+                case 0x56:  // Eps_BatteryVoltage
+                    p_entry->buffer.deserialize(u16Val);
+                    m_tlmReportPacket.data.Eps_BatteryVoltage = u16Val;
+                    break;
+                case 0x92:      // TempProb_InternalTemperature
+                    p_entry->buffer.deserialize(f32Val);
+                    m_tlmReportPacket.data.TempProb_InternalTemperature = f32Val;
+                    break;
+                case 0x93:      // TempProb_ExternalTemperature
+                    p_entry->buffer.deserialize(f32Val);
+                    m_tlmReportPacket.data.TempProb_ExternalTemperature = f32Val;
+                    break;
+                case 0xa6:      // THERMOMETER_TEMP
+                    p_entry->buffer.deserialize(f32Val);
+                    m_tlmReportPacket.data.THERMOMETER_TEMP = f32Val;
+                    break;
+                case 0xa7:      // THERMOMETER_HUMI
+                    p_entry->buffer.deserialize(f32Val);
+                    m_tlmReportPacket.data.THERMOMETER_HUMI = f32Val;
+                    break;
+                case 0xba:      // BAROMETER_TEMP
+                    p_entry->buffer.deserialize(f32Val);
+                    m_tlmReportPacket.data.BAROMETER_TEMP = f32Val;
+                    break;
+                case 0xbb:      // BAROMETER_PRESS
+                    p_entry->buffer.deserialize(f32Val);
+                    m_tlmReportPacket.data.BAROMETER_PRESS = f32Val;
+                    break;
+                case 0xbc:      // BAROMETER_ALT
+                    p_entry->buffer.deserialize(u16Val);
+                    m_tlmReportPacket.data.BAROMETER_ALT = u16Val;
                     break;
                 default:
                     break;
@@ -61,7 +99,7 @@ namespace Svc {
 
         // Generate TlmReportPacket
         Fw::Time time = getTime();
-        this->m_tlmReportPacket.setId(Fw::TlmReportPacket::DEBUG_REPORT);
+        this->m_tlmReportPacket.setId(Fw::TlmReportPacket::DEBUG_REPORT); // Fw::TlmReportPacket::FP1_MISSION_REPORT
         this->m_tlmReportPacket.setTimeTag(time);
         this->m_comBuffer.resetSer();
         Fw::SerializeStatus stat = this->m_tlmReportPacket.serialize(this->m_comBuffer);

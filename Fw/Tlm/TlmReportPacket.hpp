@@ -35,8 +35,17 @@ namespace Fw {
             FwChanIdType getId(void);
             Time& getTimeTag(void);
             struct {
-                U32 PR_NumPings;
+                U32 CommandErrors;
                 U32 BD_Cycles;
+                U32 PR_NumPings;
+                U16 Eps_BatteryVoltage;
+                F32 TempProb_InternalTemperature;
+                F32 TempProb_ExternalTemperature;
+                F32 THERMOMETER_TEMP;
+                F32 THERMOMETER_HUMI;
+                F32 BAROMETER_TEMP;
+                F32 BAROMETER_PRESS;
+                U16 BAROMETER_ALT;
             } data;
             
         PROTECTED:
