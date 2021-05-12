@@ -16,6 +16,11 @@ namespace Fw {
     class TlmReportPacket : public ComPacket {
         public:
 
+            enum {
+                DEBUG_REPORT = 0x69,
+                FP1_MISSION_REPORT = 0xAB
+            };
+
             TlmReportPacket();
             virtual ~TlmReportPacket();
 
@@ -33,7 +38,6 @@ namespace Fw {
                 U32 PR_NumPings;
                 U32 BD_Cycles;
             } data;
-
             
         PROTECTED:
             FwChanIdType m_id; // !< Telemtetry report id (unused for now)

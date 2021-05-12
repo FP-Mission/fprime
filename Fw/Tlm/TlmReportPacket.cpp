@@ -37,14 +37,25 @@ namespace Fw {
         }
 #endif
 
-        stat = buffer.serialize(this->data.BD_Cycles);
-        if (stat != FW_SERIALIZE_OK) {
-            return stat;
-        }
+        // Serialize depending on report id
+        switch(this->m_id) {
+            case DEBUG_REPORT:
+                stat = buffer.serialize(this->data.BD_Cycles);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
+                }
 
-        stat = buffer.serialize(this->data.PR_NumPings);
-        if (stat != FW_SERIALIZE_OK) {
-            return stat;
+                stat = buffer.serialize(this->data.PR_NumPings);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
+                }
+                break;
+            case FP1_MISSION_REPORT:
+
+                break;
+            case 0:
+                // default id
+                break;
         }
 
         return stat;
@@ -71,14 +82,25 @@ namespace Fw {
         }
 #endif
 
-        stat = buffer.deserialize(this->data.BD_Cycles);
-        if (stat != FW_SERIALIZE_OK) {
-            return stat;
-        }
+        // Serialize depending on report id
+        switch(this->m_id) {
+            case DEBUG_REPORT:
+                stat = buffer.deserialize(this->data.BD_Cycles);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
+                }
 
-        stat = buffer.deserialize(this->data.PR_NumPings);
-        if (stat != FW_SERIALIZE_OK) {
-            return stat;
+                stat = buffer.deserialize(this->data.PR_NumPings);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
+                }
+                break;
+            case FP1_MISSION_REPORT:
+
+                break;
+            case 0:
+                // default id
+                break;
         }
 
         return stat;

@@ -37,14 +37,15 @@ namespace Svc {
         }
         this->unLock();
 
-        // Generate TlmReportPacket
+        // Update data for TlmReportPacket
+        // @todo Find a cleaner way to do this
         U32 u32Val;
         for (U32 entry = 0; entry < TLMCHAN_HASH_BUCKETS; entry++) {
             TlmEntry* p_entry = &this->m_tlmEntries[1-this->m_activeBuffer].buckets[entry];
             if (p_entry->used) {
                 p_entry->buffer.resetDeser();
                 switch (p_entry->id) {
-                case 0x4C:  // PR_NumPings
+                case 0x4C:      // PR_NumPings
                     p_entry->buffer.deserialize(u32Val);
                     m_tlmReportPacket.data.PR_NumPings = u32Val;
                     break;
@@ -57,9 +58,10 @@ namespace Svc {
                 }
             }
         }
-        
+
+        // Generate TlmReportPacket
         Fw::Time time = getTime();
-        this->m_tlmReportPacket.setId(0x69);
+        this->m_tlmReportPacket.setId(Fw::TlmReportPacket::DEBUG_REPORT);
         this->m_tlmReportPacket.setTimeTag(time);
         this->m_comBuffer.resetSer();
         Fw::SerializeStatus stat = this->m_tlmReportPacket.serialize(this->m_comBuffer);

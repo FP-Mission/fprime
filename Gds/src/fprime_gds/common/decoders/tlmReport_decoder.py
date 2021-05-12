@@ -18,11 +18,15 @@ Example data that would be sent to a decoder that parses channels:
 
 import copy
 
+from enum import IntEnum
 from fprime.common.models.serialize.time_type import TimeType
 from fprime_gds.common.data_types.ch_data import ChData
 from fprime_gds.common.decoders.decoder import Decoder
 from fprime_gds.common.utils import config_manager
 
+class ReportIds(IntEnum):
+    DEBUG_REPORT = 0x69
+    FP1_MISSION_REPORT = 0xAB
 
 class TlmReportDecoder(Decoder):
     """Decoder class for Channel data"""
@@ -63,7 +67,6 @@ class TlmReportDecoder(Decoder):
         """
         ptr = 0
 
-        chan_id = 0x4e
 
         # Decode Report ID here...
         self.id_obj.deserialize(data, ptr)
@@ -75,30 +78,27 @@ class TlmReportDecoder(Decoder):
         report_time.deserialize(data, ptr)
         ptr += report_time.getSize()
 
-        # @todo Get id from dictionnary
-        # @todo Dynamic reading depending on TlmReport file format ??
-        if report_id == 0x69: # test report id
-            print("===== TLM REPORT id: 0x{:02X}".format(report_id))
+        # @todo Get ids from dictionnary depending on channel name
+        # @todo Dynamic reading of TlmReport file format ??
+        # print("===== TLM REPORT id: 0x{:02X} =====".format(report_id))
+        if report_id == ReportIds.DEBUG_REPORT: 
 
-            ch_temp = self.__dict[0x4e]     # Get template for PR_NumPings
-            val_obj = self.decode_ch_val(data, ptr, ch_temp)
-            ptr += val_obj.getSize()
-            PR_NumPings = ChData(val_obj, report_time, ch_temp)
-
-            print("Channel 0x{:02X} = {}".format(chan_id, PR_NumPings.get_val()))
-
-            ch_temp = self.__dict[0x4c]     # Get template for BD_Cycles
-            val_obj = self.decode_ch_val(data, ptr, ch_temp)
-            ptr += val_obj.getSize()
-            BD_Cycles = ChData(val_obj, report_time, ch_temp)
-
-            print("Channel 0x{:02X} = {}".format(chan_id, BD_Cycles.get_val()))
+            (ptr, PR_NumPings) = self.decode_ch(0x4e, data, ptr, report_time)
+            (ptr, BD_Cycles) = self.decode_ch(0x4c, data, ptr, report_time)
 
             return [PR_NumPings, BD_Cycles]
-            
+        elif report_id == ReportIds.FP1_MISSION_REPORT: 
+            print("Decode FP1_MISSION TlmReport")
+            # @todo
         else:
-            print("Channel decode error: id %d not in dictionary" % chan_id)
+            print("TlmReport id 0x{:02X} does not exist".format(report_id))
             return None
+
+    def decode_ch(self, chan_id, data, ptr, report_time):
+        ch_temp = self.__dict[chan_id]                      # Get template
+        val_obj = self.decode_ch_val(data, ptr, ch_temp)    # Decode channel value
+        ptr += val_obj.getSize()                            # Increment pointer
+        return (ptr, ChData(val_obj, report_time, ch_temp))
 
     def decode_ch_val(self, val_data, offset, template):
         """
