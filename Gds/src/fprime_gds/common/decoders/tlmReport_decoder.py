@@ -17,12 +17,15 @@ Example data that would be sent to a decoder that parses channels:
 """
 
 import copy
+import logging
 
 from enum import IntEnum
 from fprime.common.models.serialize.time_type import TimeType
 from fprime_gds.common.data_types.ch_data import ChData
 from fprime_gds.common.decoders.decoder import Decoder
 from fprime_gds.common.utils import config_manager
+
+LOGGER = logging.getLogger("decoder")
 
 class ReportIds(IntEnum):
     DEBUG_REPORT = 0x69
@@ -81,35 +84,44 @@ class TlmReportDecoder(Decoder):
         # @todo Get ids from dictionnary depending on channel name
         # @todo Dynamic reading of TlmReport file format ??
         # print("===== TLM REPORT id: 0x{:02X} =====".format(report_id))
-        if report_id == ReportIds.DEBUG_REPORT: 
+        try:
+            if report_id == ReportIds.DEBUG_REPORT: 
 
-            (ptr, PR_NumPings) = self.decode_ch(0x4e, data, ptr, report_time)
-            (ptr, BD_Cycles) = self.decode_ch(0x4c, data, ptr, report_time)
+                (ptr, PR_NumPings) = self.decode_ch(0x4e, data, ptr, report_time)
+                (ptr, BD_Cycles) = self.decode_ch(0x4c, data, ptr, report_time)
 
-            return [PR_NumPings, BD_Cycles]
-        elif report_id == ReportIds.FP1_MISSION_REPORT: 
-            (ptr, CommandErrors) = self.decode_ch(0x4c, data, ptr, report_time)
-            (ptr, PR_NumPings) = self.decode_ch(0x4c, data, ptr, report_time)
-            (ptr, BD_Cycles) = self.decode_ch(0x4c, data, ptr, report_time)
-            (ptr, Eps_BatteryVoltage) = self.decode_ch(0x4c, data, ptr, report_time)
-            (ptr, TempProb_InternalTemperature) = self.decode_ch(0x4c, data, ptr, report_time)
-            (ptr, TempProb_ExternalTemperature) = self.decode_ch(0x4c, data, ptr, report_time)
-            (ptr, THERMOMETER_TEMP) = self.decode_ch(0x4c, data, ptr, report_time)
-            (ptr, THERMOMETER_HUMI) = self.decode_ch(0x4c, data, ptr, report_time)
-            (ptr, BAROMETER_TEMP) = self.decode_ch(0x4c, data, ptr, report_time)
-            (ptr, BAROMETER_PRESS) = self.decode_ch(0x4c, data, ptr, report_time)
-            (ptr, BAROMETER_ALT) = self.decode_ch(0x4c, data, ptr, report_time)
+                return [PR_NumPings, BD_Cycles]
+            elif report_id == ReportIds.FP1_MISSION_REPORT: 
 
-            return [CommandErrors, PR_NumPings, BD_Cycles, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature, THERMOMETER_TEMP, THERMOMETER_HUMI, BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT]
-            
-        else:
-            print("TlmReport id 0x{:02X} does not exist".format(report_id))
+                (ptr, CommandErrors) = self.decode_ch(0x4, data, ptr, report_time)
+                (ptr, BD_Cycles) = self.decode_ch(0x4e, data, ptr, report_time)
+                (ptr, Eps_BatteryVoltage) = self.decode_ch(0x56, data, ptr, report_time)
+                (ptr, TempProb_InternalTemperature) = self.decode_ch(0x92, data, ptr, report_time)
+                (ptr, TempProb_ExternalTemperature) = self.decode_ch(0x93, data, ptr, report_time)
+                (ptr, THERMOMETER_TEMP) = self.decode_ch(0xa6, data, ptr, report_time)
+                (ptr, THERMOMETER_HUMI) = self.decode_ch(0xa7, data, ptr, report_time)
+                (ptr, BAROMETER_TEMP) = self.decode_ch(0xba, data, ptr, report_time)
+                (ptr, BAROMETER_PRESS) = self.decode_ch(0xbb, data, ptr, report_time)
+                (ptr, BAROMETER_ALT) = self.decode_ch(0xbc, data, ptr, report_time)
+
+                return [CommandErrors, BD_Cycles, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature, THERMOMETER_TEMP, THERMOMETER_HUMI, BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT]
+                
+            else:
+                LOGGER.warning("TlmReport id 0x{:02X} does not exist".format(report_id))
+                return None
+        except:
+            LOGGER.warning("Unable to parse TlmReport {}".format(report_id))
             return None
+
 
     def decode_ch(self, chan_id, data, ptr, report_time):
         ch_temp = self.__dict[chan_id]                      # Get template
-        val_obj = self.decode_ch_val(data, ptr, ch_temp)    # Decode channel value
-        ptr += val_obj.getSize()                            # Increment pointer
+        try:
+            val_obj = self.decode_ch_val(data, ptr, ch_temp)    # Decode channel value
+            ptr += val_obj.getSize()                            # Increment pointer
+        except:
+            LOGGER.warning("Unable to decode channel 0x{:02X} from TlmReport".format(chan_id))
+            raise
         return (ptr, ChData(val_obj, report_time, ch_temp))
 
     def decode_ch_val(self, val_data, offset, template):

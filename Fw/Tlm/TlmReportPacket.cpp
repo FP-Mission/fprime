@@ -51,11 +51,11 @@ namespace Fw {
                 }
                 break;
             case FP1_MISSION_REPORT:
-                stat = buffer.serialize(this->data.BD_Cycles);
+                stat = buffer.serialize(this->data.CommandErrors);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
-                stat = buffer.serialize(this->data.CommandErrors);
+                stat = buffer.serialize(this->data.BD_Cycles);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
