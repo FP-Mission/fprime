@@ -37,13 +37,17 @@ namespace Fw {
         }
 #endif
 
-        stat = buffer.serialize(this->value);
+        stat = buffer.serialize(this->data.BD_Cycles);
+        if (stat != FW_SERIALIZE_OK) {
+            return stat;
+        }
+
+        stat = buffer.serialize(this->data.PR_NumPings);
         if (stat != FW_SERIALIZE_OK) {
             return stat;
         }
 
         return stat;
-
     }
 
     SerializeStatus TlmReportPacket::deserialize(SerializeBufferBase& buffer) {
@@ -67,7 +71,12 @@ namespace Fw {
         }
 #endif
 
-        stat = buffer.deserialize(this->value);
+        stat = buffer.deserialize(this->data.BD_Cycles);
+        if (stat != FW_SERIALIZE_OK) {
+            return stat;
+        }
+
+        stat = buffer.deserialize(this->data.PR_NumPings);
         if (stat != FW_SERIALIZE_OK) {
             return stat;
         }

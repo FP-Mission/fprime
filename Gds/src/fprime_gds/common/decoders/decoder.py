@@ -48,7 +48,12 @@ class Decoder(
         """
         decoded = self.decode_api(data)
         if decoded is not None:
-            self.send_to_all(decoded)
+            if isinstance(decoded, list):
+                # Decode API can return an array (tlmReport_decoder)
+                for d in decoded:
+                    self.send_to_all(d)
+            else:
+                self.send_to_all(decoded)
             return
         LOGGER.warning("Decoder of type %s produced 'None' decoded object", type(self))
 

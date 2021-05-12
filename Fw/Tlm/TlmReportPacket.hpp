@@ -29,7 +29,11 @@ namespace Fw {
             // getters
             FwChanIdType getId(void);
             Time& getTimeTag(void);
-            U32 value;  // test variable to store random u32 in report
+            struct {
+                U32 PR_NumPings;
+                U32 BD_Cycles;
+            } data;
+
             
         PROTECTED:
             FwChanIdType m_id; // !< Telemtetry report id (unused for now)

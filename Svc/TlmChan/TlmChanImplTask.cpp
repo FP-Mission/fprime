@@ -44,16 +44,20 @@ namespace Svc {
             if (p_entry->used) {
                 p_entry->buffer.resetDeser();
                 switch (p_entry->id) {
-                case 0x4E:  // BD_Cycles
+                case 0x4C:  // PR_NumPings
                     p_entry->buffer.deserialize(u32Val);
-                    m_tlmReportPacket.value = u32Val;
+                    m_tlmReportPacket.data.PR_NumPings = u32Val;
+                    break;
+                case 0x4E:      // BD_Cycles
+                    p_entry->buffer.deserialize(u32Val);
+                    m_tlmReportPacket.data.BD_Cycles = u32Val;
                     break;
                 default:
                     break;
                 }
             }
         }
-        // @todo Get current time
+        
         Fw::Time time = getTime();
         this->m_tlmReportPacket.setId(0x69);
         this->m_tlmReportPacket.setTimeTag(time);

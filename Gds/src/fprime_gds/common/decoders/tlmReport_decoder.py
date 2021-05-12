@@ -63,7 +63,6 @@ class TlmReportDecoder(Decoder):
         """
         ptr = 0
 
-
         chan_id = 0x4e
 
         # Decode Report ID here...
@@ -76,17 +75,27 @@ class TlmReportDecoder(Decoder):
         report_time.deserialize(data, ptr)
         ptr += report_time.getSize()
 
-        if chan_id in self.__dict:
-            # Retrieve the template instance for this channel
-            ch_temp = self.__dict[chan_id]
+        # @todo Get id from dictionnary
+        # @todo Dynamic reading depending on TlmReport file format ??
+        if report_id == 0x69: # test report id
+            print("===== TLM REPORT id: 0x{:02X}".format(report_id))
 
+            ch_temp = self.__dict[0x4e]     # Get template for PR_NumPings
             val_obj = self.decode_ch_val(data, ptr, ch_temp)
+            ptr += val_obj.getSize()
+            PR_NumPings = ChData(val_obj, report_time, ch_temp)
 
-            ch_data = ChData(val_obj, report_time, ch_temp)
+            print("Channel 0x{:02X} = {}".format(chan_id, PR_NumPings.get_val()))
 
-            # print("===== TLM REPORT id: 0x{:02X}, channel 0x{:02X} = {}".format(report_id, chan_id, ch_data.get_val()))
+            ch_temp = self.__dict[0x4c]     # Get template for BD_Cycles
+            val_obj = self.decode_ch_val(data, ptr, ch_temp)
+            ptr += val_obj.getSize()
+            BD_Cycles = ChData(val_obj, report_time, ch_temp)
 
-            return ch_data
+            print("Channel 0x{:02X} = {}".format(chan_id, BD_Cycles.get_val()))
+
+            return [PR_NumPings, BD_Cycles]
+            
         else:
             print("Channel decode error: id %d not in dictionary" % chan_id)
             return None
