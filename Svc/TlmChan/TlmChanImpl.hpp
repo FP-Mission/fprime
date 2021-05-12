@@ -17,6 +17,7 @@
 #include <TlmChanImplCfg.hpp>
 #include <Os/Mutex.hpp>
 #include <Fw/Tlm/TlmPacket.hpp>
+#include <Fw/Tlm/TlmReportPacket.hpp>
 
 namespace Svc {
 
@@ -68,6 +69,7 @@ namespace Svc {
             // work variables
             Fw::ComBuffer m_comBuffer;
             Fw::TlmPacket m_tlmPacket;
+            Fw::TlmReportPacket m_tlmReportPacket;
 
     };
 

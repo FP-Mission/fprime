@@ -21,7 +21,7 @@ namespace Svc {
     public:
       static const U32 MAX_DATA_SIZE;
       static const TOKEN_TYPE START_WORD;
-      static const U32 END_WORD;
+      static const TOKEN_TYPE END_WORD;
       // ----------------------------------------------------------------------
       // Construction, initialization, and destruction
       // ----------------------------------------------------------------------
@@ -81,7 +81,7 @@ namespace Svc {
       void frame_send(
           U8* data, /*!< Data to be framed and sent out */
           TOKEN_TYPE size, /*!< Size of data in typed format */
-          TOKEN_TYPE packet_type = Fw::ComPacket::FW_PACKET_UNKNOWN /*!< Packet type override for anonymous data i.e. file downlink */
+          FwPacketDescriptorType packet_type = Fw::ComPacket::FW_PACKET_UNKNOWN /*!< Packet type override for anonymous data i.e. file downlink */
       );
 
       //! Processes the out-going data into coms order

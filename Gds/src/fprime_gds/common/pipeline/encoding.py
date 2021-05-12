@@ -7,6 +7,7 @@ and decoding into a single component that the be composed into the standard pipe
 @mstarch
 """
 import fprime_gds.common.decoders.ch_decoder
+import fprime_gds.common.decoders.tlmReport_decoder
 import fprime_gds.common.decoders.event_decoder
 import fprime_gds.common.decoders.file_decoder
 import fprime_gds.common.decoders.pkt_decoder
@@ -26,6 +27,7 @@ class EncodingDecoding:
     3. File decoding
     4. Command encoding
     5. File encoding
+    6. Telemetry report decoding
     """
 
     def __init__(self):
@@ -39,6 +41,7 @@ class EncodingDecoding:
         self.channel_decoder = None
         self.file_decoder = None
         self.packet_decoder = None
+        self.tlm_report_decoder = None
         self.command_subscribers = []
 
     def setup_coders(self, dictionaries, distributor, sender, config):
@@ -64,6 +67,9 @@ class EncodingDecoding:
         self.channel_decoder = fprime_gds.common.decoders.ch_decoder.ChDecoder(
             dictionaries.channel_id, config=config
         )
+        self.tlm_report_decoder = fprime_gds.common.decoders.tlmReport_decoder.TlmReportDecoder(
+            dictionaries.channel_id, config=config
+        )
         self.file_decoder = fprime_gds.common.decoders.file_decoder.FileDecoder()
         self.packet_decoder = None
         if dictionaries.packet is not None:
@@ -78,6 +84,7 @@ class EncodingDecoding:
         distributor.register("FW_PACKET_LOG", self.event_decoder)
         distributor.register("FW_PACKET_TELEM", self.channel_decoder)
         distributor.register("FW_PACKET_FILE", self.file_decoder)
+        distributor.register("FW_PACKET_TLM_REPORT", self.tlm_report_decoder)
         if self.packet_decoder is not None:
             distributor.register("FW_PACKET_PACKETIZED_TLM", self.packet_decoder)
 
@@ -117,6 +124,7 @@ class EncodingDecoding:
         :param consumer: consumer of channels
         """
         self.channel_decoder.register(consumer)
+        self.tlm_report_decoder.register(consumer)
 
     def remove_channel_consumer(self, consumer):
         """

@@ -58,7 +58,7 @@ namespace Svc {
             } m_filterState[EventLevel_MAX];
 
             // Working members
-            Fw::LogPacket m_logPacket; //!< packet buffer for assembling log packets
+            Fw::LogPacket m_logPacket; //!< packet for assembling log 
             Fw::ComBuffer m_comBuffer; //!< com buffer for sending event buffers
 
             // array of filtered event IDs.

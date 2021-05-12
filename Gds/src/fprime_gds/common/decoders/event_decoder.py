@@ -6,8 +6,9 @@ in event_data objects.
 
 Example data structure:
     +-------------------+---------------------+---------------------- - - -
-    | ID (4 bytes)      | Time Tag (11 bytes) | Event argument data....
+    | ID (4 bytes)      | Time Tag (x bytes) | Event argument data....
     +-------------------+---------------------+---------------------- - - -
+                        depends on time context and base enabling
 
 @date Created June 29, 2018
 @author R. Joseph Paetz
@@ -41,8 +42,8 @@ class EventDecoder(decoder.Decoder):
         """
         super(EventDecoder, self).__init__()
 
+        # Retrieve defaults for the configs
         if config is None:
-            # Retrieve defaults for the configs
             config = config_manager.ConfigManager().get_instance()
 
         self.__dict = event_dict

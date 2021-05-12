@@ -20,6 +20,8 @@ DataDescType = Enum(
         "FW_PACKET_PACKETIZED_TLM": 4,
         # Idle packet
         "FW_PACKET_IDLE": 5,
+        # Telemetry report 
+        "FW_PACKET_TLM_REPORT": 6,
         # Handshake packet
         "FW_PACKET_HAND": 0xFE,
         # Unknown packet

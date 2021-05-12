@@ -165,8 +165,14 @@ class ConfigManager(configparser.ConfigParser):
         self.__prop["types"]["event_id"] = "U8"     # FwEventIdType
         self.__prop["types"]["pkt_id"] = "U16"      # Unknown
         self.__prop["types"]["key_val"] = "U16"     # Unknown
+        self.__prop["types"]["time_base"] = "U16"   # FwTimeBaseStoreType
+        self.__prop["types"]["time_context"] = "U16"# FwTimeContextStoreType
         self._set_section_defaults("types")         # Missing: FwPrmIdType, FwBuffSizeType, FwEnumStoreType
-                                                    # FwTimeBaseStoreType, FwTimeContextStoreType
+
+        self.__prop["time"] = dict()
+        self.__prop["time"]["base"] = False    # FW_USE_TIME_BASE
+        self.__prop["time"]["context"] = False # FW_USE_TIME_CONTEXT
+        self._set_section_defaults("time")
 
         ######################### COLORS ###########################
         # Colors are hex codes in BGR format

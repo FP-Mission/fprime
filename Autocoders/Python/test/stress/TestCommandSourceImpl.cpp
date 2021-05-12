@@ -72,7 +72,7 @@ void TestCommandSourceImpl::test_TEST_CMD_1(I32 arg1, I32 arg2) {
     argBuff.serialize(arg1);
     argBuff.serialize(arg2);
 
-    this->cmdSendPort_out(0, 0x100, 1, argBuff);
+    this->cmdSendPort_out(0, 0x10, 1, argBuff);
 
     // wrong value
 
@@ -80,7 +80,7 @@ void TestCommandSourceImpl::test_TEST_CMD_1(I32 arg1, I32 arg2) {
     argBuff.serialize(arg1);
     argBuff.serialize(arg2+1);
 
-    this->cmdSendPort_out(0, 0x100, 1, argBuff);
+    this->cmdSendPort_out(0, 0x10, 1, argBuff);
 
     // too many arguments
     argBuff.resetSer();
@@ -89,13 +89,13 @@ void TestCommandSourceImpl::test_TEST_CMD_1(I32 arg1, I32 arg2) {
     argBuff.serialize(arg2);
     argBuff.serialize(arg2);
 
-    this->cmdSendPort_out(0, 0x100, 1, argBuff);
+    this->cmdSendPort_out(0, 0x10, 1, argBuff);
 
     // too few arguments
     argBuff.resetSer();
 
     argBuff.serialize(arg1);
 
-    this->cmdSendPort_out(0, 0x100, 1, argBuff);
+    this->cmdSendPort_out(0, 0x10, 1, argBuff);
 }
 

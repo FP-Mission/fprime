@@ -5,6 +5,7 @@
 // ====================================================================== 
 
 #include <Fw/Com/ComPacket.hpp>
+#include <Fw/Log/LogPacket.hpp>
 #include <Svc/GroundInterface/GroundInterface.hpp>
 #include "Fw/Types/BasicTypes.hpp"
 #include <string.h>
@@ -13,7 +14,7 @@ namespace Svc {
 
   const U32 GroundInterfaceComponentImpl::MAX_DATA_SIZE = 2048;
   const TOKEN_TYPE GroundInterfaceComponentImpl::START_WORD = static_cast<TOKEN_TYPE>(0xdeadbeef);
-  const U32 GroundInterfaceComponentImpl::END_WORD = static_cast<U32>(0xcafecafe);
+  const TOKEN_TYPE GroundInterfaceComponentImpl::END_WORD = static_cast<TOKEN_TYPE>(0xcafecafe);
 
   // ----------------------------------------------------------------------
   // Construction, initialization, and destruction 
@@ -94,16 +95,17 @@ namespace Svc {
       }
   }
 
-  void GroundInterfaceComponentImpl::frame_send(U8 *data, TOKEN_TYPE size, TOKEN_TYPE packet_type) {
+  void GroundInterfaceComponentImpl::frame_send(U8 *data, TOKEN_TYPE size, FwPacketDescriptorType packet_type) {
       // TODO: replace with a call to a buffer manager
       Fw::Buffer buffer = m_ext_buffer;
       Fw::SerializeBufferBase& buffer_wrapper = buffer.getSerializeRepr();
       buffer_wrapper.resetSer();
-      // True size is supplied size plus sizeof(TOKEN_TYPE) if a packet_type other than "UNKNOWN" was supplied.
+      // True size is supplied size plus sizeof(FwPacketDescriptorType) if a packet_type other than "UNKNOWN" was supplied.
       // This is because if not UNKNOWN, the packet_type is serialized too.  Otherwise it is assumed the PACKET_TYPE is
       // already the first token in the UNKNOWN typed buffer.
-      U32 true_size = (packet_type != Fw::ComPacket::FW_PACKET_UNKNOWN) ? size + sizeof(TOKEN_TYPE) : size;
-      U32 total_size = sizeof(TOKEN_TYPE) + sizeof(TOKEN_TYPE) + true_size + sizeof(U32);
+      U32 true_size = (packet_type != Fw::ComPacket::FW_PACKET_UNKNOWN) ? size + sizeof(FwPacketDescriptorType) : size;
+      // START_WORD + true size + data + END_WORD
+      U32 total_size = sizeof(TOKEN_TYPE) + sizeof(U32) + true_size + sizeof(TOKEN_TYPE);
       // Serialize data
       FW_ASSERT(GND_BUFFER_SIZE >= total_size, GND_BUFFER_SIZE, total_size);
       buffer_wrapper.serialize(START_WORD);
@@ -114,10 +116,55 @@ namespace Svc {
       }
       buffer_wrapper.serialize(data, size, true);
       buffer_wrapper.serialize(static_cast<TOKEN_TYPE>(END_WORD));
-
       // Setup for sending by truncating unused data
       buffer.setSize(buffer_wrapper.getBuffLength());
       FW_ASSERT(buffer.getSize() == total_size, buffer.getSize(), total_size);
+
+        /*/ Deserialization example for fun
+        Fw::SerializeBufferBase& deserBufferWrapper = buffer.getSerializeRepr();
+        deserBufferWrapper.resetDeser();
+        deserBufferWrapper.setBuffLen(buffer.getSize());
+
+        TOKEN_TYPE token;
+        Fw::SerializeStatus stat = deserBufferWrapper.deserialize(token);
+        FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
+        FW_ASSERT(token == START_WORD);
+
+        TOKEN_TYPE dataSize;
+        FwPacketDescriptorType packetType;
+
+        stat = deserBufferWrapper.deserialize(dataSize);
+        FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
+
+        stat = deserBufferWrapper.deserialize(packetType);
+        FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
+
+        if(packetType == Fw::ComPacket::FW_PACKET_LOG && dataSize == 17) {
+            Fw::ComBuffer comBuffer(deserBufferWrapper.getBuffAddrLeft(), dataSize-1);
+            comBuffer.resetDeser();
+
+            Fw::LogPacket logPacket;
+            
+            stat = logPacket.deserialize(comBuffer);
+            FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
+            
+            // Skip Com packet
+            stat = deserBufferWrapper.deserializeSkip(dataSize - 1);
+            FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
+
+            // Deserialize END_WORD
+            stat = deserBufferWrapper.deserialize(token);
+            FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
+            FW_ASSERT(token == END_WORD);
+
+            // ?? logPacket.getId() does not work :(
+            printf("Received LogPacket of size %u for event 0x%.2x\n", dataSize, logPacket.getId());
+            return;
+        } else {
+            printf("PacketType %u of size %u\n", packetType, dataSize);
+        }
+        //*/
+
       write_out(0, buffer);
   }
 
