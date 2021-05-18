@@ -321,6 +321,9 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
     LinuxSerialDriverComponentImpl* comp =
         static_cast<LinuxSerialDriverComponentImpl*>(ptr);
 
+    // Wait one second to ensure m_buffSet array has been set 
+    // by consummer component
+    sleep(1);
 
     while(1) {
         Fw::Buffer buff;
