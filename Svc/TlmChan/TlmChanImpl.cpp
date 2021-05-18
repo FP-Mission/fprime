@@ -45,7 +45,13 @@ namespace Svc {
         this->m_tlmEntries[0].free = 0;
         this->m_tlmEntries[1].free = 0;
 
-
+#if TLMCHAN_MODE == 1
+        printf("TlmChan is configured to downlink data through TlmPackets\n");
+#elif TLMCHAN_MODE == 2
+        printf("TlmChan is configured to downlink data through TlmReportsPackets\n");
+#else
+        printf("!! Tlm downlink is disabled %u. Please set TLMCHAN_MODE in TlmChanImplCfg.hpp to configure Tlm mode\n", TLMCHAN_MODE);
+#endif
     }
 
     TlmChanImpl::~TlmChanImpl() {

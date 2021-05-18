@@ -21,7 +21,7 @@
 
 namespace Svc {
 
-    void TlmChanImpl::Run_handler(NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
+    void TlmChanImpl::Run_handler(NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {        
         // Only write packets if connected
         if (not this->isConnected_PktSend_OutputPort(0)) {
             return;
@@ -37,6 +37,23 @@ namespace Svc {
         }
         this->unLock();
 
+
+#if TLMCHAN_MODE == 1   // TlmPackets mode
+        // Go through each entry and send a TlmPacket if it has been updated
+        for (U32 entry = 0; entry < TLMCHAN_HASH_BUCKETS; entry++) {
+            TlmEntry* p_entry = &this->m_tlmEntries[1-this->m_activeBuffer].buckets[entry];
+            if ((p_entry->updated) && (p_entry->used)) {
+                this->m_tlmPacket.setId(p_entry->id);
+                this->m_tlmPacket.setTimeTag(p_entry->lastUpdate);
+                this->m_tlmPacket.setTlmBuffer(p_entry->buffer);
+                this->m_comBuffer.resetSer();
+                Fw::SerializeStatus stat = this->m_tlmPacket.serialize(this->m_comBuffer);
+                FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
+                p_entry->updated = false;
+                this->PktSend_out(0,this->m_comBuffer,0);
+            }
+        }
+#elif TLMCHAN_MODE == 2 // TlmReportsPackets mode
         // Update data for TlmReportPacket
         // @todo Find a cleaner way/better place to do this
         U32 u32Val;
@@ -106,23 +123,6 @@ namespace Svc {
         FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
         this->PktSend_out(0,this->m_comBuffer,0);
         //*/
-        
-        
-        /*/ go through each entry and send a TlmPacket if it has been updated
-        for (U32 entry = 0; entry < TLMCHAN_HASH_BUCKETS; entry++) {
-            TlmEntry* p_entry = &this->m_tlmEntries[1-this->m_activeBuffer].buckets[entry];
-            if ((p_entry->updated) && (p_entry->used)) {
-                this->m_tlmPacket.setId(p_entry->id);
-                this->m_tlmPacket.setTimeTag(p_entry->lastUpdate);
-                this->m_tlmPacket.setTlmBuffer(p_entry->buffer);
-                this->m_comBuffer.resetSer();
-                Fw::SerializeStatus stat = this->m_tlmPacket.serialize(this->m_comBuffer);
-                FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
-                p_entry->updated = false;
-                this->PktSend_out(0,this->m_comBuffer,0);
-            }
-        }
-        //*/
+#endif
     }
-
 }
