@@ -8,8 +8,9 @@ binary data after removing any length and descriptor headers.
 
 Example data that would be sent to a decoder that parses events or channels:
     +-------------------+---------------------+------------ - - -
-    | ID (4 bytes) | Time Tag (11 bytes) | Data....
+    | ID (4 bytes) | Time Tag (x bytes) | Data....
     +-------------------+---------------------+------------ - - -
+                        depends on time context and base enabling
 
 This base class does not do any parsing, but instead acts as a pass through to
 allow consumers to receive raw data.
@@ -26,7 +27,6 @@ import logging
 import fprime_gds.common.handlers
 
 LOGGER = logging.getLogger("decoder")
-
 
 class Decoder(
     fprime_gds.common.handlers.DataHandler,
@@ -48,7 +48,12 @@ class Decoder(
         """
         decoded = self.decode_api(data)
         if decoded is not None:
-            self.send_to_all(decoded)
+            if isinstance(decoded, list):
+                # Decode API can return an array (tlmReport_decoder)
+                for d in decoded:
+                    self.send_to_all(d)
+            else:
+                self.send_to_all(decoded)
             return
         LOGGER.warning("Decoder of type %s produced 'None' decoded object", type(self))
 

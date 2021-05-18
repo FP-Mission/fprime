@@ -1398,7 +1398,7 @@ namespace ExampleComponents {
 
   void ExampleTesterBase ::
     textLogIn(
-        const U32 id,
+        FwEventIdType id,
         Fw::Time &timeTag,
         const Fw::TextLogSeverity severity,
         const Fw::TextLogString &text

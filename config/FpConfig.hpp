@@ -218,7 +218,7 @@
 
 // Specifies the size of the buffer that contains a communications packet.
 #ifndef FW_COM_BUFFER_MAX_SIZE
-#define FW_COM_BUFFER_MAX_SIZE               32   //!< Max size of Fw::Com buffer
+#define FW_COM_BUFFER_MAX_SIZE               64   //!< Max size of Fw::Com buffer
 #endif
 
 // Specifies the size of the buffer that contains the serialized command arguments.
@@ -342,11 +342,11 @@ enum TimeBase {
 // class are used. Some systems may not use or need those fields
 
 #ifndef FW_USE_TIME_BASE
-#define FW_USE_TIME_BASE                1 //!< Whether or not to use the time base
+#define FW_USE_TIME_BASE                0 //!< Whether or not to use the time base
 #endif
 
 #ifndef FW_USE_TIME_CONTEXT
-#define FW_USE_TIME_CONTEXT             1 //!< Whether or not to serialize the time context
+#define FW_USE_TIME_CONTEXT             0 //!< Whether or not to serialize the time context
 #endif
 //
 //These defines used for the FilepathCharString type

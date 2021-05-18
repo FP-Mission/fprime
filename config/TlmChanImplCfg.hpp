@@ -39,18 +39,20 @@
 //        ... (Other buckets in the slot)
 //     The number of buckets assigned to each slot can be checked for balance.
 
+#define TLMCHAN_MODE 1          // 0: Disabled
+                                // 1: TlmPackets are sent for each Tlm update
+                                // 2: One TlmReportPacket is sent with TlmChan inside
+
 namespace {
 
     enum {
-        TLMCHAN_NUM_TLM_HASH_SLOTS = 15, // !< Number of slots in the hash table.
-                                        // Works best when set to about twice the number of components producing telemetry
-        TLMCHAN_HASH_MOD_VALUE = 99,    // !< The modulo value of the hashing function.
-                                        // Should be set to a little below the ID gaps to spread the entries around
-
-        TLMCHAN_HASH_BUCKETS = 50       // !< Buckets assignable to a hash slot.
-                                        // Buckets must be >= number of telemetry channels in system
+        TLMCHAN_NUM_TLM_HASH_SLOTS = 15,    // !< Number of slots in the hash table.
+                                            // Works best when set to about twice the number of components producing telemetry
+        TLMCHAN_HASH_MOD_VALUE = 99,        // !< The modulo value of the hashing function.
+                                            // Should be set to a little below the ID gaps to spread the entries around
+        TLMCHAN_HASH_BUCKETS = 50           // !< Buckets assignable to a hash slot.
+                                            // Buckets must be >= number of telemetry channels in system
     };
-
 
 }
 
