@@ -25,7 +25,6 @@
 namespace Svc {
 
     void TlmChanImpl::Run_handler(NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
-        return;
         // Only write packets if connected
         if (not this->isConnected_PktSend_OutputPort(0)) {
             return;
@@ -57,7 +56,7 @@ namespace Svc {
                 Fw::SerializeStatus stat = this->m_tlmPacket.serialize(this->m_comBuffer);
                 FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
                 p_entry->updated = false;
-                //this->PktSend_out(0,this->m_comBuffer,0);
+                this->PktSend_out(0,this->m_comBuffer,0);
             }
         }
 #elif TLMCHAN_MODE == 2 // TlmReportsPackets mode
