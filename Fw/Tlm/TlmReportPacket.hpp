@@ -11,6 +11,8 @@
 #include <Fw/Com/ComPacket.hpp>
 #include <Fw/Time/Time.hpp>
 
+#include <App/Gps/GpsComponentImpl.hpp>
+
 namespace Fw {
 
     class TlmReportPacket : public ComPacket {
@@ -46,6 +48,7 @@ namespace Fw {
                 F32 BAROMETER_TEMP;
                 F32 BAROMETER_PRESS;
                 U16 BAROMETER_ALT;
+                App::PositionSer gpsPosition;
             } data;
             
         PROTECTED:

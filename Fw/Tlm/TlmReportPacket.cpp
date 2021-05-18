@@ -91,6 +91,10 @@ namespace Fw {
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
+                stat = buffer.serialize(this->data.gpsPosition);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
+                }
 
                 break;
             case 0:
@@ -173,6 +177,10 @@ namespace Fw {
                     return stat;
                 }
                 stat = buffer.deserialize(this->data.BAROMETER_ALT);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
+                }
+                stat = buffer.serialize(this->data.gpsPosition);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }

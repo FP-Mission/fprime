@@ -60,6 +60,7 @@ namespace Svc {
         U16 u16Val;
         F32 f32Val;
         I16 i16Val;
+        App::PositionSer position;
         for (U32 entry = 0; entry < TLMCHAN_HASH_BUCKETS; entry++) {
             TlmEntry* p_entry = &this->m_tlmEntries[1-this->m_activeBuffer].buckets[entry];
             if (p_entry->used) {
@@ -77,9 +78,13 @@ namespace Svc {
                     p_entry->buffer.deserialize(u32Val);
                     m_tlmReportPacket.data.BD_Cycles = u32Val;
                     break;
-                case 0x56:  // Eps_BatteryVoltage
+                case 0x56:      // Eps_BatteryVoltage
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.Eps_BatteryVoltage = u16Val;
+                    break;
+                case 0x6a:      // Gps_Position
+                    p_entry->buffer.deserialize(position);
+                    m_tlmReportPacket.data.gpsPosition = position;
                     break;
                 case 0x92:      // TempProb_InternalTemperature
                     p_entry->buffer.deserialize(i16Val);
