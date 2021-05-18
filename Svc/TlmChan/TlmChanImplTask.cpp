@@ -59,6 +59,7 @@ namespace Svc {
         U32 u32Val;
         U16 u16Val;
         F32 f32Val;
+        I16 i16Val;
         for (U32 entry = 0; entry < TLMCHAN_HASH_BUCKETS; entry++) {
             TlmEntry* p_entry = &this->m_tlmEntries[1-this->m_activeBuffer].buckets[entry];
             if (p_entry->used) {
@@ -81,12 +82,12 @@ namespace Svc {
                     m_tlmReportPacket.data.Eps_BatteryVoltage = u16Val;
                     break;
                 case 0x92:      // TempProb_InternalTemperature
-                    p_entry->buffer.deserialize(f32Val);
-                    m_tlmReportPacket.data.TempProb_InternalTemperature = f32Val;
+                    p_entry->buffer.deserialize(i16Val);
+                    m_tlmReportPacket.data.TempProb_InternalTemperature = i16Val;
                     break;
                 case 0x93:      // TempProb_ExternalTemperature
-                    p_entry->buffer.deserialize(f32Val);
-                    m_tlmReportPacket.data.TempProb_ExternalTemperature = f32Val;
+                    p_entry->buffer.deserialize(i16Val);
+                    m_tlmReportPacket.data.TempProb_ExternalTemperature = i16Val;
                     break;
                 case 0xa6:      // THERMOMETER_TEMP
                     p_entry->buffer.deserialize(f32Val);
