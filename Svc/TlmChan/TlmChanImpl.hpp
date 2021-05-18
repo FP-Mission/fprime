@@ -21,58 +21,73 @@
 
 namespace Svc {
 
-    class TlmChanImpl: public TlmChanComponentBase {
-        public:
-            friend class TlmChanImplTester;
-            TlmChanImpl(const char* compName);
-            virtual ~TlmChanImpl();
-            void init(
-                    NATIVE_INT_TYPE queueDepth, /*!< The queue depth*/
-                    NATIVE_INT_TYPE instance /*!< The instance number*/
-                    );
-        PROTECTED:
+class TlmChanImpl: public TlmChanComponentBase {
+    public:
+        friend class TlmChanImplTester;
+        TlmChanImpl(const char* compName);
+        virtual ~TlmChanImpl();
+        void init(
+                NATIVE_INT_TYPE queueDepth, /*!< The queue depth*/
+                NATIVE_INT_TYPE instance /*!< The instance number*/
+                );
+    PROTECTED:
 
-            // can be overridden for alternate algorithms
-            virtual NATIVE_UINT_TYPE doHash(FwChanIdType id);
+        // can be overridden for alternate algorithms
+        virtual NATIVE_UINT_TYPE doHash(FwChanIdType id);
 
-        PRIVATE:
+    PRIVATE:
 
-            // Port functions
-            void TlmRecv_handler(NATIVE_INT_TYPE portNum, FwChanIdType id, Fw::Time &timeTag, Fw::TlmBuffer &val);
-            void TlmGet_handler(NATIVE_INT_TYPE portNum, FwChanIdType id, Fw::Time &timeTag, Fw::TlmBuffer &val);
-            void Run_handler(NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context);
-            //! Handler implementation for pingIn
-            //!
-            void pingIn_handler(
-                const NATIVE_INT_TYPE portNum, /*!< The port number*/
-                U32 key /*!< Value to return to pinger*/
-            );
+        // Port functions
+        void TlmRecv_handler(NATIVE_INT_TYPE portNum, FwChanIdType id, Fw::Time &timeTag, Fw::TlmBuffer &val);
+        void TlmGet_handler(NATIVE_INT_TYPE portNum, FwChanIdType id, Fw::Time &timeTag, Fw::TlmBuffer &val);
+        void Run_handler(NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context);
+        //! Handler implementation for pingIn
+        //!
+        void pingIn_handler(
+            const NATIVE_INT_TYPE portNum, /*!< The port number*/
+            U32 key /*!< Value to return to pinger*/
+        );
 
-            typedef struct tlmEntry {
-                FwChanIdType id; //!< telemetry id stored in slot
-                bool updated; //!< set whenever a value has been written. Used to skip if writing out values for downlinking
-                Fw::Time lastUpdate; //!< last updated time
-                Fw::TlmBuffer buffer; //!< buffer to store serialized telemetry
-                tlmEntry* next; //!< pointer to next bucket in table
-                bool used; //!< if entry has been used
-                NATIVE_UINT_TYPE bucketNo; //!< for testing
-            } TlmEntry;
+    PRIVATE:
 
-            struct TlmSet {
-                TlmEntry* slots[TLMCHAN_NUM_TLM_HASH_SLOTS]; //!< set of hash slots in hash table
-                TlmEntry buckets[TLMCHAN_HASH_BUCKETS]; //!< set of buckets used in hash table
-                NATIVE_INT_TYPE free; //!< next free bucket
-            } m_tlmEntries[2];
+        // ----------------------------------------------------------------------
+        // Command handler implementations
+        // ----------------------------------------------------------------------
 
-            U32 m_activeBuffer; // !< which buffer is active for storing telemetry
+        //! Implementation for DUMP_CHANNEL command handler
+        //! Dump a specific channel
+        void DUMP_CHANNEL_cmdHandler(
+            const FwOpcodeType opCode, /*!< The opcode*/
+            const U32 cmdSeq, /*!< The command sequence number*/
+            U8 id 
+        );
 
-            // work variables
-            Fw::ComBuffer m_comBuffer;
-            Fw::TlmPacket m_tlmPacket;
-            Fw::TlmReportPacket m_tlmReportPacket;
+        typedef struct tlmEntry {
+            FwChanIdType id; //!< telemetry id stored in slot
+            bool updated; //!< set whenever a value has been written. Used to skip if writing out values for downlinking
+            Fw::Time lastUpdate; //!< last updated time
+            Fw::TlmBuffer buffer; //!< buffer to store serialized telemetry
+            tlmEntry* next; //!< pointer to next bucket in table
+            bool used; //!< if entry has been used
+            NATIVE_UINT_TYPE bucketNo; //!< for testing
+        } TlmEntry;
 
-    };
+        struct TlmSet {
+            TlmEntry* slots[TLMCHAN_NUM_TLM_HASH_SLOTS]; //!< set of hash slots in hash table
+            TlmEntry buckets[TLMCHAN_HASH_BUCKETS]; //!< set of buckets used in hash table
+            NATIVE_INT_TYPE free; //!< next free bucket
+        } m_tlmEntries[2];
 
+        U32 m_activeBuffer; // !< which buffer is active for storing telemetry
+
+        // work variables
+        Fw::ComBuffer m_comBuffer;
+        Fw::TlmPacket m_tlmPacket;
+        Fw::TlmReportPacket m_tlmReportPacket;
+
+        Os::Mutex dumpSearchMutex;
+
+};
 }
 
 #endif /* TELEMCHANIMPL_HPP_ */
