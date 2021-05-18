@@ -116,7 +116,7 @@ namespace Svc {
 
         // Generate TlmReportPacket
         Fw::Time time = getTime();
-        this->m_tlmReportPacket.setId(Fw::TlmReportPacket::DEBUG_REPORT); // Fw::TlmReportPacket::FP1_MISSION_REPORT
+        this->m_tlmReportPacket.setId(Fw::TlmReportPacket::FP1_MISSION_REPORT); // Fw::TlmReportPacket::FP1_MISSION_REPORT
         this->m_tlmReportPacket.setTimeTag(time);
         this->m_comBuffer.resetSer();
         Fw::SerializeStatus stat = this->m_tlmReportPacket.serialize(this->m_comBuffer);
