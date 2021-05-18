@@ -103,8 +103,9 @@ class TlmReportDecoder(Decoder):
                 (ptr, BAROMETER_TEMP) = self.decode_ch(0xba, data, ptr, report_time)
                 (ptr, BAROMETER_PRESS) = self.decode_ch(0xbb, data, ptr, report_time)
                 (ptr, BAROMETER_ALT) = self.decode_ch(0xbc, data, ptr, report_time)
+                (ptr, Gps_Position) = self.decode_ch(0x6a, data, ptr, report_time)
 
-                return [CommandErrors, BD_Cycles, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature, THERMOMETER_TEMP, THERMOMETER_HUMI, BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT]
+                return [CommandErrors, BD_Cycles, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature, THERMOMETER_TEMP, THERMOMETER_HUMI, BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position]
                 
             else:
                 LOGGER.warning("TlmReport id 0x{:02X} does not exist".format(report_id))
