@@ -96,8 +96,8 @@ namespace Svc {
             // According to TlmRecv_handler, at this step the algorithm create a new entry at slot head
             // In our case (reading), it means that the id was not found
             DEBUG_PRINT("No slot for id 0x%.2X in TlmSet %p\n", id, tlmSet);
-            return 0;
         }
+        return 0;
     }
 
     void TlmChanImpl::pingIn_handler(
