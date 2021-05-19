@@ -72,7 +72,7 @@ namespace Svc {
         return (id % TLMCHAN_HASH_MOD_VALUE)%TLMCHAN_NUM_TLM_HASH_SLOTS;
     }
 
-    void* TlmChanImpl::findEntry(TlmSet* tlmSet, FwChanIdType id) {
+    TlmChanImpl::TlmEntry* TlmChanImpl::findEntry(TlmSet* tlmSet, FwChanIdType id) {
         NATIVE_UINT_TYPE index = this->doHash(id);
         TlmEntry* entry = 0;
         
@@ -137,8 +137,8 @@ namespace Svc {
         dumpSearchMutex.lock();    // avoid Run_handler
 
         // Search in both buffers
-        entryBuffer0 = (TlmEntry*)findEntry(&this->m_tlmEntries[0], id);
-        entryBuffer1 = (TlmEntry*)findEntry(&this->m_tlmEntries[1], id);
+        entryBuffer0 = findEntry(&this->m_tlmEntries[0], id);
+        entryBuffer1 = findEntry(&this->m_tlmEntries[1], id);
 
         // Use entry depending on results
         if(entryBuffer0 != 0 && entryBuffer1 == 0) {

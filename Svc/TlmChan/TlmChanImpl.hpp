@@ -80,7 +80,7 @@ class TlmChanImpl: public TlmChanComponentBase {
 
         U32 m_activeBuffer; // !< which buffer is active for storing telemetry
 
-        void* findEntry(TlmSet* tlmSet, FwChanIdType id);
+        TlmEntry* findEntry(TlmSet* tlmSet, FwChanIdType id);
 
         // work variables
         Fw::ComBuffer m_comBuffer;
