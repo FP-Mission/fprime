@@ -31,6 +31,9 @@ namespace Svc {
                 if (entryToUse) {
                     if (entryToUse->id == id) { // found the matching entry
                         DEBUG_PRINT("Update channel 0x%.2X in buffer %d\n", id, this->m_activeBuffer);
+                        if(id == 0x74) {
+                            printf("Update channel 0x%.2X in buffer %d\n", id, this->m_activeBuffer);
+                        }
                         break;
                     } else { // try next entry
                         prevEntry = entryToUse;
