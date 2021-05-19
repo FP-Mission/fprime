@@ -98,6 +98,7 @@ namespace Svc {
             DEBUG_PRINT("No slot for id 0x%.2X in TlmSet %p\n", id, tlmSet);
             return 0;
         }
+        return 0;
     }
 
     void TlmChanImpl::pingIn_handler(
