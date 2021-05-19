@@ -11,7 +11,7 @@
 #include <Fw/Com/ComPacket.hpp>
 #include <Fw/Time/Time.hpp>
 
-#include <App/Gps/GpsComponentImpl.hpp>
+#include <App/FlexTrak/Position/PositionSerializableAc.hpp>
 
 namespace Fw {
 
