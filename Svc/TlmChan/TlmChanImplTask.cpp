@@ -19,9 +19,12 @@
 
 #include <stdio.h>
 
+//#define DEBUG_PRINT(x, ...)  printf(x, ##__VA_ARGS__); fflush(stdout)
+#define DEBUG_PRINT(x,...)
+
 namespace Svc {
 
-    void TlmChanImpl::Run_handler(NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {        
+    void TlmChanImpl::Run_handler(NATIVE_INT_TYPE portNum, NATIVE_UINT_TYPE context) {
         // Only write packets if connected
         if (not this->isConnected_PktSend_OutputPort(0)) {
             return;
@@ -37,12 +40,15 @@ namespace Svc {
         }
         this->unLock();
 
+        dumpSearchMutex.lock();    // avoid DUMP_CHANNEL_cmdHandler
 
 #if TLMCHAN_MODE == 1   // TlmPackets mode
         // Go through each entry and send a TlmPacket if it has been updated
+        DEBUG_PRINT("Downlink activeBuffer %u\n", 1-this->m_activeBuffer);
         for (U32 entry = 0; entry < TLMCHAN_HASH_BUCKETS; entry++) {
             TlmEntry* p_entry = &this->m_tlmEntries[1-this->m_activeBuffer].buckets[entry];
             if ((p_entry->updated) && (p_entry->used)) {
+                DEBUG_PRINT("\tDownlink 0x%.2X\n", p_entry->id);
                 this->m_tlmPacket.setId(p_entry->id);
                 this->m_tlmPacket.setTimeTag(p_entry->lastUpdate);
                 this->m_tlmPacket.setTlmBuffer(p_entry->buffer);
@@ -61,6 +67,8 @@ namespace Svc {
         F32 f32Val;
         I16 i16Val;
         App::PositionSer position;
+        // Channels that are in the other active buffer will be updated 
+        // on the next call to Run_handler
         for (U32 entry = 0; entry < TLMCHAN_HASH_BUCKETS; entry++) {
             TlmEntry* p_entry = &this->m_tlmEntries[1-this->m_activeBuffer].buckets[entry];
             if (p_entry->used) {
@@ -130,5 +138,6 @@ namespace Svc {
         this->PktSend_out(0,this->m_comBuffer,0);
         //*/
 #endif
+       dumpSearchMutex.unLock();    // avoid DUMP_CHANNEL_cmdHandler
     }
 }

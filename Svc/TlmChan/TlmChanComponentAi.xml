@@ -43,5 +43,29 @@
             </comment>
         </port>
     </ports>
+    <commands>
+        <command kind="async" opcode="0" mnemonic="DUMP_CHANNEL">
+            <comment>
+            Dump a specific channel
+            </comment>
+            <args>
+                <arg name="id" type="U8" comment="Channel id to dump">
+                </arg>
+            </args>
+        </command>
+    </commands>
+
+    <events>
+        <event id="0" name="TLM_NOT_UPDATED" severity="WARNING_LO" format_string = "Channel 0x%.2X has never been updated" >
+            <comment>
+                Throw by DUMP_CHANNEL command when channel is not available
+            </comment>
+            <args>
+                <arg name="id" type="U8">
+                    <comment>Channel id</comment>
+                </arg>          
+            </args>
+        </event>
+     </events>
 </component>
 

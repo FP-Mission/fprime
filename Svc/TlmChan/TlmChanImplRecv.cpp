@@ -12,12 +12,14 @@
 
 #include <stdio.h>
 
+//#define DEBUG_PRINT(x, ...)  printf(x, ##__VA_ARGS__); fflush(stdout)
+#define DEBUG_PRINT(x,...)
+
 namespace Svc {
 
     void TlmChanImpl::TlmRecv_handler(NATIVE_INT_TYPE portNum, FwChanIdType id, Fw::Time &timeTag, Fw::TlmBuffer &val) {
 
         // Compute index for entry
-
         NATIVE_UINT_TYPE index = this->doHash(id);
         TlmEntry* entryToUse = 0;
         TlmEntry* prevEntry = 0;
@@ -28,6 +30,10 @@ namespace Svc {
             for (NATIVE_UINT_TYPE bucket = 0; bucket < TLMCHAN_HASH_BUCKETS; bucket++) {
                 if (entryToUse) {
                     if (entryToUse->id == id) { // found the matching entry
+                        DEBUG_PRINT("Update channel 0x%.2X in buffer %d\n", id, this->m_activeBuffer);
+                        if(id == 0x74) {
+                            printf("Update channel 0x%.2X in buffer %d\n", id, this->m_activeBuffer);
+                        }
                         break;
                     } else { // try next entry
                         prevEntry = entryToUse;
@@ -41,6 +47,7 @@ namespace Svc {
                     prevEntry->next = entryToUse;
                     // clear next pointer
                     entryToUse->next = 0;
+                    DEBUG_PRINT("Create bucket for channel 0x%.2X in buffer %d\n", id, this->m_activeBuffer);
                     break;
                 }
             }
@@ -50,6 +57,7 @@ namespace Svc {
             // create new entry at slot head
             this->m_tlmEntries[this->m_activeBuffer].slots[index] = &this->m_tlmEntries[this->m_activeBuffer].buckets[this->m_tlmEntries[this->m_activeBuffer].free++];
             entryToUse = this->m_tlmEntries[this->m_activeBuffer].slots[index];
+            DEBUG_PRINT("Create entry for channel 0x%.2X in buffer %d\n", id, this->m_activeBuffer);
             entryToUse->next = 0;
         }
 
