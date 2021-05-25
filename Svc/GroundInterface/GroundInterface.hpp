@@ -47,7 +47,10 @@ namespace Svc {
       // ----------------------------------------------------------------------
       // Handler implementations for user-defined typed input ports
       // ----------------------------------------------------------------------
-
+      void pictureIn_handler(
+          const NATIVE_INT_TYPE portNum, /*!< The port number*/
+          U32 path 
+      );
       //! Handler implementation for downlinkPort
       //!
       void downlinkPort_handler(

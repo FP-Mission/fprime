@@ -10,6 +10,10 @@
 #include "Fw/Types/BasicTypes.hpp"
 #include <string.h>
 
+#include "App/Config/PiCameraConfig.hpp"
+#include "Os/FileSystem.hpp"
+#include <sstream>
+
 namespace Svc {
 
   const U32 GroundInterfaceComponentImpl::MAX_DATA_SIZE = 2048;
@@ -48,7 +52,17 @@ namespace Svc {
   // ----------------------------------------------------------------------
   // Handler implementations for user-defined typed input ports
   // ----------------------------------------------------------------------
-
+  void pictureIn_handler(
+          const NATIVE_INT_TYPE portNum, /*!< The port number*/
+          U32 path 
+      )
+      {
+          std::ostringstream osPictureSsdv;
+          U64 size;
+          osPictureSsdv << App::BIN_DIRECTORY << path <<".bin";
+          Os::FileSystem::getFileSize(osPictureSsdv.str().c_str(),size);
+          printf("size image %lu \n");
+      }
   void GroundInterfaceComponentImpl ::
     downlinkPort_handler(
         const NATIVE_INT_TYPE portNum,
