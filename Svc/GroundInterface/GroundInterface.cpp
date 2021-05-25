@@ -8,6 +8,7 @@
 #include <Fw/Log/LogPacket.hpp>
 #include <Svc/GroundInterface/GroundInterface.hpp>
 #include "Fw/Types/BasicTypes.hpp"
+#include "Fw/Tlm/PicturePacket.hpp"
 #include <string.h>
 
 #include "App/Config/PiCameraConfig.hpp"
@@ -59,11 +60,30 @@ namespace Svc {
           U32 path 
       )
       {
-          std::ostringstream osPictureSsdv;
-          osPictureSsdv << App::BIN_DIRECTORY << path <<".bin";
-          std::ifstream in(osPictureSsdv.str(), std::ifstream::ate | std::ifstream::binary);   
-          U64 size = in.tellg();
-          printf("size image %lu \n",size);
+        std::ostringstream osPictureSsdv;
+        osPictureSsdv << App::BIN_DIRECTORY << path <<".bin";
+        printf("%s\n",osPictureSsdv.str().c_str());
+        std::ifstream in(osPictureSsdv.str().c_str(),std::ios::binary | std::ios::ate);
+        U32 nbPacket = in.tellg()/256;
+        in.seekg (0, std::ios::end);
+        Fw::PicturePacket picturePacket;
+        Fw::Buffer* pictureBuffer = picturePacket.getPacketBuffer();
+        Fw::ComBuffer buffer;
+        U8 data[256];
+        pictureBuffer->setSize(256);
+        pictureBuffer->setData(data);;
+        U16 index = 0;
+        for(U16 i = 0; i<nbPacket ;i++){
+            picturePacket.setId(i);
+            //in.read(data,256);
+            index += 256;
+            in.seekg(index);
+            buffer.resetSer();
+            picturePacket.serialize(buffer);
+            frame_send(buffer.getBuffAddr(),buffer.getBuffLength(),Fw::ComPacket::FW_PACKET_PICTURE_PACKET);
+        }
+
+        in.close();
       }
   void GroundInterfaceComponentImpl ::
     downlinkPort_handler(
