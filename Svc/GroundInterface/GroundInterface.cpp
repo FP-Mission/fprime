@@ -13,6 +13,8 @@
 #include "App/Config/PiCameraConfig.hpp"
 #include "Os/FileSystem.hpp"
 #include <sstream>
+#include <iostream>
+#include <fstream>
 
 namespace Svc {
 
@@ -52,16 +54,16 @@ namespace Svc {
   // ----------------------------------------------------------------------
   // Handler implementations for user-defined typed input ports
   // ----------------------------------------------------------------------
-  void pictureIn_handler(
+  void GroundInterfaceComponentImpl::pictureIn_handler(
           const NATIVE_INT_TYPE portNum, /*!< The port number*/
           U32 path 
       )
       {
           std::ostringstream osPictureSsdv;
-          U64 size;
           osPictureSsdv << App::BIN_DIRECTORY << path <<".bin";
-          Os::FileSystem::getFileSize(osPictureSsdv.str().c_str(),size);
-          printf("size image %lu \n");
+          std::ifstream in(osPictureSsdv.str(), std::ifstream::ate | std::ifstream::binary);   
+          U64 size = in.tellg();
+          printf("size image %lu \n",size);
       }
   void GroundInterfaceComponentImpl ::
     downlinkPort_handler(
