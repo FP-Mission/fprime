@@ -8,7 +8,8 @@
 set(MOD_DEPS
     Fw/Com
 )
-set(SOURCE_FILES
+set(SOURCE_FILES  
+  "${CMAKE_CURRENT_LIST_DIR}/PositionSerializable/PositionSerializableCustom.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/TlmPortAi.xml"
   "${CMAKE_CURRENT_LIST_DIR}/TlmBuffer.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/TlmPacket.cpp"

@@ -11,7 +11,7 @@
 #include <Fw/Com/ComPacket.hpp>
 #include <Fw/Time/Time.hpp>
 
-#include <App/FlexTrak/Position/PositionSerializableAc.hpp>
+#include <Fw/Tlm/PositionSerializable/PositionSerializableCustom.hpp>
 
 namespace Fw {
 
@@ -48,7 +48,7 @@ namespace Fw {
                 F32 BAROMETER_TEMP;
                 F32 BAROMETER_PRESS;
                 U16 BAROMETER_ALT;
-                App::PositionSer gpsPosition;
+                App::PositionSerCustom gpsPosition;
             } data;
             
         PROTECTED:
