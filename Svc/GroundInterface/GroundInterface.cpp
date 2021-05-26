@@ -65,17 +65,19 @@ namespace Svc {
         printf("%s\n",osPictureSsdv.str().c_str());
         std::ifstream in(osPictureSsdv.str().c_str(),std::ios::binary | std::ios::ate);
         U32 nbPacket = in.tellg()/256;
+        printf("nb image packet : %d\n",nbPacket);
         in.seekg (0, std::ios::end);
         Fw::PicturePacket picturePacket;
         Fw::Buffer* pictureBuffer = picturePacket.getPacketBuffer();
         Fw::ComBuffer buffer;
         U8 data[256];
         pictureBuffer->setSize(256);
-        pictureBuffer->setData(data);;
+        pictureBuffer->setData(data);
+        char* dataChar = reinterpret_cast<char*>(data);
         U16 index = 0;
         for(U16 i = 0; i<nbPacket ;i++){
             picturePacket.setId(i);
-            //in.read(data,256);
+            in.read((char*)dataChar,256);
             index += 256;
             in.seekg(index);
             buffer.resetSer();
