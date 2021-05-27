@@ -96,7 +96,7 @@ namespace Fw {
             this->m_frameId = id;
         }
         void PicturePacket::setData(U8* data, U32 index,U32 lenght){
-            std::memcpy(m_data,data+index*lenght,lenght);
+            std::memcpy(m_data,data + index * lenght,lenght);
             this->m_dataLenght = lenght;
         }
 

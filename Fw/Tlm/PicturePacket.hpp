@@ -36,7 +36,7 @@ namespace Fw {
         PROTECTED:
             U32 m_pictrueId; 
             U32 m_frameId;
-            U8* m_data;
+            U8 m_data[256];
             U32 m_dataLenght; 
     };
 
