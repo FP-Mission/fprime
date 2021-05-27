@@ -26,6 +26,7 @@ namespace Fw {
                 FW_PACKET_PACKETIZED_TLM,   // !< Packetized telemetry packet type
                 FW_PACKET_IDLE,             // !< Idle packet
                 FW_PACKET_TLM_REPORT,       // !< Custom FP Packet for TLM report
+                FW_PACKET_PICTURE,          // !< Custom FP Packet for Picture
                 FW_PACKET_UNKNOWN = 0xFF    // !< Unknown packet
             } ComPacketType;
 
