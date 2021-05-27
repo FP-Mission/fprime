@@ -26,7 +26,7 @@ namespace Fw {
             // setters
             void setPictureId(U32 id);
             void setFrameId(U32 id);
-            void setData(U8* data, U32 lenght);
+            void setData(U8* data, U32 index, U32 lenght);
 
             // getters
             U32 getPictrueId(void);
