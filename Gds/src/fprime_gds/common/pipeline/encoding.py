@@ -12,6 +12,7 @@ import fprime_gds.common.decoders.event_decoder
 import fprime_gds.common.decoders.file_decoder
 import fprime_gds.common.decoders.pkt_decoder
 import fprime_gds.common.encoders.cmd_encoder
+import fprime_gds.common.decoders.picture_decoder
 
 # Encoders and Decoders
 import fprime_gds.common.encoders.file_encoder
@@ -71,6 +72,7 @@ class EncodingDecoding:
             dictionaries.channel_id, config=config
         )
         self.file_decoder = fprime_gds.common.decoders.file_decoder.FileDecoder()
+        self.picture_decoder = fprime_gds.common.decoders.picture_decoder.PictureDecoder()
         self.packet_decoder = None
         if dictionaries.packet is not None:
             self.packet_decoder = fprime_gds.common.decoders.pkt_decoder.PktDecoder(
@@ -85,6 +87,7 @@ class EncodingDecoding:
         distributor.register("FW_PACKET_TELEM", self.channel_decoder)
         distributor.register("FW_PACKET_FILE", self.file_decoder)
         distributor.register("FW_PACKET_TLM_REPORT", self.tlm_report_decoder)
+        distributor.register("FW_PACKET_PICTURE", self.picture_decoder)
         if self.packet_decoder is not None:
             distributor.register("FW_PACKET_PACKETIZED_TLM", self.packet_decoder)
 
