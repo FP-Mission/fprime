@@ -29,6 +29,7 @@ import fprime_gds.common.communication.adapters.ip
 import fprime_gds.common.logger
 import fprime_gds.executables.cli
 
+from fprime_gds.common.communication.adapters.rockblock import RockBlockAdapter
 from fprime_gds.common.communication.framing import FpFramerDeframer
 from fprime_gds.common.communication.framing import LoRaGoFramerDeframer
 from fprime_gds.common.communication.updown import Downlinker, Uplinker
@@ -60,13 +61,13 @@ def main():
         description="F prime communications layer.",
         client=True,
     )
+
     # Create the handling components for either side of this script, adapter for hardware, and ground for the GDS side
     ground = fprime_gds.common.communication.ground.TCPGround(
         args.tts_addr, args.tts_port
     )
 
-
-    # Ip or uart (LoRaGo) adapter changed here when setting '--comm-adapter uart/ip'
+    # Ip or uart (LoRaGo) adapter for downlink changed here when setting '--comm-adapter uart/ip'
     adapter = args.comm_adapter
 
     # Set the framing class used and pass it to the uplink and downlink component constructions giving each a separate
@@ -75,14 +76,18 @@ def main():
     # If SerialAdapter is used with LoRaGo module and FlexTrak, uses LoRaGoFramerDeframer
     framer_class = FpFramerDeframer
     uplink_adapter = None
+
     if(isinstance(adapter, fprime_gds.common.communication.adapters.uart.SerialAdapter)) :
         framer_class = LoRaGoFramerDeframer
+        # Debug purpose - Use ip uplink adapter with LoRa downlink
         uplink_adapter = fprime_gds.common.communication.adapters.base.BaseAdapter.construct_adapter('ip', args)
 
+    # Force usage of RockBlock adapter for uplink
+    # @todo Should be depending on config parser
+    # Current --uplink-adapter rockblock option does not work correctly ?!
+    uplink_adapter = RockBlockAdapter()
 
-
-    # Temp adapter and framerDeframer for uplink with Ip
-
+    # Set-up adapter and framerDeframer depending on config
     downlinker = Downlinker(adapter, ground, framer_class())
     uplinker = Uplinker(uplink_adapter if uplink_adapter is not None else adapter, ground, framer_class(), downlinker)
 

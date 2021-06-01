@@ -209,6 +209,7 @@ class CommParser(ParserBase):
             for argument in adapter.get_arguments().keys():
                 comm_parser.add_argument(*argument, **adapter.get_arguments()[argument])
             adapter_parents.append(comm_parser)
+
         parser = argparse.ArgumentParser(
             description="Process arguments needed to specify a comm-adapter",
             add_help=False,
@@ -219,10 +220,21 @@ class CommParser(ParserBase):
             dest="adapter",
             action="store",
             type=str,
-            help="Adapter for communicating to flight deployment. [default: %(default)s]",
+            help="Downlink adapter for communicating to flight deployment. [default: %(default)s]",
             choices=adapters,
             default="ip",
         )
+
+        parser.add_argument(
+            "--uplink-adapter",
+            dest="uplink_adapter",
+            action="store",
+            type=str,
+            help="Uplink adapter for communicating to flight deployment. [default: %(default)s]",
+            choices=['ip', 'rockblock'],
+            default="ip",
+        )
+
         return parser
 
     @classmethod
