@@ -24,20 +24,23 @@ namespace Fw {
             // Buffer containing value must be remainder of buffer
             SerializeStatus deserialize(SerializeBufferBase& buffer);
             // setters
-            void setPictureId(U32 id);
-            void setFrameId(U32 id);
-            void setData(U8* data, U32 index, U32 lenght);
+            void setPictureId(U16 id);
+            void setFrameId(U16 id);
+            void setData(U8* data, U32 index, U32 lenght, U32 fileSize);
 
             // getters
-            U32 getPictrueId(void);
-            U32 getFrameId(void);
+            U16 getPictrueId(void);
+            U16 getFrameId(void);
             U8* getData(void);
+            U16 getNbPacket(void);
             
         PROTECTED:
-            U32 m_pictrueId; 
-            U32 m_frameId;
+            U16 m_pictrueId; 
+            U16 m_frameId;
+            U16 m_nbPacket;
             U8 m_data[256];
             U32 m_dataLenght; 
+
     };
 
 } /* namespace Fw */

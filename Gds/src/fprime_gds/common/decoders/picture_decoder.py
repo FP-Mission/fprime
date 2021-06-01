@@ -50,10 +50,10 @@ class PictureDecoder(Decoder):
         self.id_obj.deserialize(data, ptr)
         ptr += self.id_obj.getSize()
         report_id = self.id_obj.val
-        print(f"taille id : {report_id}")
+        print(f"taille : {report_id}")
 
         with open('/mnt/c/dev/HE-ARC/github/test.bin', 'ab') as file:  
 
-            file.write(data[12:])
+            file.write(data[6:])
 
 

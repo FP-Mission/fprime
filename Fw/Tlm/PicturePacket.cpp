@@ -38,7 +38,7 @@ namespace Fw {
         }
 
         
-        stat = buffer.serialize(this->m_dataLenght);
+        stat = buffer.serialize(this->m_nbPacket);
         if (stat != FW_SERIALIZE_OK) {
             return stat;
         }
@@ -73,12 +73,12 @@ namespace Fw {
         }
 
         
-        stat = buffer.deserialize(this->m_dataLenght);
+        stat = buffer.deserialize(this->m_nbPacket);
         if (stat != FW_SERIALIZE_OK) {
             return stat;
         }
 
-        for(U32 i = 0; i< m_dataLenght; i++){
+        for(U16 i = 0; i< m_dataLenght; i++){
             stat = buffer.deserialize(this->m_data[i]);
             if (stat != FW_SERIALIZE_OK) {
                 return stat;
@@ -89,23 +89,27 @@ namespace Fw {
     
     }
 
-        void PicturePacket::setPictureId(U32 id){
+        void PicturePacket::setPictureId(U16 id){
             this->m_pictrueId = id;
         }
-        void PicturePacket::setFrameId(U32 id){
+        void PicturePacket::setFrameId(U16 id){
             this->m_frameId = id;
         }
-        void PicturePacket::setData(U8* data, U32 index,U32 lenght){
+        void PicturePacket::setData(U8* data, U32 index,U32 lenght, U32 fileSize){
             std::memcpy(m_data,data + index * lenght,lenght);
             this->m_dataLenght = lenght;
+            this->m_nbPacket =  (U16)fileSize/lenght;
         }
 
         // getters
-        U32 PicturePacket::getPictrueId(void){
+        U16 PicturePacket::getPictrueId(void){
             return this->m_pictrueId;
         }
-        U32 PicturePacket::getFrameId(void){
+        U16 PicturePacket::getFrameId(void){
             return this->m_frameId;
+        }
+        U16 PicturePacket::getNbPacket(void){
+            return this->m_nbPacket;
         }
         U8* PicturePacket::getData(void){
             return this->m_data;
