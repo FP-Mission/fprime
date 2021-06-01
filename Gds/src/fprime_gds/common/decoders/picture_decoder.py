@@ -1,6 +1,7 @@
 
 import copy
 import logging
+import time
 
 from fprime_gds.common.data_types.ch_data import ChData
 from fprime_gds.common.decoders.decoder import Decoder
@@ -40,19 +41,17 @@ class PictureDecoder(Decoder):
         # Decode Report ID here...
         self.id_obj.deserialize(data, ptr)
         ptr += self.id_obj.getSize()
-        report_id = self.id_obj.val
-        print(f"picture id : {report_id}")
-        print(type(data))
+        picture_id = self.id_obj.val
+
 
         self.id_obj.deserialize(data, ptr)
         ptr += self.id_obj.getSize()
-        report_id = self.id_obj.val
-        print(f"frame id : {report_id}")
+        frame_id = self.id_obj.val
 
         self.id_obj.deserialize(data, ptr)
         ptr += self.id_obj.getSize()
-        report_id = self.id_obj.val
-        print(f"taille : {report_id}")
+        filesize = self.id_obj.val
+
 
         with open('/mnt/c/dev/HE-ARC/github/test.bin', 'ab') as file:  
 
