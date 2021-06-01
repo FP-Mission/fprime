@@ -52,7 +52,11 @@ class StringType(type_base.ValueType):
         ):
             raise StringSizeException(len(self.val), self.__max_string_len)
         # Pack the string size first then return the encoded data
-        buff = struct.pack(">H", len(self.val)) + self.val.encode(DATA_ENCODING)
+
+        # !!! Variable size depends on FwBuffSizeType in FpConfig.hpp on the sending side
+        # "B" for U8, ">H" for U16
+        # @todo Should be changed by config_manager.py
+        buff = struct.pack("B", len(self.val)) + self.val.encode(DATA_ENCODING)
         return buff
 
     def deserialize(self, data, offset):
@@ -60,18 +64,23 @@ class StringType(type_base.ValueType):
         Deserializes a string from the given data buffer.
         """
         try:
-            val_size = struct.unpack_from(">H", data, offset)[0]
+            # !!! Variable size depends on FwBuffSizeType in FpConfig.hpp on the sending side
+            # "B" for U8, ">H" for U16
+            # @todo Should be changed by config_manager.py
+            val_size = struct.unpack_from("B", data, offset)[0]
+            sizeStorageVarSize = 1 # 1 byte for U8, 2 for U16, ...
+
             # Deal with not enough data left in the buffer
-            if len(data[offset + 2 :]) < val_size:
+            if len(data[offset + sizeStorageVarSize :]) < val_size:
                 raise DeserializeException(
                     "Not enough data to deserialize string data. Needed: {} Left: {}".format(
-                        val_size, len(data[offset + 2 :])
+                        val_size, len(data[offset + sizeStorageVarSize :])
                     )
                 )
             # Deal with a string that is larger than max string
             elif self.__max_string_len is not None and val_size > self.__max_string_len:
                 raise StringSizeException(val_size, self.__max_string_len)
-            self.val = data[offset + 2 : offset + 2 + val_size].decode(DATA_ENCODING)
+            self.val = data[offset + sizeStorageVarSize : offset + sizeStorageVarSize + val_size].decode(DATA_ENCODING)
         except struct.error:
             raise DeserializeException("Not enough bytes to deserialize string length.")
 
@@ -79,4 +88,5 @@ class StringType(type_base.ValueType):
         """
         Get the size of this object
         """
-        return struct.calcsize(">H") + len(self.val)
+        # @todo !!! See above note concerning size
+        return struct.calcsize("B") + len(self.val)

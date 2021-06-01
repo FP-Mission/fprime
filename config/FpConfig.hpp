@@ -249,7 +249,7 @@
 
 // Specifies the maximum size of a string in a log event
 #ifndef FW_LOG_STRING_MAX_SIZE
-#define FW_LOG_STRING_MAX_SIZE           16   //!< Max size of log string parameter type
+#define FW_LOG_STRING_MAX_SIZE           32   //!< Max size of log string parameter type
 #endif
 
 // Specifies the size of the buffer that contains the serialized telemetry value.
