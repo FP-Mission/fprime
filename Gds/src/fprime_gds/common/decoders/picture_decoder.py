@@ -5,6 +5,8 @@ import logging
 from fprime_gds.common.data_types.ch_data import ChData
 from fprime_gds.common.decoders.decoder import Decoder
 from fprime_gds.common.utils import config_manager
+from fprime.common.models.serialize.numerical_types import  U16Type
+
 
 
 class PictureDecoder(Decoder):
@@ -16,7 +18,7 @@ class PictureDecoder(Decoder):
 
         self.config = config_manager.ConfigManager().get_instance()
 
-        self.id_obj = self.config.get_type("msg_len")
+        self.id_obj = U16Type()
 
     def decode_api(self, data):
         """
