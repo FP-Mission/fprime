@@ -98,15 +98,15 @@ class RockBlockAdapter(fprime_gds.common.communication.adapters.base.BaseAdapter
             'password': self.password,
             'data': frame.hex()
         }
-        
+
         x = requests.post(url, data = myobj, headers=headers)
 
         if x.status_code == requests.codes.ok:
             response = x.text.split(",")
             if response[0] == "ERROR":
                 print("Error sending command to RockBock: ({}) {}", response[1], response[2])
-            elif response[1] == "OK":
-                print("Command sent to RockBlock")
+            elif response[0] == "OK":
+                print("Command sent to RockBlock: ".format(frame.hex()))
                 return True
         else:
             print("Unable to reach RockBlock API")
