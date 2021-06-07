@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?oxygen RNGSchema="file:../xml/ISF_Type_Schema.rnc" type="compact"?>
+<interface name="BinaryMode" namespace="Drv">
+    <comment>
+        Binary mode port
+    </comment>
+    <args>
+        <arg name="length" type="U16">
+            <comment>Bytes to read in binary mode</comment>
+        </arg>
+    </args>
+</interface>
+
