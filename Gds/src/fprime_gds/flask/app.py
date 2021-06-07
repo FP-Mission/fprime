@@ -21,6 +21,7 @@ import fprime_gds.flask.json
 import fprime_gds.flask.logs
 import fprime_gds.flask.updown
 import fprime_gds.flask.pictures
+import fprime_gds.flask.pressures
 
 from . import components
 
@@ -125,6 +126,10 @@ def construct_app():
     api.add_resource(
         fprime_gds.flask.pictures.Picture,
         "/images"
+    )
+    api.add_resource(
+        fprime_gds.flask.pressures.Pressure,
+        "/pressures"
     )
     # Optionally serve log files
     if app.config["SERVE_LOGS"]:

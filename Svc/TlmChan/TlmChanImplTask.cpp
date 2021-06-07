@@ -16,6 +16,7 @@
 #include <Fw/Types/Assert.hpp>
 #include <Fw/Tlm/TlmPacket.hpp>
 #include <Fw/Com/ComBuffer.hpp>
+#include <Fw/Tlm/PositionSerializable/PositionSerializableCustom.hpp>
 
 #include <stdio.h>
 
@@ -66,7 +67,7 @@ namespace Svc {
         U16 u16Val;
         F32 f32Val;
         I16 i16Val;
-        App::PositionSer position;
+        App::PositionSerCustom position;
         // Channels that are in the other active buffer will be updated 
         // on the next call to Run_handler
         for (U32 entry = 0; entry < TLMCHAN_HASH_BUCKETS; entry++) {

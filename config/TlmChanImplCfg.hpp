@@ -39,7 +39,7 @@
 //        ... (Other buckets in the slot)
 //     The number of buckets assigned to each slot can be checked for balance.
 
-#define TLMCHAN_MODE 1          // 0: Disabled
+#define TLMCHAN_MODE 2          // 0: Disabled
                                 // 1: TlmPackets are sent for each Tlm update
                                 // 2: One TlmReportPacket is sent with TlmChan inside
 

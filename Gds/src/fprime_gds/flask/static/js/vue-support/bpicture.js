@@ -8,10 +8,11 @@ Vue.component("b-picture", {
   methods:{
       async getImg(){
         let data = await (await fetch('http://127.0.0.1:5000/images')).json();
-        for(let i= 0; i < data.length; i++){
-          console.log(`${this.path}${data[i]}.jpeg`)
-          this.imgs.push(`${this.path}${data[i]}.jpeg`);
-        } 
+        if (data[0] != -1){
+          for(let i= 0; i < data.length; i++){
+            this.imgs.push(`${this.path}${data[i]}.jpeg`);
+          } 
+        }
       }
   },
   watch:{

@@ -18,6 +18,8 @@ Example data that would be sent to a decoder that parses channels:
 
 import copy
 import logging
+import json
+import time
 
 from enum import IntEnum
 from fprime.common.models.serialize.time_type import TimeType
@@ -104,7 +106,10 @@ class TlmReportDecoder(Decoder):
                 (ptr, BAROMETER_PRESS) = self.decode_ch(0xbb, data, ptr, report_time)
                 (ptr, BAROMETER_ALT) = self.decode_ch(0xbc, data, ptr, report_time)
                 (ptr, Gps_Position) = self.decode_ch(0x6a, data, ptr, report_time)
+                
+                self.save_data(BAROMETER_PRESS, report_time,"/mnt/c/dev/HE-ARC/github/pressure.txt" )
 
+                
                 return [CommandErrors, BD_Cycles, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature, THERMOMETER_TEMP, THERMOMETER_HUMI, BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position]
                 
             else:
@@ -151,3 +156,21 @@ class TlmReportDecoder(Decoder):
         val_obj.deserialize(val_data, offset)
 
         return val_obj
+
+    def save_data(self, data, epoch, path):
+        val = data.get_val()
+        epoch = epoch.seconds
+        current_time = time.localtime(epoch)
+        format_date = f"{current_time.tm_hour}:{current_time.tm_min}:{current_time.tm_sec}"
+        json_data = []
+        tmp = {"x":format_date,"y":round(val,3)}
+        """try:
+            with open(path) as json_file:
+                json_data = json.load(json_file)
+        except:
+            pass
+        json_data.append(tmp)
+        with open(path, 'w') as json_file: 
+            json.dump(json_data, json_file)"""
+
+

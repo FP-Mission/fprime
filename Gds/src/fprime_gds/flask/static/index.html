@@ -30,7 +30,8 @@ Note: Vue.js annotations are used, as Vue is the data-to-view framework of choic
         <!-- Third-party JavaScript files, hosted locally to remove internet dependence -->
         <script src="third-party/js/vue.min.js"></script>
         <script src="third-party/js/sorttable.js"></script>
-        <!-- JavaScript GDS files -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+        <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>        <!-- JavaScript GDS files -->
         <script type="module" src="js/gds.js"></script>
     </head>
     <body>
@@ -92,6 +93,7 @@ Note: Vue.js annotations are used, as Vue is the data-to-view framework of choic
                         <downlink      v-show="currentTab == 'Downlink'"></downlink>
                         <logging       v-show="currentTab == 'Logs'"></logging>
                         <dashboard     v-show="currentTab == 'Dashboard'"></dashboard>
+                        <b-data :current="currentTab"  v-show="currentTab == 'Data'"></b-data>                  
                         <b-picture :current="currentTab"  v-show="currentTab == 'Picture'"></b-picture>                  
 
                     </div>
@@ -464,9 +466,29 @@ Note: Vue.js annotations are used, as Vue is the data-to-view framework of choic
                 <div class="fp-flex-repeater">
                     <div class="fp-flex-header">
                         <h2>Pictures</h2>
-                        <img v-for="(img, k) in imgs"
-                        :key="k"
-                        :src="img"/>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div v-for="(img, k) in imgs" class="col">
+                                <img width="160px" height="120px"
+                                :key="k"
+                                :src="img"/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </template>
+
+            <template id="data-template">
+                <div class="fp-flex-repeater">
+                    <div class="fp-flex-header">
+                        <h2>Data</h2>
+                    </div>
+                    <div class="w-50">
+                        <canvas id="myChart" width="10" height="10" ref="my-canvas"></canvas>
+
                     </div>
                 </div>
             </template>

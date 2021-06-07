@@ -11,6 +11,6 @@ class Picture(flask_restful.Resource):
                 lines = file.read().splitlines()
                 return lines
         except:
-            return "file doesn't exist"
+            return [-1]
          
         
