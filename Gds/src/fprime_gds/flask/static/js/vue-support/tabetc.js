@@ -10,6 +10,7 @@ import {config} from "../config.js"
 
 // Child component imports ensures that the Vue components exist before using them
 import "./channel.js"
+import "./bpicture.js"
 import "./command.js"
 import "./downlink.js"
 import "./event.js"
@@ -34,7 +35,7 @@ Vue.component("tabbed-etc", {
             let hash = window.location.hash.replace("#", "");
             return {
                 "currentTab": (hash == "")? "Commanding" : hash,
-                "tabs": ["Commanding", "Events", "Channels", "Uplink", "Downlink", "Logs", "Dashboard"],
+                "tabs": ["Commanding", "Events", "Channels", "Uplink", "Downlink", "Logs", "Dashboard", "Picture"],
                 "config": config,
                 "active": _datastore.active
             }

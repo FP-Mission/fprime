@@ -2,6 +2,7 @@
 import copy
 import logging
 import time
+import os
 
 from fprime_gds.common.data_types.ch_data import ChData
 from fprime_gds.common.decoders.decoder import Decoder
@@ -21,6 +22,16 @@ class PictureDecoder(Decoder):
 
         self.id_obj = U16Type()
 
+        self.data_size = 32
+
+        self.counter_frame = -1
+
+        self.packet_received = []
+
+        self.current_picture_id = -1
+
+        self.data_stored = []
+
     def decode_api(self, data):
         """
         Decodes the given data and returns the result.
@@ -36,25 +47,46 @@ class PictureDecoder(Decoder):
             ChData object or None if the data is not decodable
         """
         ptr = 0
-
-
         # Decode Report ID here...
         self.id_obj.deserialize(data, ptr)
         ptr += self.id_obj.getSize()
-        picture_id = self.id_obj.val
-
+        picture_id = self.id_obj.val           
 
         self.id_obj.deserialize(data, ptr)
         ptr += self.id_obj.getSize()
         frame_id = self.id_obj.val
 
+
         self.id_obj.deserialize(data, ptr)
         ptr += self.id_obj.getSize()
-        filesize = self.id_obj.val
+        nb_packet = self.id_obj.val
 
 
-        with open('/mnt/c/dev/HE-ARC/github/test.bin', 'ab') as file:  
+        if picture_id != self.current_picture_id:
+            self.packet_received = [False] * nb_packet
+            self.data_stored = [None] * nb_packet
+            self.current_picture_id = picture_id
+            self.counter_frame = -1
 
-            file.write(data[6:])
+        if frame_id != self.counter_frame + 1:
+            with open(f'/mnt/c/dev/HE-ARC/github/{picture_id}.txt', 'a') as file: 
+                file.write(f"{picture_id}, {frame_id}")
+            
+        self.counter_frame = frame_id
+        self.packet_received[frame_id] = True
+        self.data_stored[frame_id] = data[-self.data_size:]
+        
+        if all(self.packet_received):
+            
+            with open(f'/mnt/c/dev/HE-ARC/github/FS/fprime/Gds/src/fprime_gds/flask/static/img/pictures/bin/{picture_id}.bin', 'wb') as file:  
+                for d in self.data_stored:   
+                    file.write(d)
+            
+            os.system(f"ssdv -d /mnt/c/dev/HE-ARC/github/FS/fprime/Gds/src/fprime_gds/flask/static/img/pictures/bin/{picture_id}.bin /mnt/c/dev/HE-ARC/github/FS/fprime/Gds/src/fprime_gds/flask/static/img/pictures/{picture_id}.jpeg")
+
+            with open(f'/mnt/c/dev/HE-ARC/github/picture.txt', 'a') as file: 
+                file.write(f"{picture_id}\n")
+
+        return 1
 
 

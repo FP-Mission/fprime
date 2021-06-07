@@ -43,6 +43,7 @@ class EncodingDecoding:
         self.file_decoder = None
         self.packet_decoder = None
         self.tlm_report_decoder = None
+        self.picture_decoder = None
         self.command_subscribers = []
 
     def setup_coders(self, dictionaries, distributor, sender, config):

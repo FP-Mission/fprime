@@ -92,6 +92,8 @@ Note: Vue.js annotations are used, as Vue is the data-to-view framework of choic
                         <downlink      v-show="currentTab == 'Downlink'"></downlink>
                         <logging       v-show="currentTab == 'Logs'"></logging>
                         <dashboard     v-show="currentTab == 'Dashboard'"></dashboard>
+                        <b-picture :current="currentTab"  v-show="currentTab == 'Picture'"></b-picture>                  
+
                     </div>
                 </div>
             </template>
@@ -453,6 +455,18 @@ Note: Vue.js annotations are used, as Vue is the data-to-view framework of choic
                     </div>
                     <div class="row fp-flex-header no-gutters justify-content-end" v-if="!editing && !compact">
                         <button class="col-3 btn btn-secondary" v-if="clearRows != null" v-on:click="clearRows">Clear</button>
+                    </div>
+                </div>
+            </template>
+
+            
+            <template id="picture-template">
+                <div class="fp-flex-repeater">
+                    <div class="fp-flex-header">
+                        <h2>Pictures</h2>
+                        <img v-for="(img, k) in imgs"
+                        :key="k"
+                        :src="img"/>
                     </div>
                 </div>
             </template>
