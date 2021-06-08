@@ -4,35 +4,41 @@ Vue.component("b-data", {
     props: ['current'],
     data: () => ({
         pressures:[],
-        labels:[],
-        chart:""
+        labelsPressure:[],
+        altitudes:[],
+        labelsAltitude:[],
+        chartPressure:"",
+        chartAltitude:""
     }),
     methods:{
-        async getData(update){
-          let data = await (await fetch('http://127.0.0.1:5000/pressures')).json();
-          if(!update){
-            if(data[0] != -1){
-                for(let i=0; i<data.length; ++i){
-                  this.pressures.push(data[i]["y"]);
-                  this.labels.push(data[i]["x"]);
+        async getData(){
+          let dataPressure = await (await fetch('http://127.0.0.1:5000/pressures')).json();
+          let dataAltitude = await (await fetch('http://127.0.0.1:5000/altitudes')).json();
+            if(dataPressure[0] != -1){
+                for(let i=0; i<dataPressure.length; ++i){
+                  this.pressures.push(dataPressure[i]["y"]);
+                  this.labelsPressure.push(dataPressure[i]["x"]);
                 }
             }
-              
-          }else{
-            this.pressures.push(data[data.length-1]["y"])
-            this.pressures.push(data[data.length-1]["x"])
-            this.chart.update();
+            if(dataAltitude[0] != -1){
+              for(let i=0; i<dataAltitude.length; ++i){
+                this.altitudes.push(dataAltitude[i]["y"]);
+                this.labelsAltitude.push(dataAltitude[i]["x"]);
+              }
           }
+
         },
         async createGraph(){
-            await this.getData(false);
-            let ctx = this.$refs['my-canvas'].getContext('2d')
-            this.chart = new Chart(ctx, {
+            await this.getData();
+            let ctxPressure = this.$refs['chartPressure'].getContext('2d')
+            let ctxAltitude = this.$refs['chartAltitude'].getContext('2d')
+            this.chartPressure = new Chart(ctxPressure, {
                 type: 'line',
                 data: {
-                    labels:this.labels,
+                    labels:this.labelsPressure,
                     datasets: [{
                         label:"pressures",
+                        tension: 0.4,
                         data: this.pressures,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)'
@@ -49,13 +55,35 @@ Vue.component("b-data", {
                     },
                   
             });
+            this.chartAltitude = new Chart(ctxAltitude, {
+              type: 'line',
+              data: {
+                  labels:this.labelsAltitude,
+                  datasets: [{
+                      label:"altitudes",
+                      data: this.altitudes,
+                      tension: 0.4,
+                      backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)',
+                      ],
+                      borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                      ],
+                      borderWidth: 1
+                  }]
+              },
+               options: {
+                    responsive: true,
+  
+                  },
+                
+          });
         }
     },
     watch:{
       current(val){
-        this.pressures = [];
         if (val == "Data"){
-            this.getData(true);
+          this.createGraph();
         }
       }
     },

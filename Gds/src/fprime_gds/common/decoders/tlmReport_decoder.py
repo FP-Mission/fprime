@@ -107,7 +107,9 @@ class TlmReportDecoder(Decoder):
                 (ptr, BAROMETER_ALT) = self.decode_ch(0xbc, data, ptr, report_time)
                 (ptr, Gps_Position) = self.decode_ch(0x6a, data, ptr, report_time)
                 
-                self.save_data(BAROMETER_PRESS, report_time,"/mnt/c/dev/HE-ARC/github/pressure.txt" )
+                #self.save_data(BAROMETER_PRESS, report_time,"/mnt/c/dev/HE-ARC/github/pressure.txt" )
+                #self.save_data(BAROMETER_ALT, report_time,"/mnt/c/dev/HE-ARC/github/altitude.txt" )
+
 
                 
                 return [CommandErrors, BD_Cycles, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature, THERMOMETER_TEMP, THERMOMETER_HUMI, BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position]
@@ -164,13 +166,13 @@ class TlmReportDecoder(Decoder):
         format_date = f"{current_time.tm_hour}:{current_time.tm_min}:{current_time.tm_sec}"
         json_data = []
         tmp = {"x":format_date,"y":round(val,3)}
-        """try:
+        try:
             with open(path) as json_file:
                 json_data = json.load(json_file)
         except:
             pass
         json_data.append(tmp)
         with open(path, 'w') as json_file: 
-            json.dump(json_data, json_file)"""
+            json.dump(json_data, json_file)
 
 
