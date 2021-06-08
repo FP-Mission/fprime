@@ -281,6 +281,7 @@ bool LinuxSerialDriverComponentImpl::open(const char* const device,
 
     // Default mode is non-binary
     this->binaryMode = 0;
+    this->endChar = '\n';
 
     return true;
 }
@@ -404,8 +405,8 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
                             break; // Allocate new buffer for next data
                         } 
                     } else {
-                        // If non-binary mode, return buffer when '\n' char is detected
-                        if(c == '\n') {
+                        // If non-binary mode, return buffer when endChar is detected
+                        if(c == comp->endChar) {
                             serReadStat = Drv::SER_OK;
                             DEBUG_PRINT("Send %s\n", buff.getData());
                             comp->serialRecv_out(0, buff, serReadStat);  

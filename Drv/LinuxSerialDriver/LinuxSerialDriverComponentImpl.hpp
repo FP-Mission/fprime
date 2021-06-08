@@ -126,6 +126,9 @@ namespace Drv {
       U32 binaryMode;   // if set to zero, will return buffer when '\n' is received
                         // if > 0, will receive data and decrement counter
 
+    public:
+        char endChar;
+
     };
 
 } // end namespace Drv
