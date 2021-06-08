@@ -278,6 +278,11 @@ bool LinuxSerialDriverComponentImpl::open(const char* const device,
     // All done!
     Fw::LogStringArg _arg = device;
     this->log_ACTIVITY_HI_DR_PortOpened(_arg);
+
+    // Default mode is non-binary
+    this->binaryMode = 0;
+    this->endChar = '\n';
+
     return true;
 }
 
@@ -313,6 +318,14 @@ void LinuxSerialDriverComponentImpl ::serialSend_handler(
         Fw::LogStringArg _arg = this->m_device;
         this->log_WARNING_HI_DR_WriteError(_arg, stat);
     }
+}
+
+void LinuxSerialDriverComponentImpl ::binaryMode_handler(
+        const NATIVE_INT_TYPE portNum,
+        U16 length
+) {
+    DEBUG_PRINT("Binary mode set (%lu)\n", length);
+    this->binaryMode = length;
 }
 
 void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
@@ -378,16 +391,29 @@ void LinuxSerialDriverComponentImpl ::serialReadTaskEntry(void* ptr) {
                     char* ptr = reinterpret_cast<char *>(buff.getData());
 
                     ptr += buff.getSize();      // append data
-                    DEBUG_PRINT("Append data to %lu\n", buff.getSize());
+                    DEBUG_PRINT("Append data 0x%02X (%c) to %lu\n", c, c, buff.getSize());
                     memcpy(ptr, &c, 1);
                     buff.setSize(buff.getSize() + 1);        // increment size
 
-                    if(c == '\n') {
-                        serReadStat = Drv::SER_OK;
-                        DEBUG_PRINT("Send %s\n", buff.getData());
-                        comp->serialRecv_out(0, buff, serReadStat);  
-                        break; // Allocate new buffer for next data
+                    if(comp->binaryMode) {
+                        // Decrement counter and send data when full
+                        if (--comp->binaryMode == 0)
+                        {
+                            serReadStat = Drv::SER_OK;
+                            DEBUG_PRINT("Send binary (%u)\n", buff.getSize());
+                            comp->serialRecv_out(0, buff, serReadStat);
+                            break; // Allocate new buffer for next data
+                        } 
+                    } else {
+                        // If non-binary mode, return buffer when endChar is detected
+                        if(c == comp->endChar) {
+                            serReadStat = Drv::SER_OK;
+                            DEBUG_PRINT("Send %s\n", buff.getData());
+                            comp->serialRecv_out(0, buff, serReadStat);  
+                            break; // Allocate new buffer for next data
+                        }
                     }
+
                 } else {
                     // Not enough place in buffer, end character not found
                     // Throw error

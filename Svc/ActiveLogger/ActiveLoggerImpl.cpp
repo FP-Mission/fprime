@@ -9,6 +9,8 @@
 #include <Fw/Types/Assert.hpp>
 #include <Os/File.hpp>
 
+#include <App/Top/Dictionnary.hpp>
+
 namespace Svc {
 
     ActiveLoggerImpl::ActiveLoggerImpl(const char* name) : 
@@ -36,8 +38,8 @@ namespace Svc {
             for(int i = 0; i < TELEM_ID_FILTER_SIZE; i++) {
                 this->m_filteredIDs[i] = 0;     // @todo Set to "i + 1" to disable all events - Currently to "0" for debug purpose
             }
-            this->m_filteredIDs[0x4D - 1] = 0;  // Remove filter for PR_PingReceived - Debugging purpose
-            this->m_filteredIDs[0x74 - 1] = 0;  // Remove filter for PiCam_PictureTaken - Debugging purpose
+            this->m_filteredIDs[DICT_PR_PingReceived - 1] = 0;  // Remove filter for PR_PingReceived - Debugging purpose
+            this->m_filteredIDs[DICT_PiCam_PictureTaken - 1] = 0;  // Remove filter for PiCam_PictureTaken - Debugging purpose
         }
     }
 

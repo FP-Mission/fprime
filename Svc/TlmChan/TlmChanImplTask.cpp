@@ -18,6 +18,8 @@
 #include <Fw/Com/ComBuffer.hpp>
 #include <Fw/Tlm/PositionSerializable/PositionSerializableCustom.hpp>
 
+#include <App/Top/Dictionnary.hpp>
+
 #include <stdio.h>
 
 //#define DEBUG_PRINT(x, ...)  printf(x, ##__VA_ARGS__); fflush(stdout)
@@ -75,51 +77,51 @@ namespace Svc {
             if (p_entry->used) {
                 p_entry->buffer.resetDeser();
                 switch (p_entry->id) {
-                case 0x4:       // CommandErrors
+                case DICT_CommandErrors:
                     p_entry->buffer.deserialize(u32Val);
                     m_tlmReportPacket.data.CommandErrors = u32Val;
                     break;
-                case 0x4C:      // PR_NumPings
+                case DICT_PR_NumPings:
                     p_entry->buffer.deserialize(u32Val);
                     m_tlmReportPacket.data.PR_NumPings = u32Val;
                     break;
-                case 0x4E:      // BD_Cycles
+                case DICT_BD_Cycles:
                     p_entry->buffer.deserialize(u32Val);
                     m_tlmReportPacket.data.BD_Cycles = u32Val;
                     break;
-                case 0x56:      // Eps_BatteryVoltage
+                case DICT_Eps_BatteryVoltage:
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.Eps_BatteryVoltage = u16Val;
                     break;
-                case 0x6a:      // Gps_Position
+                case DICT_Gps_Position:
                     p_entry->buffer.deserialize(position);
                     m_tlmReportPacket.data.gpsPosition = position;
                     break;
-                case 0x92:      // TempProb_InternalTemperature
+                case DICT_TempProb_InternalTemperature:
                     p_entry->buffer.deserialize(i16Val);
                     m_tlmReportPacket.data.TempProb_InternalTemperature = i16Val;
                     break;
-                case 0x93:      // TempProb_ExternalTemperature
+                case DICT_TempProb_ExternalTemperature:
                     p_entry->buffer.deserialize(i16Val);
                     m_tlmReportPacket.data.TempProb_ExternalTemperature = i16Val;
                     break;
-                case 0xa6:      // THERMOMETER_TEMP
+                case DICT_THERMOMETER_TEMP:
                     p_entry->buffer.deserialize(f32Val);
                     m_tlmReportPacket.data.THERMOMETER_TEMP = f32Val;
                     break;
-                case 0xa7:      // THERMOMETER_HUMI
+                case DICT_THERMOMETER_HUMI:
                     p_entry->buffer.deserialize(f32Val);
                     m_tlmReportPacket.data.THERMOMETER_HUMI = f32Val;
                     break;
-                case 0xba:      // BAROMETER_TEMP
+                case DICT_BAROMETER_TEMP:
                     p_entry->buffer.deserialize(f32Val);
                     m_tlmReportPacket.data.BAROMETER_TEMP = f32Val;
                     break;
-                case 0xbb:      // BAROMETER_PRESS
+                case DICT_BAROMETER_PRESS:
                     p_entry->buffer.deserialize(f32Val);
                     m_tlmReportPacket.data.BAROMETER_PRESS = f32Val;
                     break;
-                case 0xbc:      // BAROMETER_ALT
+                case DICT_BAROMETER_ALT:
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.BAROMETER_ALT = u16Val;
                     break;

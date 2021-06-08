@@ -3,6 +3,8 @@
 #include <Fw/Types/Assert.hpp>
 #include <Fw/Logger/Logger.hpp>
 
+#include <time.h> 
+
 namespace Svc {
 
     ConsoleTextLoggerImpl::ConsoleTextLoggerImpl(const char* compName) :
@@ -16,6 +18,10 @@ namespace Svc {
     ConsoleTextLoggerImpl::~ConsoleTextLoggerImpl(void) {}
 
     void ConsoleTextLoggerImpl::TextLogger_handler(NATIVE_INT_TYPE portNum, FwEventIdType id, Fw::Time &timeTag, Fw::TextLogSeverity severity, Fw::TextLogString &text) {
+        time_t time;
+        char time_c[18];
+        struct tm * ptm;
+
         const char *severityString = "UNKNOWN";
         switch (severity) {
             case Fw::TEXT_LOG_FATAL:
@@ -43,8 +49,13 @@ namespace Svc {
                 severityString = "SEVERITY ERROR";
                 break;
         }
-        Fw::Logger::logMsg("EVENT: (0x%02X) (%d:%d,%d) %s: %s\n",
-                id, timeTag.getTimeBase(), timeTag.getSeconds(), timeTag.getUSeconds(),
-                reinterpret_cast<POINTER_CAST>(severityString), reinterpret_cast<POINTER_CAST>(text.toChar()));
+
+        time = timeTag.getSeconds();
+        ptm = gmtime(&time);
+        strftime(time_c, 18, "%d/%m/%y %H:%M:%S", ptm);
+
+        Fw::Logger::logMsg("%s (%d:%d,%d) - EVENT %s 0x%02X: %s\n",
+                reinterpret_cast<POINTER_CAST>(time_c), timeTag.getTimeBase(), timeTag.getSeconds(), timeTag.getUSeconds(), 
+                reinterpret_cast<POINTER_CAST>(severityString), id, reinterpret_cast<POINTER_CAST>(text.toChar()));
     }
 }
