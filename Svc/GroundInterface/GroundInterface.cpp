@@ -197,7 +197,10 @@ namespace Svc {
               m_in_ring.peek(com.getBuffAddr(), m_data_size, HEADER_SIZE);
               // Reset com buffer for sending out data
               com.setBuffLen(m_data_size);
+
+              FW_ASSERT(this->isConnected_uplinkPort_OutputPort(0));
               uplinkPort_out(0, com, 0);
+              
               break;
           }
           case Fw::ComPacket::FW_PACKET_FILE: {
