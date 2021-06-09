@@ -20,6 +20,7 @@ import copy
 import logging
 import json
 import time
+import sys, os
 
 from enum import IntEnum
 from fprime.common.models.serialize.time_type import TimeType
@@ -115,8 +116,10 @@ class TlmReportDecoder(Decoder):
             else:
                 LOGGER.warning("TlmReport id 0x{:02X} does not exist".format(report_id))
                 return None
-        except:
-            LOGGER.warning("Unable to parse TlmReport {}".format(report_id))
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            LOGGER.warning("Unable to parse TlmReport {:02X}. Check {}:{}".format(report_id, fname, exc_tb.tb_lineno))
             return None
 
 
