@@ -67,16 +67,13 @@ class PictureDecoder(Decoder):
             self.data_stored = [None] * nb_packet
             self.current_picture_id = picture_id
             self.counter_frame = -1
-
-        if frame_id != self.counter_frame + 1:
-            with open(f'/mnt/c/dev/HE-ARC/github/{picture_id}.txt', 'a') as file: 
-                file.write(f"{picture_id}, {frame_id}")
             
         self.counter_frame = frame_id
         self.packet_received[frame_id] = True
-        self.data_stored[frame_id] = data[-self.data_size:]
+        print(f"picture id : {picture_id}, frame {frame_id} received")
         
         if all(self.packet_received):
+            print(f"all picture {picture_id} received")
             
             with open(f'/mnt/c/dev/HE-ARC/github/FS/fprime/Gds/src/fprime_gds/flask/static/img/pictures/bin/{picture_id}.bin', 'wb') as file:  
                 for d in self.data_stored:   
