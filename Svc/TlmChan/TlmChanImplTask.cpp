@@ -138,6 +138,8 @@ namespace Svc {
         this->m_comBuffer.resetSer();
         Fw::SerializeStatus stat = this->m_tlmReportPacket.serialize(this->m_comBuffer);
         FW_ASSERT(Fw::FW_SERIALIZE_OK == stat,static_cast<NATIVE_INT_TYPE>(stat));
+        FW_ASSERT(this->isConnected_PktSend_OutputPort(0));
+        DEBUG_PRINT("Downlink TlmReport\n");
         this->PktSend_out(0,this->m_comBuffer,0);
         //*/
 #endif
