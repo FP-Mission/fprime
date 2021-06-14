@@ -36,7 +36,7 @@ namespace Svc {
         // All possible event (eventCode is U8) are filtered by default
         if (TELEM_ID_FILTER_SIZE == 255) {
             for(int i = 0; i < TELEM_ID_FILTER_SIZE; i++) {
-                this->m_filteredIDs[i] = i + 1;     // @todo Set to "i + 1" to disable all events - Currently to "0" for debug purpose
+                this->m_filteredIDs[i] = 0;     // @todo Set to "i + 1" to disable all events - Currently to "0" for debug purpose
             }
             this->m_filteredIDs[DICT_PR_PingReceived - 1] = 0;  // Remove filter for PR_PingReceived - Debugging purpose
             this->m_filteredIDs[DICT_PiCam_PictureTaken - 1] = 0;  // Remove filter for PiCam_PictureTaken - Debugging purpose

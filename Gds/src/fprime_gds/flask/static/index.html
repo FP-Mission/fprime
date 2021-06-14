@@ -24,6 +24,11 @@ Note: Vue.js annotations are used, as Vue is the data-to-view framework of choic
         <link rel="stylesheet" href="third-party/css/vue-select.css">
         <link rel="stylesheet" href="css/fpstyle.css">
         <link rel="stylesheet" href="css/fprime.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+
+
         <!-- Development mode -Vue- should it be needed for debug purposes -->
         <!--script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script-->
 
@@ -31,7 +36,10 @@ Note: Vue.js annotations are used, as Vue is the data-to-view framework of choic
         <script src="third-party/js/vue.min.js"></script>
         <script src="third-party/js/sorttable.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-        <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>        <!-- JavaScript GDS files -->
+        <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script> 
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
         <script type="module" src="js/gds.js"></script>
     </head>
     <body>
@@ -95,6 +103,8 @@ Note: Vue.js annotations are used, as Vue is the data-to-view framework of choic
                         <dashboard     v-show="currentTab == 'Dashboard'"></dashboard>
                         <b-data :current="currentTab"  v-show="currentTab == 'Data'"></b-data>                  
                         <b-picture :current="currentTab"  v-show="currentTab == 'Picture'"></b-picture>                  
+                        <b-map :current="currentTab"  v-show="currentTab == 'Map'"></b-map>                  
+
 
                     </div>
                 </div>
@@ -494,6 +504,14 @@ Note: Vue.js annotations are used, as Vue is the data-to-view framework of choic
                         <canvas id="chartAltitude" width="10" height="10" ref="chartAltitude"></canvas>
 
                     </div>
+                </div>
+            </template>
+            <template id="map-template">
+                <div class="fp-flex-repeater">
+                    <div class="fp-flex-header">
+                        <h2>Map</h2>
+                    </div>
+                    <div ref="map" id="map" style="width: 600px; height: 400px;"></div>
                 </div>
             </template>
         </div>

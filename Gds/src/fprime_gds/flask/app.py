@@ -23,6 +23,7 @@ import fprime_gds.flask.updown
 import fprime_gds.flask.pictures
 import fprime_gds.flask.pressures
 import fprime_gds.flask.altitudes
+import fprime_gds.flask.gps
 
 from . import components
 
@@ -136,6 +137,10 @@ def construct_app():
     api.add_resource(
         fprime_gds.flask.altitudes.Altitude,
         "/altitudes"
+    )
+    api.add_resource(
+        fprime_gds.flask.gps.Gps,
+        "/gps"
     )
     # Optionally serve log files
     if app.config["SERVE_LOGS"]:
