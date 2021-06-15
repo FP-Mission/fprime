@@ -32,6 +32,8 @@ class PictureDecoder(Decoder):
 
         self.data_stored = []
 
+        self.pictureFull = False
+
     def decode_api(self, data):
         """
         Decodes the given data and returns the result.
@@ -67,6 +69,7 @@ class PictureDecoder(Decoder):
             self.data_stored = [None] * nb_packet
             self.current_picture_id = picture_id
             self.counter_frame = -1
+            self.pictureFull= False
  
         self.counter_frame = frame_id
         self.packet_received[frame_id] = True
@@ -75,7 +78,8 @@ class PictureDecoder(Decoder):
         with open(f'/mnt/c/dev/HE-ARC/github/{picture_id}.txt', 'a') as file: 
                 file.write(f"{picture_id}, {frame_id}, {nb_packet}\n")
 
-        if all(self.packet_received):
+        if all(self.packet_received) and self.pictureFull == False:
+            self.pictureFull = True
             print(f"all picture {picture_id} received")
             
             with open(f'/mnt/c/dev/HE-ARC/github/FS/fprime/Gds/src/fprime_gds/flask/static/img/pictures/bin/{picture_id}.bin', 'wb') as file:  
