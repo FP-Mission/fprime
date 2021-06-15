@@ -67,11 +67,14 @@ class PictureDecoder(Decoder):
             self.data_stored = [None] * nb_packet
             self.current_picture_id = picture_id
             self.counter_frame = -1
-            
+ 
         self.counter_frame = frame_id
         self.packet_received[frame_id] = True
-        print(f"picture id : {picture_id}, frame {frame_id} received")
+        self.data_stored[frame_id] = data[-self.data_size:]
         
+        with open(f'/mnt/c/dev/HE-ARC/github/{picture_id}.txt', 'a') as file: 
+                file.write(f"{picture_id}, {frame_id}, {nb_packet}\n")
+
         if all(self.packet_received):
             print(f"all picture {picture_id} received")
             
