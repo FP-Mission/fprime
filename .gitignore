@@ -77,4 +77,7 @@ GTestBase.*
 /Gds/src/fprime_gds.egg-info
 **/DefaultDict/serializable/*
 
-Gds/src/fprime_gds/flask/static/img/pictures/
+Gds/src/fprime_gds/flask/static/img/pictures/*
+!Gds/src/fprime_gds/flask/static/img/pictures/bin
+Gds/src/fprime_gds/flask/static/img/pictures/bin/*
+!Gds/src/fprime_gds/flask/static/img/pictures/bin/.gitkeep

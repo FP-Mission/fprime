@@ -108,9 +108,9 @@ class TlmReportDecoder(Decoder):
                 (ptr, BAROMETER_ALT) = self.decode_ch(0xca, data, ptr, report_time)
                 (ptr, Gps_Position) = self.decode_ch(0x78, data, ptr, report_time)
                 
-                #self.save_data(BAROMETER_PRESS, report_time,"/mnt/c/dev/HE-ARC/github/pressure.txt" )
-                #self.save_data(BAROMETER_ALT, report_time,"/mnt/c/dev/HE-ARC/github/altitude.txt" )
-                #self.save_data(Gps_Position, report_time,"/mnt/c/dev/HE-ARC/github/gps.txt" )
+                #self.save_data(BAROMETER_PRESS, report_time,"../data/pressure.txt" )
+                #self.save_data(BAROMETER_ALT, report_time,"../data//altitude.txt" )
+                #self.save_data(Gps_Position, report_time,"../data//gps.txt" )
                 
 
                 return [CommandErrors, BD_Cycles, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature, THERMOMETER_TEMP, THERMOMETER_HUMI, BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position]

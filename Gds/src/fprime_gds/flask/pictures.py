@@ -7,7 +7,7 @@ class Picture(flask_restful.Resource):
         Returns picture present.
         """
         try:
-            with open(f'/mnt/c/dev/HE-ARC/github/picture.txt') as file: 
+            with open(f'../data/picture.txt') as file: 
                 lines = file.read().splitlines()
                 return lines
         except:

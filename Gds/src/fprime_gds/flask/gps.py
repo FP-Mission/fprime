@@ -8,7 +8,7 @@ class Gps(flask_restful.Resource):
         Returns pressure present.
         """
         try:
-            with open('/mnt/c/dev/HE-ARC/github/gps.txt') as json_file:
+            with open('../data/gps.txt') as json_file:
                 json_data = json.load(json_file)
                 return json_data
         except Exception as e:

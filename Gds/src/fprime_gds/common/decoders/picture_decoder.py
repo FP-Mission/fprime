@@ -75,20 +75,20 @@ class PictureDecoder(Decoder):
         self.packet_received[frame_id] = True
         self.data_stored[frame_id] = data[-self.data_size:]
         
-        with open(f'/mnt/c/dev/HE-ARC/github/{picture_id}.txt', 'a') as file: 
+        with open(f'../data/frame/{picture_id}.txt', 'a') as file: 
                 file.write(f"{picture_id}, {frame_id}, {nb_packet}\n")
 
         if all(self.packet_received) and self.pictureFull == False:
             self.pictureFull = True
             print(f"all picture {picture_id} received")
             
-            with open(f'/mnt/c/dev/HE-ARC/github/FS/fprime/Gds/src/fprime_gds/flask/static/img/pictures/bin/{picture_id}.bin', 'wb') as file:  
+            with open(f'../fprime/Gds/src/fprime_gds/flask/static/img/pictures/bin/{picture_id}.bin', 'wb') as file:  
                 for d in self.data_stored:   
                     file.write(d)
             
-            os.system(f"ssdv -d /mnt/c/dev/HE-ARC/github/FS/fprime/Gds/src/fprime_gds/flask/static/img/pictures/bin/{picture_id}.bin /mnt/c/dev/HE-ARC/github/FS/fprime/Gds/src/fprime_gds/flask/static/img/pictures/{picture_id}.jpeg")
+            os.system(f"ssdv -d ../fprime/Gds/src/fprime_gds/flask/static/img/pictures/bin/{picture_id}.bin /mnt/c/dev/HE-ARC/github/FS/fprime/Gds/src/fprime_gds/flask/static/img/pictures/{picture_id}.jpeg")
 
-            with open(f'/mnt/c/dev/HE-ARC/github/picture.txt', 'a') as file: 
+            with open(f'../data/picture.txt', 'a') as file: 
                 file.write(f"{picture_id}\n")
 
         return 1
