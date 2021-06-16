@@ -36,10 +36,56 @@ namespace Svc {
         // All possible event (eventCode is U8) are filtered by default
         if (TELEM_ID_FILTER_SIZE == 255) {
             for(int i = 0; i < TELEM_ID_FILTER_SIZE; i++) {
-                this->m_filteredIDs[i] = 0;     // @todo Set to "i + 1" to disable all events - Currently to "0" for debug purpose
+                this->m_filteredIDs[i] = i + 1;     // @todo Set to "i + 1" to disable all events - Currently to "0" for debug purpose
             }
             this->m_filteredIDs[DICT_PR_PingReceived - 1] = 0;  // Remove filter for PR_PingReceived - Debugging purpose
-            this->m_filteredIDs[DICT_PiCam_PictureTaken - 1] = 0;  // Remove filter for PiCam_PictureTaken - Debugging purpose
+            this->m_filteredIDs[DICT_TLM_NOT_UPDATED - 1] = 0; 
+            this->m_filteredIDs[DICT_OpCodeCompleted - 1] = 0; 
+            this->m_filteredIDs[DICT_OpCodeError - 1] = 0; 
+            this->m_filteredIDs[DICT_MalformedCommand - 1] = 0; 
+            this->m_filteredIDs[DICT_InvalidCommand - 1] = 0; 
+            this->m_filteredIDs[DICT_TooManyCommands - 1] = 0; 
+            this->m_filteredIDs[DICT_NoOpReceived - 1] = 0; 
+            this->m_filteredIDs[DICT_AF_ASSERT_0 - 1] = 0; 
+            this->m_filteredIDs[DICT_AF_ASSERT_1 - 1] = 0; 
+            this->m_filteredIDs[DICT_AF_ASSERT_2 - 1] = 0; 
+            this->m_filteredIDs[DICT_AF_ASSERT_3 - 1] = 0; 
+            this->m_filteredIDs[DICT_AF_ASSERT_4 - 1] = 0; 
+            this->m_filteredIDs[DICT_AF_ASSERT_5 - 1] = 0; 
+            this->m_filteredIDs[DICT_AF_ASSERT_6 - 1] = 0; 
+            this->m_filteredIDs[DICT_AF_UNEXPECTED_ASSERT - 1] = 0; 
+            this->m_filteredIDs[DICT_HLTH_PING_WARN - 1] = 0; 
+            this->m_filteredIDs[DICT_HLTH_PING_LATE - 1] = 0; 
+            this->m_filteredIDs[DICT_HLTH_PING_WRONG_KEY - 1] = 0; 
+            this->m_filteredIDs[DICT_HLTH_CHECK_PING - 1] = 0; 
+            this->m_filteredIDs[DICT_HLTH_CHECK_LOOKUP_ERROR - 1] = 0; 
+            this->m_filteredIDs[DICT_HLTH_PING_UPDATED - 1] = 0; 
+            this->m_filteredIDs[DICT_HLTH_PING_INVALID_VALUES - 1] = 0; 
+            this->m_filteredIDs[DICT_GroundInterfaceError - 1] = 0; 
+            this->m_filteredIDs[DICT_ID_FILTER_ENABLED - 1] = 0; 
+            this->m_filteredIDs[DICT_ID_FILTER_LIST_FULL - 1] = 0; 
+            this->m_filteredIDs[DICT_ID_FILTER_REMOVED - 1] = 0; 
+            this->m_filteredIDs[DICT_ID_FILTER_NOT_FOUND - 1] = 0; 
+            this->m_filteredIDs[DICT_DR1_OpenError - 1] = 0; 
+            this->m_filteredIDs[DICT_DR1_ConfigError - 1] = 0; 
+            this->m_filteredIDs[DICT_DR1_WriteError - 1] = 0; 
+            this->m_filteredIDs[DICT_DR1_ReadError - 1] = 0; 
+            this->m_filteredIDs[DICT_DR1_PortOpened - 1] = 0; 
+            this->m_filteredIDs[DICT_DR1_NoBuffers - 1] = 0; 
+            this->m_filteredIDs[DICT_DR1_BufferTooSmall - 1] = 0; 
+            this->m_filteredIDs[DICT_DR2_OpenError - 1] = 0; 
+            this->m_filteredIDs[DICT_DR2_ConfigError - 1] = 0; 
+            this->m_filteredIDs[DICT_DR2_WriteError - 1] = 0; 
+            this->m_filteredIDs[DICT_DR2_ReadError - 1] = 0; 
+            this->m_filteredIDs[DICT_DR2_PortOpened - 1] = 0; 
+            this->m_filteredIDs[DICT_DR2_NoBuffers - 1] = 0; 
+            this->m_filteredIDs[DICT_DR2_BufferTooSmall - 1] = 0; 
+            this->m_filteredIDs[DICT_PiCam_PictureTaken - 1] = 0; 
+            this->m_filteredIDs[DICT_PiCam_PictureError - 1] = 0; 
+            this->m_filteredIDs[DICT_RckBlck_CSQ - 1] = 0; 
+            this->m_filteredIDs[DICT_RckBlck_MessageReceived - 1] = 0; 
+            this->m_filteredIDs[DICT_RckBlck_MailboxCheckFail - 1] = 0; 
+            this->m_filteredIDs[DICT_RckBlck_RingAlert - 1] = 0; 
         }
     }
 
