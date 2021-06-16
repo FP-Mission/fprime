@@ -218,7 +218,7 @@
 
 // Specifies the size of the buffer that contains a communications packet.
 #ifndef FW_COM_BUFFER_MAX_SIZE
-#define FW_COM_BUFFER_MAX_SIZE               128   //!< Max size of Fw::Com buffer
+#define FW_COM_BUFFER_MAX_SIZE               256   //!< Max size of Fw::Com buffer
 #endif
 
 // Specifies the size of the buffer that contains the serialized command arguments.

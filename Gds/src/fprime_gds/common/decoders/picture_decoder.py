@@ -22,7 +22,7 @@ class PictureDecoder(Decoder):
 
         self.id_obj = U16Type()
 
-        self.data_size = 128
+        self.data_size = 64
 
         self.counter_frame = -1
 
