@@ -22,7 +22,7 @@ class PictureDecoder(Decoder):
 
         self.id_obj = U16Type()
 
-        self.data_size = 32
+        self.data_size = 128
 
         self.counter_frame = -1
 
@@ -63,6 +63,7 @@ class PictureDecoder(Decoder):
         ptr += self.id_obj.getSize()
         nb_packet = self.id_obj.val
 
+        print("Frame received {} {}".format(picture_id, frame_id))
 
         if picture_id != self.current_picture_id:
             self.packet_received = [False] * nb_packet
@@ -74,6 +75,7 @@ class PictureDecoder(Decoder):
         self.counter_frame = frame_id
         self.packet_received[frame_id] = True
         self.data_stored[frame_id] = data[-self.data_size:]
+
         
         with open(f'../data/frame/{picture_id}.txt', 'a') as file: 
                 file.write(f"{picture_id}, {frame_id}, {nb_packet}\n")
@@ -86,7 +88,7 @@ class PictureDecoder(Decoder):
                 for d in self.data_stored:   
                     file.write(d)
             
-            os.system(f"ssdv -d ../fprime/Gds/src/fprime_gds/flask/static/img/pictures/bin/{picture_id}.bin /mnt/c/dev/HE-ARC/github/FS/fprime/Gds/src/fprime_gds/flask/static/img/pictures/{picture_id}.jpeg")
+            os.system(f"ssdv -d ../fprime/Gds/src/fprime_gds/flask/static/img/pictures/bin/{picture_id}.bin ../fprime/Gds/src/fprime_gds/flask/static/img/pictures/{picture_id}.jpeg")
 
             with open(f'../data/picture.txt', 'a') as file: 
                 file.write(f"{picture_id}\n")
