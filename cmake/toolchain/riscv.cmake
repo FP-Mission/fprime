@@ -1,6 +1,6 @@
 ####
-# RiscV toolchain
-# 
+# Risc-V Toolchain
+#
 ####
 # Set system name
 set(CMAKE_SYSTEM_NAME "riscv64-unknown-elf")
@@ -8,7 +8,7 @@ set(CMAKE_SYSTEM_NAME "riscv64-unknown-elf")
 # Location of pi toolchain
 set(RISCV_TOOLCHAIN "$ENV{RISCV_TOOLCHAIN_DIR}")
 if ("${RISCV_TOOLCHAIN}" STREQUAL "")
-    set(RISCV_TOOLCHAIN "/opt/riscv")
+    set(RISCV_TOOLCHAIN "/home/jonathan/Documents/he-arc/ArtyA7SmpLinux/buildroot-build/host")
 endif()
 # Check toolchain directory exists
 IF(NOT EXISTS "${RISCV_TOOLCHAIN}")
