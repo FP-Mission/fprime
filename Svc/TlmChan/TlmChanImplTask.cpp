@@ -93,6 +93,10 @@ namespace Svc {
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.Eps_BatteryVoltage = u16Val;
                     break;
+                case DICT_PingLateWarnings:
+                    p_entry->buffer.deserialize(u32Val);
+                    m_tlmReportPacket.data.Ping_lateWarning = u16Val;
+                    break;
                 case DICT_Gps_Position:
                     p_entry->buffer.deserialize(position);
                     m_tlmReportPacket.data.gpsPosition = position;
@@ -124,6 +128,10 @@ namespace Svc {
                 case DICT_BAROMETER_ALT:
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.BAROMETER_ALT = u16Val;
+                    break;
+                case DICT_PiCam_PictureCnt:
+                    p_entry->buffer.deserialize(u32Val);
+                    m_tlmReportPacket.data.PiCam_PictureCnt = u32Val;
                     break;
                 default:
                     break;

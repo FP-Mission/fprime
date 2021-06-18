@@ -38,6 +38,7 @@ namespace Fw {
             Time& getTimeTag(void);
             struct {
                 U32 CommandErrors;
+                U32 Ping_lateWarning;
                 U32 BD_Cycles;
                 U32 PR_NumPings;
                 U16 Eps_BatteryVoltage;
@@ -49,6 +50,7 @@ namespace Fw {
                 F32 BAROMETER_PRESS;
                 U16 BAROMETER_ALT;
                 App::PositionSerCustom gpsPosition;
+                U32 PiCam_PictureCnt;
             } data;
             
         PROTECTED:
