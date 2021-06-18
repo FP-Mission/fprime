@@ -22,6 +22,7 @@
 #include <App/Top/Dictionnary.hpp>
 
 #include <stdio.h>
+#include <time.h>
 
 //#define DEBUG_PRINT(x,...) Fw::Logger::logMsg(x,##__VA_ARGS__);
 #define DEBUG_PRINT(x,...)
@@ -94,6 +95,10 @@ namespace Svc {
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.Eps_BatteryVoltage = u16Val;
                     break;
+                case DICT_PingLateWarnings:
+                    p_entry->buffer.deserialize(u32Val);
+                    m_tlmReportPacket.data.Ping_lateWarning = u16Val;
+                    break;
                 case DICT_Gps_Position:
                     p_entry->buffer.deserialize(position);
                     m_tlmReportPacket.data.gpsPosition = position;
@@ -126,6 +131,10 @@ namespace Svc {
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.BAROMETER_ALT = u16Val;
                     break;
+                case DICT_PiCam_PictureCnt:
+                    p_entry->buffer.deserialize(u32Val);
+                    m_tlmReportPacket.data.PiCam_PictureCnt = u32Val;
+                    break;
                 default:
                     break;
                 }
@@ -134,6 +143,7 @@ namespace Svc {
 
         // Generate TlmReportPacket
         Fw::Time time = getTime();
+        manageTelemetry(time);
         this->m_tlmReportPacket.setId(Fw::TlmReportPacket::FP1_MISSION_REPORT); // Fw::TlmReportPacket::FP1_MISSION_REPORT
         this->m_tlmReportPacket.setTimeTag(time);
         this->m_comBuffer.resetSer();
@@ -145,5 +155,25 @@ namespace Svc {
         //*/
 #endif
        dumpSearchMutex.unLock();    // avoid DUMP_CHANNEL_cmdHandler
+    }
+    void TlmChanImpl::manageTelemetry(Fw::Time& time){
+            time_t t = time.getSeconds();
+            tm tm;
+            if (localtime_r(&t, &tm) == NULL) {
+                return;
+            }
+        std::ostringstream stringTime;
+        stringTime << tm.tm_mday<<"/"<<tm.tm_mon + 1<<"/"<<tm.tm_year + 1900<< " "<< tm.tm_hour
+        << ":"<< tm.tm_min<<":"<<tm.tm_sec;
+        std::ostringstream osTelemetry;
+        osTelemetry << path;
+        std::ofstream outFileTelemetry (osTelemetry.str(),std::ios::app );
+
+        outFileTelemetry << stringTime.str() <<","<<m_tlmReportPacket.data.BD_Cycles <<"," <<m_tlmReportPacket.data.Ping_lateWarning <<","<< m_tlmReportPacket.data.gpsPosition.getlatitude() << 
+        ","<<m_tlmReportPacket.data.gpsPosition.getlongitude()<<","<< m_tlmReportPacket.data.BAROMETER_TEMP <<","<< m_tlmReportPacket.data.BAROMETER_PRESS <<  
+            ","<< m_tlmReportPacket.data.BAROMETER_ALT << ","<< m_tlmReportPacket.data.TempProb_InternalTemperature << ","<< m_tlmReportPacket.data.TempProb_ExternalTemperature << ","<< m_tlmReportPacket.data.Eps_BatteryVoltage <<
+            ","<< m_tlmReportPacket.data.PiCam_PictureCnt <<"\n";
+
+        outFileTelemetry.close();
     }
 }

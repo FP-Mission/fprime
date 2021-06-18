@@ -19,6 +19,11 @@
 #include <Fw/Tlm/TlmPacket.hpp>
 #include <Fw/Tlm/TlmReportPacket.hpp>
 
+#include "Os/FileSystem.hpp"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
 namespace Svc {
 
 class TlmChanImpl: public TlmChanComponentBase {
@@ -78,6 +83,8 @@ class TlmChanImpl: public TlmChanComponentBase {
             NATIVE_INT_TYPE free; //!< next free bucket
         } m_tlmEntries[2];
 
+        void manageTelemetry(Fw::Time& );
+
         U32 m_activeBuffer; // !< which buffer is active for storing telemetry
 
         TlmEntry* findEntry(TlmSet* tlmSet, FwChanIdType id);
@@ -88,6 +95,8 @@ class TlmChanImpl: public TlmChanComponentBase {
         Fw::TlmReportPacket m_tlmReportPacket;
 
         Os::Mutex dumpSearchMutex;
+
+        const char* path = "/home/pi/Telemetry/telemetry.csv";
 
 };
 }
