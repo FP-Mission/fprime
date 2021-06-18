@@ -18,6 +18,8 @@
 
 #include <stdio.h>
 
+
+
 //#define DEBUG_PRINT(x, ...)  printf(x, ##__VA_ARGS__); fflush(stdout)
 #define DEBUG_PRINT(x,...)
 
@@ -56,6 +58,20 @@ namespace Svc {
 #else
         printf("!! Tlm downlink is disabled %u. Please set TLMCHAN_MODE in TlmChanImplCfg.hpp to configure Tlm mode\n", TLMCHAN_MODE);
 #endif
+
+
+    std::ostringstream osTelemetry;
+    osTelemetry << path;
+    Os::FileSystem::Status status = Os::FileSystem::createDirectory("/home/pi/Telemetry/");
+
+    if(status == Os::FileSystem::Status::OP_OK){
+            std::ofstream outFileTelemetry (osTelemetry.str());
+            outFileTelemetry<<"Time" <<","<< "BD_Cycles" <<","<< "PingLateWarnings" << 
+            ","<<"Latitude"<<","<< "Longitude"<<","<< "BARO_TEMP" <<","<< "BARO_PRESS" <<  
+            ","<< "BARO_ALT" << ","<< "TempProb_InternalTemperature" << ","<< "TempProb_ExternalTemperature" << ","<< "Eps_BatteryVoltage " <<
+            ","<< "PiCam_PictureCnt" <<"\n";
+            outFileTelemetry.close();
+        }
     }
 
     TlmChanImpl::~TlmChanImpl() {
