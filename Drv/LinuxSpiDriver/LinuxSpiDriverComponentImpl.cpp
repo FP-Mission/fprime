@@ -13,6 +13,7 @@
 #include <Drv/LinuxSpiDriver/LinuxSpiDriverComponentImpl.hpp>
 #include "Fw/Types/BasicTypes.hpp"
 #include <Fw/Types/Assert.hpp>
+#include "Fw/Logger/Logger.hpp"
 
 #include <stdint.h>
 #include <unistd.h>
@@ -24,7 +25,7 @@
 #include <linux/spi/spidev.h>
 #include <errno.h>
 
-//#define DEBUG_PRINT(x,...) printf(x,##__VA_ARGS__); fflush(stdout)
+//#define DEBUG_PRINT(x,...) Fw::Logger::logMsg(x,##__VA_ARGS__);
 #define DEBUG_PRINT(x,...)
 
 namespace Drv {

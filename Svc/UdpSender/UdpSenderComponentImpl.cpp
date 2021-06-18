@@ -13,13 +13,14 @@
 
 #include <Svc/UdpSender/UdpSenderComponentImpl.hpp>
 #include "Fw/Types/BasicTypes.hpp"
+#include "Fw/Logger/Logger.hpp"
 #include <sys/types.h>
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-//#define DEBUG_PRINT(x,...) printf(x,##__VA_ARGS__)
+//#define DEBUG_PRINT(x,...) Fw::Logger::logMsg(x,##__VA_ARGS__);
 #define DEBUG_PRINT(x,...)
 
 namespace Svc {

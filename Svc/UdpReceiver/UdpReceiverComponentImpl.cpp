@@ -21,8 +21,9 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <Fw/Types/EightyCharString.hpp>
+#include "Fw/Logger/Logger.hpp"
 
-//#define DEBUG_PRINT(x,...) printf(x,##__VA_ARGS__)
+//#define DEBUG_PRINT(x,...) Fw::Logger::logMsg(x,##__VA_ARGS__);
 #define DEBUG_PRINT(x,...)
 
 namespace Svc {

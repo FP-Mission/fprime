@@ -2,6 +2,7 @@
 #include <Fw/Types/BasicTypes.hpp>
 #include <Os/File.hpp>
 #include <Fw/Types/Assert.hpp>
+#include "Fw/Logger/Logger.hpp"
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,7 +23,7 @@ extern "C" {
 #include <string.h>
 #include <stdio.h>
 
-//#define DEBUG_PRINT(x,...) printf(x,##__VA_ARGS__); fflush(stdout)
+//#define DEBUG_PRINT(x,...) Fw::Logger::logMsg(x,##__VA_ARGS__);
 #define DEBUG_PRINT(x,...)
 
 namespace Os {
