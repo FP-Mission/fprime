@@ -51,18 +51,20 @@ namespace Fw {
                 }
                 break;
             case FP1_MISSION_REPORT:
-                /*stat = buffer.serialize(this->data.CommandErrors);
-                if (stat != FW_SERIALIZE_OK) {
-                    return stat;
-                }*/
                 stat = buffer.serialize(this->data.BD_Cycles);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
+                stat = buffer.serialize(this->data.CommandErrors);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
+                }
+                /*/
                 stat = buffer.serialize(this->data.Ping_lateWarning);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
+                //*/
                 stat = buffer.serialize(this->data.Eps_BatteryVoltage);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
@@ -74,15 +76,19 @@ namespace Fw {
                 stat = buffer.serialize(this->data.TempProb_ExternalTemperature);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
-                }/*
+                }
+                /*/
                 stat = buffer.serialize(this->data.THERMOMETER_TEMP);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
+                //*/
+                /*/
                 stat = buffer.serialize(this->data.THERMOMETER_HUMI);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
-                }*/
+                }
+                //*/
                 stat = buffer.serialize(this->data.BAROMETER_TEMP);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
@@ -150,15 +156,17 @@ namespace Fw {
                 stat = buffer.deserialize(this->data.BD_Cycles);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
-                }/*
+                }
                 stat = buffer.deserialize(this->data.CommandErrors);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
-                }*/
+                }
+                /*/
                 stat = buffer.deserialize(this->data.Ping_lateWarning);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
+                //*/
                 stat = buffer.deserialize(this->data.Eps_BatteryVoltage);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
@@ -170,15 +178,19 @@ namespace Fw {
                 stat = buffer.deserialize(this->data.TempProb_ExternalTemperature);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
-                }/*
+                }
+                /*/
                 stat = buffer.deserialize(this->data.THERMOMETER_TEMP);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
+                //*/
+                /*/
                 stat = buffer.deserialize(this->data.THERMOMETER_HUMI);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
-                }*/
+                }
+                //*/
                 stat = buffer.deserialize(this->data.BAROMETER_TEMP);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;

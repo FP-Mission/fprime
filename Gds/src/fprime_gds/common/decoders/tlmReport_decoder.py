@@ -57,6 +57,10 @@ class TlmReportDecoder(Decoder):
         self.__dict = ch_dict
         self.id_obj = config.get_type("ch_id")
 
+    def debug_report(self, value):
+        # print(value)
+        pass
+
     def decode_api(self, data):
         """
         Decodes the given data and returns the result.
@@ -86,7 +90,7 @@ class TlmReportDecoder(Decoder):
 
         # @todo Get ids from dictionnary depending on channel name
         # @todo Dynamic reading of TlmReport file format ??
-        # print("===== TLM REPORT id: 0x{:02X} =====".format(report_id))
+        self.debug_report("===== TLM REPORT id: 0x{:02X} =====".format(report_id))
         try:
             if report_id == ReportIds.DEBUG_REPORT: 
 
@@ -96,26 +100,36 @@ class TlmReportDecoder(Decoder):
                 return [PR_NumPings, BD_Cycles]
             elif report_id == ReportIds.FP1_MISSION_REPORT: 
 
-                #(ptr, CommandErrors) = self.decode_ch(0x4, data, ptr, report_time)
-                (ptr, BD_Cycles) = self.decode_ch(0x4e, data, ptr, report_time)
-                (ptr, PingLateWarnings) = self.decode_ch(0x1d, data, ptr, report_time)
-                (ptr, Eps_BatteryVoltage) = self.decode_ch(0x64, data, ptr, report_time)
-                (ptr, TempProb_InternalTemperature) = self.decode_ch(0xa0, data, ptr, report_time)
-                (ptr, TempProb_ExternalTemperature) = self.decode_ch(0xa1, data, ptr, report_time)
-                #(ptr, THERMOMETER_TEMP) = self.decode_ch(0xb4, data, ptr, report_time)
-                #(ptr, THERMOMETER_HUMI) = self.decode_ch(0xb5, data, ptr, report_time)
-                (ptr, BAROMETER_TEMP) = self.decode_ch(0xc8, data, ptr, report_time)
-                (ptr, BAROMETER_PRESS) = self.decode_ch(0xc9, data, ptr, report_time)
-                (ptr, BAROMETER_ALT) = self.decode_ch(0xca, data, ptr, report_time)
-                (ptr, Gps_Position) = self.decode_ch(0x78, data, ptr, report_time)
-                (ptr, PiCam_PictureCnt) = self.decode_ch(0x82, data, ptr, report_time)
+                # (ptr, PingLateWarnings) = self.decode_ch(0x1d, data, ptr, report_time)
+                # (ptr, THERMOMETER_TEMP) = self.decode_ch(0xb4, data, ptr, report_time)
+                # (ptr, THERMOMETER_HUMI) = self.decode_ch(0xb5, data, ptr, report_time)
                 
+                (ptr, BD_Cycles) = self.decode_ch(0x4e, data, ptr, report_time)
+                self.debug_report(BD_Cycles)
+                (ptr, CommandErrors) = self.decode_ch(0x4, data, ptr, report_time)
+                self.debug_report(CommandErrors)
+                (ptr, Eps_BatteryVoltage) = self.decode_ch(0x64, data, ptr, report_time)
+                self.debug_report(Eps_BatteryVoltage)
+                (ptr, TempProb_InternalTemperature) = self.decode_ch(0xa0, data, ptr, report_time)
+                self.debug_report(TempProb_InternalTemperature)
+                (ptr, TempProb_ExternalTemperature) = self.decode_ch(0xa1, data, ptr, report_time)
+                self.debug_report(TempProb_ExternalTemperature)
+                (ptr, BAROMETER_TEMP) = self.decode_ch(0xc8, data, ptr, report_time)
+                self.debug_report(BAROMETER_TEMP)
+                (ptr, BAROMETER_PRESS) = self.decode_ch(0xc9, data, ptr, report_time)
+                self.debug_report(BAROMETER_PRESS)
+                (ptr, BAROMETER_ALT) = self.decode_ch(0xca, data, ptr, report_time)
+                self.debug_report(BAROMETER_ALT)
+                (ptr, Gps_Position) = self.decode_ch(0x78, data, ptr, report_time)
+                self.debug_report(Gps_Position)
+                (ptr, PiCam_PictureCnt) = self.decode_ch(0x82, data, ptr, report_time)
+                self.debug_report(PiCam_PictureCnt)
+
                 #self.save_data(BAROMETER_PRESS, report_time,"../data/pressure.txt" )
                 #self.save_data(BAROMETER_ALT, report_time,"../data//altitude.txt" )
                 #self.save_data(Gps_Position, report_time,"../data//gps.txt" )
-                
- 
-                return [CommandErrors, PingLateWarnings, BD_Cycles, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature, THERMOMETER_TEMP, THERMOMETER_HUMI, BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position, PiCam_PictureCnt]
+
+                return [BD_Cycles, CommandErrors, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature,   BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position, PiCam_PictureCnt]
                 
             else:
                 LOGGER.warning("TlmReport id 0x{:02X} does not exist".format(report_id))
@@ -123,7 +137,8 @@ class TlmReportDecoder(Decoder):
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            LOGGER.warning("Unable to parse TlmReport {:02X}. Check {}:{}".format(report_id, fname, exc_tb.tb_lineno))
+            LOGGER.warning("Unable to parse TlmReport 0x{:02X}. Check {}:{}".format(report_id, fname, exc_tb.tb_lineno))
+            print(e)
             return None
 
 
@@ -135,6 +150,7 @@ class TlmReportDecoder(Decoder):
         except:
             LOGGER.warning("Unable to decode channel 0x{:02X} from TlmReport".format(chan_id))
             raise
+            
         return (ptr, ChData(val_obj, report_time, ch_temp))
 
     def decode_ch_val(self, val_data, offset, template):
