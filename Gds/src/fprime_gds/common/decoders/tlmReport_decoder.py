@@ -125,9 +125,9 @@ class TlmReportDecoder(Decoder):
                 (ptr, PiCam_PictureCnt) = self.decode_ch(0x82, data, ptr, report_time)
                 self.debug_report(PiCam_PictureCnt)
 
-                #self.save_data(BAROMETER_PRESS, report_time,"../data/pressure.txt" )
-                #self.save_data(BAROMETER_ALT, report_time,"../data//altitude.txt" )
-                #self.save_data(Gps_Position, report_time,"../data//gps.txt" )
+                self.save_data(BAROMETER_PRESS, report_time,"../data/pressure.txt" )
+                self.save_data(BAROMETER_ALT, report_time,"../data/altitude.txt" )
+                self.save_data(Gps_Position, report_time,"../data/gps.txt" )
 
                 return [BD_Cycles, CommandErrors, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature,   BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position, PiCam_PictureCnt]
                 
