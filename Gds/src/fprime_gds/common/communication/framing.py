@@ -15,6 +15,7 @@ import abc
 import copy
 import struct
 import re
+import binascii
 
 
 def CHECKSUM_CALC(_):
@@ -325,6 +326,10 @@ class LoRaGoFramerDeframer(FramerDeframer):
                     # Is formated as hex chain but deframe() requires a binary format
                     # b'DEADBEEF' -> b'\xde\xad\xbe\xef'
                     (packet, data) = df.deframe(bytearray.fromhex(f[2].decode()))
+
+                    # df.deframe() returns bytearray data b'\xde\xad\xbe\xef' that have
+                    # to be reconverted to binary -> b'DEADBEEF' for next analysis
+                    data = binascii.hexlify(data)
 
                     # If FP frame is found
                     if packet is not None:
