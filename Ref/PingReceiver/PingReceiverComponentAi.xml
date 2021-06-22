@@ -27,7 +27,7 @@
         </command>
     </commands>
     <telemetry>
-        <channel id="0" name="PR_NumPings" data_type="U32">
+        <channel id="0" name="PR_NumPings" data_type="U16">
             <comment>
             Number of pings received
             </comment>

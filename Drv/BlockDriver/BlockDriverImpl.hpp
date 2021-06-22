@@ -34,7 +34,7 @@ namespace Drv {
         static void s_driverISR(void* arg);
 
         // cycle count
-        U32 m_cycles;
+        U16 m_cycles;
 
     };
 }

@@ -148,7 +148,7 @@ namespace Svc {
             U32 m_numPingEntries; //!< stores number of entries passed to constructor
             U32 m_key; //!< current key value. Just increments for each ping entry.
             U32 m_watchDogCode; //!< stores code used for watchdog stroking
-            U32 m_warnings; //!< number of slip warnings issued
+            U8 m_warnings; //!< number of slip warnings issued
             HealthEnabled m_enabled; //!< if the pinger is enabled
             U32 queue_depth; //!< queue depth passed by user
 

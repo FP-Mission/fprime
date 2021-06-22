@@ -219,12 +219,12 @@
         </event>
     </events>
     <telemetry>
-        <channel id="0" name="CommandsDispatched" data_type="U32" update="on_change" abbrev="T002-1100">
+        <channel id="0" name="CommandsDispatched" data_type="U8" update="on_change" abbrev="T002-1100">
             <comment>
             Number of commands dispatched
             </comment>
         </channel>
-        <channel id="1" name="CommandErrors" data_type="U32" update="on_change" abbrev="T002-1000">
+        <channel id="1" name="CommandErrors" data_type="U8" update="on_change" abbrev="T002-1000">
             <comment>
             Number of command errors
             </comment>
