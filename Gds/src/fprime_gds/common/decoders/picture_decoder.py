@@ -78,7 +78,7 @@ class PictureDecoder(Decoder):
 
         
         if frame_id != self.counter_frame:
-            with open(f'../data/frame/{picture_id}_miss.txt', 'a') as file:
+            with open(f'../data/frame/{picture_id}_missed.txt', 'a') as file:
                 for i in range(self.counter_frame, frame_id):
                     file.write(f"{picture_id}, {self.counter_frame+1}, {nb_packet}\n")
 
