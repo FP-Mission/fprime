@@ -24,7 +24,7 @@ class PictureDecoder(Decoder):
 
         self.data_size = 64
 
-        self.counter_frame = -1
+        self.counter_frame = 0
 
         self.packet_received = []
 
@@ -69,14 +69,21 @@ class PictureDecoder(Decoder):
             self.packet_received = [False] * nb_packet
             self.data_stored = [None] * nb_packet
             self.current_picture_id = picture_id
-            self.counter_frame = -1
+            self.counter_frame = 0
             self.pictureFull= False
  
-        self.counter_frame = frame_id
+    
         self.packet_received[frame_id] = True
         self.data_stored[frame_id] = data[-self.data_size:]
 
         
+        if frame_id != self.counter_frame:
+            with open(f'../data/frame/{picture_id}_miss.txt', 'a') as file:
+                for i in range(self.counter_frame, frame_id):
+                    file.write(f"{picture_id}, {self.counter_frame+1}, {nb_packet}\n")
+
+        self.counter_frame=frame_id+1
+
         with open(f'../data/frame/{picture_id}.txt', 'a') as file: 
                 file.write(f"{picture_id}, {frame_id}, {nb_packet}\n")
 
