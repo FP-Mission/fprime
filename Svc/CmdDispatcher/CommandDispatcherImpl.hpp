@@ -169,8 +169,8 @@ namespace Svc {
 
             I32 m_seq; //!< current command sequence number
 
-            U32 m_numCmdsDispatched; //!< number of commands dispatched
-            U32 m_numCmdErrors; //!< number of commands with an error
+            U8 m_numCmdsDispatched; //!< number of commands dispatched
+            U8 m_numCmdErrors; //!< number of commands with an error
 
     };
 }

@@ -63,7 +63,7 @@ namespace Ref {
           );
 
       bool m_inhibitPings;
-      U32 m_pingsRecvd;
+      U16 m_pingsRecvd;
 
 
     };

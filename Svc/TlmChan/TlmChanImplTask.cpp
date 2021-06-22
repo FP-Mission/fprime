@@ -67,8 +67,9 @@ namespace Svc {
 #elif TLMCHAN_MODE == 2 // TlmReportsPackets mode
         // Update data for TlmReportPacket
         // @todo Find a cleaner way/better place to do this
-        U32 u32Val;
+        U8 u8Val;
         U16 u16Val;
+        U32 u32Val;
         F32 f32Val;
         I16 i16Val;
         App::PositionSerCustom position;
@@ -79,25 +80,29 @@ namespace Svc {
             if (p_entry->used) {
                 p_entry->buffer.resetDeser();
                 switch (p_entry->id) {
+                case DICT_CommandsDispatched:
+                    p_entry->buffer.deserialize(u8Val);
+                    m_tlmReportPacket.data.CommandDispatched = u8Val;
+                    break;
                 case DICT_CommandErrors:
-                    p_entry->buffer.deserialize(u32Val);
-                    m_tlmReportPacket.data.CommandErrors = u32Val;
+                    p_entry->buffer.deserialize(u8Val);
+                    m_tlmReportPacket.data.CommandErrors = u8Val;
                     break;
                 case DICT_PR_NumPings:
-                    p_entry->buffer.deserialize(u32Val);
-                    m_tlmReportPacket.data.PR_NumPings = u32Val;
+                    p_entry->buffer.deserialize(u16Val);
+                    m_tlmReportPacket.data.PR_NumPings = u16Val;
                     break;
                 case DICT_BD_Cycles:
-                    p_entry->buffer.deserialize(u32Val);
-                    m_tlmReportPacket.data.BD_Cycles = u32Val;
+                    p_entry->buffer.deserialize(u16Val);
+                    m_tlmReportPacket.data.BD_Cycles = u16Val;
                     break;
                 case DICT_Eps_BatteryVoltage:
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.Eps_BatteryVoltage = u16Val;
                     break;
                 case DICT_PingLateWarnings:
-                    p_entry->buffer.deserialize(u32Val);
-                    m_tlmReportPacket.data.Ping_lateWarning = u16Val;
+                    p_entry->buffer.deserialize(u8Val);
+                    m_tlmReportPacket.data.Ping_lateWarning = u8Val;
                     break;
                 case DICT_Gps_Position:
                     p_entry->buffer.deserialize(position);
@@ -132,8 +137,8 @@ namespace Svc {
                     m_tlmReportPacket.data.BAROMETER_ALT = u16Val;
                     break;
                 case DICT_PiCam_PictureCnt:
-                    p_entry->buffer.deserialize(u32Val);
-                    m_tlmReportPacket.data.PiCam_PictureCnt = u32Val;
+                    p_entry->buffer.deserialize(u8Val);
+                    m_tlmReportPacket.data.PiCam_PictureCnt = u8Val;
                     break;
                 default:
                     break;
@@ -156,12 +161,13 @@ namespace Svc {
 #endif
        dumpSearchMutex.unLock();    // avoid DUMP_CHANNEL_cmdHandler
     }
+    
     void TlmChanImpl::manageTelemetry(Fw::Time& time){
-            time_t t = time.getSeconds();
-            tm tm;
-            if (localtime_r(&t, &tm) == NULL) {
-                return;
-            }
+        time_t t = time.getSeconds();
+        tm tm;
+        if (localtime_r(&t, &tm) == NULL) {
+            return;
+        }
         std::ostringstream stringTime;
         stringTime << tm.tm_mday<<"/"<<tm.tm_mon + 1<<"/"<<tm.tm_year + 1900<< " "<< tm.tm_hour
         << ":"<< tm.tm_min<<":"<<tm.tm_sec;

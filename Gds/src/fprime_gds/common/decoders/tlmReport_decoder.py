@@ -98,13 +98,10 @@ class TlmReportDecoder(Decoder):
                 (ptr, BD_Cycles) = self.decode_ch(0x4c, data, ptr, report_time)
 
                 return [PR_NumPings, BD_Cycles]
-            elif report_id == ReportIds.FP1_MISSION_REPORT: 
-
-                # (ptr, PingLateWarnings) = self.decode_ch(0x1d, data, ptr, report_time)
-                # (ptr, THERMOMETER_TEMP) = self.decode_ch(0xb4, data, ptr, report_time)
-                # (ptr, THERMOMETER_HUMI) = self.decode_ch(0xb5, data, ptr, report_time)
-                
+            elif report_id == ReportIds.FP1_MISSION_REPORT:                 
                 (ptr, BD_Cycles) = self.decode_ch(0x4e, data, ptr, report_time)
+                self.debug_report(BD_Cycles)
+                (ptr, CommandDispatched) = self.decode_ch(0x3, data, ptr, report_time)
                 self.debug_report(BD_Cycles)
                 (ptr, CommandErrors) = self.decode_ch(0x4, data, ptr, report_time)
                 self.debug_report(CommandErrors)
@@ -129,7 +126,7 @@ class TlmReportDecoder(Decoder):
                 self.save_data(BAROMETER_ALT, report_time,"../data/altitude.txt" )
                 self.save_data(Gps_Position, report_time,"../data/gps.txt" )
 
-                return [BD_Cycles, CommandErrors, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature,   BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position, PiCam_PictureCnt]
+                return [BD_Cycles, CommandDispatched, CommandErrors, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature,   BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position, PiCam_PictureCnt]
                 
             else:
                 LOGGER.warning("TlmReport id 0x{:02X} does not exist".format(report_id))

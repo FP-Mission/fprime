@@ -55,6 +55,10 @@ namespace Fw {
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
+                stat = buffer.serialize(this->data.CommandDispatched);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
+                }
                 stat = buffer.serialize(this->data.CommandErrors);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
@@ -154,6 +158,10 @@ namespace Fw {
                 break;
             case FP1_MISSION_REPORT:
                 stat = buffer.deserialize(this->data.BD_Cycles);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
+                }
+                stat = buffer.deserialize(this->data.CommandDispatched);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
