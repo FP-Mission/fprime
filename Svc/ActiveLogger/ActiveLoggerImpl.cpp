@@ -80,6 +80,7 @@ namespace Svc {
             this->m_filteredIDs[DICT_DR2_PortOpened - 1] = 0; 
             this->m_filteredIDs[DICT_DR2_NoBuffers - 1] = 0; 
             this->m_filteredIDs[DICT_DR2_BufferTooSmall - 1] = 0; 
+            this->m_filteredIDs[DICT_Gps_LockState - 1] = 0;
             this->m_filteredIDs[DICT_PiCam_PictureTaken - 1] = 0; 
             this->m_filteredIDs[DICT_PiCam_PictureError - 1] = 0; 
             this->m_filteredIDs[DICT_RckBlck_CSQ - 1] = 0; 
