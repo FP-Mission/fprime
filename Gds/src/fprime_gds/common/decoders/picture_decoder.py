@@ -63,7 +63,9 @@ class PictureDecoder(Decoder):
         ptr += self.id_obj.getSize()
         nb_packet = self.id_obj.val
 
-        print("Frame received {} {}".format(picture_id, frame_id))
+        total_frame = nb_packet-1
+
+        print("Frame received {} {}/{}".format(picture_id, frame_id, total_frame))
 
         if picture_id != self.current_picture_id:
             self.packet_received = [False] * nb_packet
@@ -80,7 +82,7 @@ class PictureDecoder(Decoder):
         if frame_id != self.counter_frame:
             with open(f'../data/frame/{picture_id}_missed.txt', 'a') as file:
                 for i in range(self.counter_frame, frame_id):
-                    file.write(f"{picture_id}, {self.counter_frame+1}, {nb_packet}\n")
+                    file.write(f"{picture_id}, {i}, {nb_packet}\n")
 
         self.counter_frame=frame_id+1
 
