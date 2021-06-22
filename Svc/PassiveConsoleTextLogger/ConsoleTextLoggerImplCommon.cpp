@@ -54,7 +54,7 @@ namespace Svc {
         ptm = gmtime(&time);
         strftime(time_c, 18, "%d/%m/%y %H:%M:%S", ptm);
 
-        Fw::Logger::logMsg("%s (%d:%d,%d) - EVENT %s 0x%02X: %s\n",
+        Fw::Logger::logMsgRaw("[%s] (%d:%d,%d) - EVENT %s 0x%02X: %s\n",
                 reinterpret_cast<POINTER_CAST>(time_c), timeTag.getTimeBase(), timeTag.getSeconds(), timeTag.getUSeconds(), 
                 reinterpret_cast<POINTER_CAST>(severityString), id, reinterpret_cast<POINTER_CAST>(text.toChar()));
     }
