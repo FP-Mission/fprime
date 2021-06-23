@@ -40,6 +40,7 @@ class RockBlockAdapter(fprime_gds.common.communication.adapters.base.BaseAdapter
         self.data_chunks = queue.Queue()
         self.blob = b""
 
+
         # @todo define path with command argument
         creds = None
         try:
@@ -57,6 +58,8 @@ class RockBlockAdapter(fprime_gds.common.communication.adapters.base.BaseAdapter
             print("\tpassword : '<Rock Seven Core Password>'")
             print("=============")
             exit()
+
+        print("[INFO] Send uplink to RockBlock imei{} for user {}".format(self.imei, self.username))
 
     def open(self):
         pass      
