@@ -67,7 +67,7 @@ namespace Svc {
             outFileTelemetry<<"Time" <<","<< "BD_Cycles" <<","<< "PingLateWarnings" << 
             ","<<"Latitude"<<","<< "Longitude"<<","<< "BARO_TEMP" <<","<< "BARO_PRESS" <<  
             ","<< "BARO_ALT" << ","<< "TempProb_InternalTemperature" << ","<< "TempProb_ExternalTemperature" << ","<< "Eps_BatteryVoltage " <<
-            ","<< "PiCam_PictureCnt" <<"\n";
+            ","<< "PiCam_PictureCnt" <<","<<"thermometer_humidity"<<"\n";
             outFileTelemetry.close();
         }
     }

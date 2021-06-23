@@ -178,7 +178,7 @@ namespace Svc {
         outFileTelemetry << stringTime.str() <<","<<m_tlmReportPacket.data.BD_Cycles <<"," <<m_tlmReportPacket.data.Ping_lateWarning <<","<< m_tlmReportPacket.data.gpsPosition.getlatitude() << 
         ","<<m_tlmReportPacket.data.gpsPosition.getlongitude()<<","<< m_tlmReportPacket.data.BAROMETER_TEMP <<","<< m_tlmReportPacket.data.BAROMETER_PRESS <<  
             ","<< m_tlmReportPacket.data.BAROMETER_ALT << ","<< m_tlmReportPacket.data.TempProb_InternalTemperature << ","<< m_tlmReportPacket.data.TempProb_ExternalTemperature << ","<< m_tlmReportPacket.data.Eps_BatteryVoltage <<
-            ","<< m_tlmReportPacket.data.PiCam_PictureCnt <<"\n";
+            ","<< m_tlmReportPacket.data.PiCam_PictureCnt <<","<<m_tlmReportPacket.data.THERMOMETER_HUMI <<"\n";
 
         outFileTelemetry.close();
     }
