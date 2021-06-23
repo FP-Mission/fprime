@@ -14,7 +14,9 @@ Vue.component("b-map", {
         let data = await (await fetch('http://127.0.0.1:5000/gps')).json();
         if (data[0] != -1){
           for(let i= 0; i < data.length; i++){
-           this.latlngs.push(new L.LatLng(data[i].y.latitude, data[i].y.longitude));
+            if(data[i].y.latitude !=0 && data[i].y.longitude!=0){
+              this.latlngs.push(new L.LatLng(data[i].y.latitude, data[i].y.longitude));
+            }
           } 
           this.polyline = L.polyline(this.latlngs, {color: 'red'})
           this.map.addLayer(this.polyline)
