@@ -83,10 +83,14 @@ namespace Svc {
             this->m_filteredIDs[DICT_Gps_LockState - 1] = 0;
             this->m_filteredIDs[DICT_PiCam_PictureTaken - 1] = 0; 
             this->m_filteredIDs[DICT_PiCam_PictureError - 1] = 0; 
-            this->m_filteredIDs[DICT_RckBlck_CSQ - 1] = 0; 
-            this->m_filteredIDs[DICT_RckBlck_MessageReceived - 1] = 0; 
-            this->m_filteredIDs[DICT_RckBlck_MailboxCheckFail - 1] = 0; 
-            this->m_filteredIDs[DICT_RckBlck_RingAlert - 1] = 0; 
+            this->m_filteredIDs[DICT_RckBlck_CSQ - 1] = 0;
+            this->m_filteredIDs[DICT_RckBlck_MessageReceived - 1] = 0;
+            this->m_filteredIDs[DICT_RckBlck_NoMessageReceived - 1] = 0;
+            this->m_filteredIDs[DICT_RckBlck_UnableToSend - 1] = 0;
+            this->m_filteredIDs[DICT_RckBlck_MailboxCheckFail - 1] = 0;
+            this->m_filteredIDs[DICT_RckBlck_RingAlert - 1] = 0;
+            this->m_filteredIDs[DICT_RckBlck_CommandSent - 1] = 0;
+            this->m_filteredIDs[DICT_RckBlck_Response - 1] = 0;
         }
     }
 
