@@ -108,6 +108,10 @@ namespace Svc {
                     p_entry->buffer.deserialize(position);
                     m_tlmReportPacket.data.gpsPosition = position;
                     break;
+                case DICT_RckBlck_RSSI:
+                    p_entry->buffer.deserialize(u8Val);
+                    m_tlmReportPacket.data.RckBlck_RSSI = u8Val;
+                    break;
                 case DICT_TempProb_InternalTemperature:
                     p_entry->buffer.deserialize(i16Val);
                     m_tlmReportPacket.data.TempProb_InternalTemperature = i16Val;

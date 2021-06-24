@@ -69,7 +69,7 @@ namespace Fw {
                     return stat;
                 }
                 //*/
-                stat = buffer.serialize(this->data.Eps_BatteryVoltage);
+                stat = buffer.serialize(this->data.RckBlck_RSSI);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
@@ -175,7 +175,7 @@ namespace Fw {
                     return stat;
                 }
                 //*/
-                stat = buffer.deserialize(this->data.Eps_BatteryVoltage);
+                stat = buffer.deserialize(this->data.RckBlck_RSSI);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }

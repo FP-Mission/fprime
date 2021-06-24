@@ -40,6 +40,7 @@ namespace Fw {
                 U8 CommandDispatched;
                 U8 CommandErrors;
                 U8 Ping_lateWarning;
+                U8 RckBlck_RSSI;
                 U16 BD_Cycles;
                 U16 PR_NumPings;
                 U16 Eps_BatteryVoltage;

@@ -105,8 +105,8 @@ class TlmReportDecoder(Decoder):
                 self.debug_report(BD_Cycles)
                 (ptr, CommandErrors) = self.decode_ch(0x4, data, ptr, report_time)
                 self.debug_report(CommandErrors)
-                (ptr, Eps_BatteryVoltage) = self.decode_ch(0x64, data, ptr, report_time)
-                self.debug_report(Eps_BatteryVoltage)
+                (ptr, RckBlck_RSSI) = self.decode_ch(0x96, data, ptr, report_time)
+                self.debug_report(RckBlck_RSSI)
                 (ptr, TempProb_InternalTemperature) = self.decode_ch(0xa0, data, ptr, report_time)
                 self.debug_report(TempProb_InternalTemperature)
                 (ptr, TempProb_ExternalTemperature) = self.decode_ch(0xa1, data, ptr, report_time)
@@ -126,7 +126,7 @@ class TlmReportDecoder(Decoder):
                 #self.save_data(BAROMETER_ALT, report_time,"../data/altitude.txt" )
                 self.save_data(Gps_Position, report_time,"../data/gps.txt" )
 
-                return [BD_Cycles, CommandDispatched, CommandErrors, Eps_BatteryVoltage, TempProb_InternalTemperature, TempProb_ExternalTemperature,   BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position, PiCam_PictureCnt]
+                return [BD_Cycles, CommandDispatched, CommandErrors, RckBlck_RSSI, TempProb_InternalTemperature, TempProb_ExternalTemperature,   BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position, PiCam_PictureCnt]
                 
             else:
                 LOGGER.warning("TlmReport id 0x{:02X} does not exist".format(report_id))
