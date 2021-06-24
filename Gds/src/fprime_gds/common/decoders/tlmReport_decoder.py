@@ -21,6 +21,7 @@ import logging
 import json
 import time
 import sys, os
+import requests
 
 from enum import IntEnum
 from fprime.common.models.serialize.time_type import TimeType
@@ -125,6 +126,7 @@ class TlmReportDecoder(Decoder):
                 #self.save_data(BAROMETER_PRESS, report_time,"../data/pressure.txt" )
                 #self.save_data(BAROMETER_ALT, report_time,"../data/altitude.txt" )
                 self.save_data(Gps_Position, report_time,"../data/gps.txt" )
+                self.send_gps(Gps_Position, report_time)
 
                 return [BD_Cycles, CommandDispatched, CommandErrors, RckBlck_RSSI, TempProb_InternalTemperature, TempProb_ExternalTemperature,   BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position, PiCam_PictureCnt]
                 
@@ -192,5 +194,15 @@ class TlmReportDecoder(Decoder):
         json_data.append(tmp)
         with open(path, 'w') as json_file: 
             json.dump(json_data, json_file)
+
+    def send_gps(self,data, epoch):
+        url = "http://panama.internet-box.ch/gps"
+        epoch = epoch.seconds
+        lat = data.get_val()['latitude']
+        long = data.get_val()['longitude']
+        if lat !=0 and long != 0:
+            data = {"date": epoch, "lat":lat, "long":long}
+            response = requests.post(url, data)
+        
 
 
