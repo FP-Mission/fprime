@@ -22,13 +22,16 @@ Vue.component("b-map", {
           this.map.addLayer(this.polyline)
         }
        },
+       caller(){
+        if (this.current == "Map"){
+          this.latlngs = [];
+          this.getGpsPos(true);
+        }
+       }
     },
     watch:{
       current(val){
-        this.latlngs = [];
-        if (val == "Map"){
-          this.getGpsPos(true);
-        }
+        this.caller()
       }
     },
     mounted() {
@@ -38,5 +41,6 @@ Vue.component("b-map", {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(this.map);
         this.getGpsPos(false);
+        setInterval(this.caller,10000);
     }
   });

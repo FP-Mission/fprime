@@ -13,17 +13,21 @@ Vue.component("b-picture", {
             this.imgs.push(`${this.path}${data[i]}.jpeg`);
           } 
         }
+      },
+      caller(){
+        if (this.current == "Picture"){
+          this.imgs = [];
+          this.getImg();
+        }
       }
   },
   watch:{
     current(val){
-      this.imgs = [];
-      if (val == "Picture"){
-        this.getImg();
-      }
+      this.caller()
     }
   },
   mounted() {
-    this.getImg();
+    this.caller()
+    setInterval(this.caller,10000)
   }
 });
