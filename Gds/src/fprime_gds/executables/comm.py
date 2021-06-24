@@ -85,7 +85,7 @@ def main():
     # Force usage of RockBlock adapter for uplink
     # @todo Should be depending on config parser
     # Current --uplink-adapter rockblock option does not work correctly ?!
-    # uplink_adapter = RockBlockAdapter()
+    uplink_adapter = RockBlockAdapter()
 
     # Set-up adapter and framerDeframer depending on config
     downlinker = Downlinker(adapter, ground, framer_class())
