@@ -115,6 +115,4 @@ class PictureDecoder(Decoder):
             data = {"id":picture_id,"picture":im_b64}
             response = requests.post(url, data)
         except:
-            print("error sendinf picture to server")
-
-
+            print("error sending picture to server")
