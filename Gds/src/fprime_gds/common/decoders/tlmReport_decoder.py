@@ -22,6 +22,7 @@ import json
 import time
 import sys, os
 import requests
+import socket
 
 from enum import IntEnum
 from fprime.common.models.serialize.time_type import TimeType
@@ -50,6 +51,7 @@ class TlmReportDecoder(Decoder):
             An initialized channel decoder object.
         """
         super().__init__()
+        self.name = socket.gethostname()
 
         if config is None:
             # Retrieve singleton for the configs
@@ -125,8 +127,8 @@ class TlmReportDecoder(Decoder):
                 (ptr, PiCam_PictureCnt) = self.decode_ch(0x82, data, ptr, report_time)
                 self.debug_report(PiCam_PictureCnt)
 
-                #self.save_data(BAROMETER_PRESS, report_time,"../data/pressure.txt" )
-                #self.save_data(BAROMETER_ALT, report_time,"../data/altitude.txt" )
+                self.save_data(BAROMETER_PRESS, report_time,"../data/pressure.txt" )
+                self.save_data(BAROMETER_ALT, report_time,"../data/altitude.txt" )
                 self.save_data(Gps_Position, report_time,"../data/gps.txt" )
                 self.send_gps(Gps_Position, report_time)
 
@@ -203,7 +205,7 @@ class TlmReportDecoder(Decoder):
         lat = data.get_val()['latitude']
         long = data.get_val()['longitude']
         if lat !=0 and long != 0:
-            data = {"date": epoch, "lat":lat, "long":long}
+            data = {"date": epoch, "lat":lat, "long":long, "name":self.name}
             response = requests.post(url, data)
         
 

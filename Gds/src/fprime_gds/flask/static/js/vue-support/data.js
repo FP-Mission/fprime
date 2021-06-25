@@ -16,14 +16,18 @@ Vue.component("b-data", {
           let dataAltitude = await (await fetch('http://127.0.0.1:5000/altitudes')).json();
             if(dataPressure[0] != -1){
                 for(let i=0; i<dataPressure.length; ++i){
-                  this.pressures.push(dataPressure[i]["y"]);
-                  this.labelsPressure.push(dataPressure[i]["x"]);
+                  if(i%10 == 0){
+                    this.pressures.push(dataPressure[i]["y"]);
+                    this.labelsPressure.push(dataPressure[i]["x"]);
+                  }
                 }
             }
             if(dataAltitude[0] != -1){
               for(let i=0; i<dataAltitude.length; ++i){
-                this.altitudes.push(dataAltitude[i]["y"]);
-                this.labelsAltitude.push(dataAltitude[i]["x"]);
+                if(i%10 == 0){
+                  this.altitudes.push(dataAltitude[i]["y"]);
+                  this.labelsAltitude.push(dataAltitude[i]["x"]);
+                }
               }
           }
 

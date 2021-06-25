@@ -61,7 +61,7 @@ class CommandHistory(flask_restful.Resource):
         """
         self.parser = flask_restful.reqparse.RequestParser()
         self.parser.add_argument(
-            "session", required=True, help="Session key for fetching data."
+            "dat", required=True
         )
         self.history = history
 
