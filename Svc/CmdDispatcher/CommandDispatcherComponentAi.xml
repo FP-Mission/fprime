@@ -85,6 +85,11 @@
             Clear command tracking info to recover from components not returning status
             </comment>
         </command>
+        <command kind="async" opcode="4" mnemonic="CMD_REBOOT" >
+            <comment>
+            reboot command
+            </comment>
+        </command>
     </commands>
     <events>
         <event id="0" name="OpCodeRegistered" severity="DIAGNOSTIC" format_string = "Opcode 0x%04X registered to port %d slot %d" >

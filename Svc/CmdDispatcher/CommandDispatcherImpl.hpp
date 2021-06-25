@@ -139,6 +139,7 @@ namespace Svc {
             //! member is set to the opcode, and the port member set to the
             //! port to dispatch to. When a new opcode is received for
             //! execution, the table is traversed until the opcode is located.
+         void CMD_REBOOT_cmdHandler(FwOpcodeType opCode, U32 cmdSeq);
 
             struct DispatchEntry {
                     bool used; //!< if entry has been used yet

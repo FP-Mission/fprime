@@ -226,6 +226,12 @@ namespace Svc {
         this->cmdResponse_out(opCode,cmdSeq,Fw::COMMAND_OK);
     }
 
+        
+    void CommandDispatcherImpl::CMD_REBOOT_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) {
+        FW_ASSERT(false);
+        this->cmdResponse_out(opCode,cmdSeq,Fw::COMMAND_OK);
+    }
+
     void CommandDispatcherImpl::pingIn_handler(NATIVE_INT_TYPE portNum, U32 key) {
         // respond to ping
         this->pingOut_out(0,key);
