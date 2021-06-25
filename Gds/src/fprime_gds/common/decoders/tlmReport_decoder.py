@@ -23,6 +23,7 @@ import time
 import sys, os
 import requests
 import socket
+import base64
 
 from enum import IntEnum
 from fprime.common.models.serialize.time_type import TimeType
@@ -206,7 +207,11 @@ class TlmReportDecoder(Decoder):
         long = data.get_val()['longitude']
         if lat !=0 and long != 0:
             data = {"date": epoch, "lat":lat, "long":long, "name":self.name}
-            response = requests.post(url, data)
+            try:
+                response = requests.post(url, data)
+            except:
+                print("error sending gps to server")
+
         
 
 

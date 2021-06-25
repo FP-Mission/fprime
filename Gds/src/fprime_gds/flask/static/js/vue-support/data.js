@@ -78,7 +78,16 @@ Vue.component("b-data", {
               },
                options: {
                     responsive: true,
-  
+                    scales: {
+                      yAxes: [{
+                        display: true,
+                        ticks: {
+                            beginAtZero: true,
+                            steps: 100,
+                            max: 40000
+                        }
+                    }]
+                  }
                   },
                 
           });

@@ -101,7 +101,20 @@ class PictureDecoder(Decoder):
 
             with open(f'../data/picture.txt', 'a') as file: 
                 file.write(f"{picture_id}\n")
+            
+            self.send_picture(picture_id)
 
         return 1
+
+    def send_picture(self, picture_id):
+        url = "http://panama.internet-box.ch/image"
+        try:
+            with open(f"../fprime/Gds/src/fprime_gds/flask/static/img/pictures/{picture_id}.jpeg", "rb") as f:
+                im_bytes = f.read()        
+            im_b64 = base64.b64encode(im_bytes).decode("utf-8")
+            data = {"id":picture_id,"picture":im_b64}
+            response = requests.post(url, data)
+        except:
+            print("error sendinf picture to server")
 
 
