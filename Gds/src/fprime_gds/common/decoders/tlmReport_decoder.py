@@ -120,6 +120,8 @@ class TlmReportDecoder(Decoder):
                 self.debug_report(BAROMETER_ALT)
                 (ptr, Gps_Position) = self.decode_ch(0x78, data, ptr, report_time)
                 self.debug_report(Gps_Position)
+                (ptr, Gps_LockState) = self.decode_ch(0x79, data, ptr, report_time)
+                self.debug_report(Gps_LockState)
                 (ptr, PiCam_PictureCnt) = self.decode_ch(0x82, data, ptr, report_time)
                 self.debug_report(PiCam_PictureCnt)
 
@@ -128,7 +130,7 @@ class TlmReportDecoder(Decoder):
                 self.save_data(Gps_Position, report_time,"../data/gps.txt" )
                 self.send_gps(Gps_Position, report_time)
 
-                return [BD_Cycles, CommandDispatched, CommandErrors, RckBlck_RSSI, TempProb_InternalTemperature, TempProb_ExternalTemperature,   BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position, PiCam_PictureCnt]
+                return [BD_Cycles, CommandDispatched, CommandErrors, RckBlck_RSSI, TempProb_InternalTemperature, TempProb_ExternalTemperature, BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position, Gps_LockState, PiCam_PictureCnt]
                 
             else:
                 LOGGER.warning("TlmReport id 0x{:02X} does not exist".format(report_id))

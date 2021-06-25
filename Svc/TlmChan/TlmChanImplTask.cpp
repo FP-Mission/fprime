@@ -80,67 +80,71 @@ namespace Svc {
             if (p_entry->used) {
                 p_entry->buffer.resetDeser();
                 switch (p_entry->id) {
-                case DICT_CommandsDispatched:
+                case DICT_TLM_CommandsDispatched:
                     p_entry->buffer.deserialize(u8Val);
                     m_tlmReportPacket.data.CommandDispatched = u8Val;
                     break;
-                case DICT_CommandErrors:
+                case DICT_TLM_CommandErrors:
                     p_entry->buffer.deserialize(u8Val);
                     m_tlmReportPacket.data.CommandErrors = u8Val;
                     break;
-                case DICT_PR_NumPings:
+                case DICT_TLM_PR_NumPings:
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.PR_NumPings = u16Val;
                     break;
-                case DICT_BD_Cycles:
+                case DICT_TLM_BD_Cycles:
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.BD_Cycles = u16Val;
                     break;
-                case DICT_Eps_BatteryVoltage:
+                case DICT_TLM_Eps_BatteryVoltage:
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.Eps_BatteryVoltage = u16Val;
                     break;
-                case DICT_PingLateWarnings:
+                case DICT_TLM_PingLateWarnings:
                     p_entry->buffer.deserialize(u8Val);
                     m_tlmReportPacket.data.Ping_lateWarning = u8Val;
                     break;
-                case DICT_Gps_Position:
+                case DICT_TLM_Gps_Position:
                     p_entry->buffer.deserialize(position);
-                    m_tlmReportPacket.data.gpsPosition = position;
+                    m_tlmReportPacket.data.Gps_Position = position;
                     break;
-                case DICT_RckBlck_RSSI:
+                case DICT_TLM_Gps_LockState:
+                    p_entry->buffer.deserialize(u8Val);
+                    m_tlmReportPacket.data.Gps_LockState = u8Val;
+                    break;
+                case DICT_TLM_RckBlck_RSSI:
                     p_entry->buffer.deserialize(u8Val);
                     m_tlmReportPacket.data.RckBlck_RSSI = u8Val;
                     break;
-                case DICT_TempProb_InternalTemperature:
+                case DICT_TLM_TempProb_InternalTemperature:
                     p_entry->buffer.deserialize(i16Val);
                     m_tlmReportPacket.data.TempProb_InternalTemperature = i16Val;
                     break;
-                case DICT_TempProb_ExternalTemperature:
+                case DICT_TLM_TempProb_ExternalTemperature:
                     p_entry->buffer.deserialize(i16Val);
                     m_tlmReportPacket.data.TempProb_ExternalTemperature = i16Val;
                     break;
-                case DICT_THERMOMETER_TEMP:
+                case DICT_TLM_THERMOMETER_TEMP:
                     p_entry->buffer.deserialize(f32Val);
                     m_tlmReportPacket.data.THERMOMETER_TEMP = f32Val;
                     break;
-                case DICT_THERMOMETER_HUMI:
+                case DICT_TLM_THERMOMETER_HUMI:
                     p_entry->buffer.deserialize(f32Val);
                     m_tlmReportPacket.data.THERMOMETER_HUMI = f32Val;
                     break;
-                case DICT_BAROMETER_TEMP:
+                case DICT_TLM_BAROMETER_TEMP:
                     p_entry->buffer.deserialize(f32Val);
                     m_tlmReportPacket.data.BAROMETER_TEMP = f32Val;
                     break;
-                case DICT_BAROMETER_PRESS:
+                case DICT_TLM_BAROMETER_PRESS:
                     p_entry->buffer.deserialize(f32Val);
                     m_tlmReportPacket.data.BAROMETER_PRESS = f32Val;
                     break;
-                case DICT_BAROMETER_ALT:
+                case DICT_TLM_BAROMETER_ALT:
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.BAROMETER_ALT = u16Val;
                     break;
-                case DICT_PiCam_PictureCnt:
+                case DICT_TLM_PiCam_PictureCnt:
                     p_entry->buffer.deserialize(u8Val);
                     m_tlmReportPacket.data.PiCam_PictureCnt = u8Val;
                     break;
@@ -179,8 +183,8 @@ namespace Svc {
         osTelemetry << path;
         std::ofstream outFileTelemetry (osTelemetry.str(),std::ios::app );
 
-        outFileTelemetry << stringTime.str() <<","<<m_tlmReportPacket.data.BD_Cycles <<"," <<m_tlmReportPacket.data.Ping_lateWarning <<","<< m_tlmReportPacket.data.gpsPosition.getlatitude() << 
-        ","<<m_tlmReportPacket.data.gpsPosition.getlongitude()<<","<< m_tlmReportPacket.data.BAROMETER_TEMP <<","<< m_tlmReportPacket.data.BAROMETER_PRESS <<  
+        outFileTelemetry << stringTime.str() <<","<<m_tlmReportPacket.data.BD_Cycles <<"," <<m_tlmReportPacket.data.Ping_lateWarning <<","<< m_tlmReportPacket.data.Gps_Position.getlatitude() << 
+        ","<<m_tlmReportPacket.data.Gps_Position.getlongitude()<<","<< m_tlmReportPacket.data.BAROMETER_TEMP <<","<< m_tlmReportPacket.data.BAROMETER_PRESS <<  
             ","<< m_tlmReportPacket.data.BAROMETER_ALT << ","<< m_tlmReportPacket.data.TempProb_InternalTemperature << ","<< m_tlmReportPacket.data.TempProb_ExternalTemperature << ","<< m_tlmReportPacket.data.Eps_BatteryVoltage <<
             ","<< m_tlmReportPacket.data.PiCam_PictureCnt <<","<<m_tlmReportPacket.data.THERMOMETER_HUMI <<"\n";
 

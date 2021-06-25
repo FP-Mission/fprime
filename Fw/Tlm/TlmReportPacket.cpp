@@ -105,7 +105,11 @@ namespace Fw {
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
-                stat = buffer.serialize(this->data.gpsPosition);
+                stat = buffer.serialize(this->data.Gps_Position);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
+                }
+                stat = buffer.serialize(this->data.Gps_LockState);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
@@ -211,7 +215,11 @@ namespace Fw {
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
-                stat = buffer.deserialize(this->data.gpsPosition);
+                stat = buffer.deserialize(this->data.Gps_Position);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
+                }
+                stat = buffer.deserialize(this->data.Gps_LockState);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }

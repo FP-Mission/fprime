@@ -51,7 +51,8 @@ namespace Fw {
                 F32 BAROMETER_TEMP;
                 F32 BAROMETER_PRESS;
                 U16 BAROMETER_ALT;
-                App::PositionSerCustom gpsPosition;
+                App::PositionSerCustom Gps_Position;
+                U8 Gps_LockState;
                 U8 PiCam_PictureCnt;
             } data;
             
