@@ -12,7 +12,6 @@ class Gps(flask_restful.Resource):
                 json_data = json.load(json_file)
                 return json_data
         except Exception as e:
-            print(e)
             return [-1]
          
         

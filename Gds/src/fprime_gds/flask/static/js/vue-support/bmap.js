@@ -41,6 +41,6 @@ Vue.component("b-map", {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(this.map);
         this.getGpsPos(false);
-        setInterval(this.caller,10000);
+        //setInterval(this.caller,10000);
     }
   });

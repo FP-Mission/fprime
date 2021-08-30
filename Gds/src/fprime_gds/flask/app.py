@@ -7,10 +7,12 @@
 ####
 import logging
 import os
+from datetime import datetime
 
 import flask
 import flask_restful
 import flask_uploads
+from flask_sqlalchemy import SQLAlchemy
 
 import fprime_gds.flask.channels
 
@@ -24,6 +26,7 @@ import fprime_gds.flask.pictures
 import fprime_gds.flask.pressures
 import fprime_gds.flask.altitudes
 import fprime_gds.flask.gps
+
 
 from . import components
 
@@ -142,6 +145,7 @@ def construct_app():
         fprime_gds.flask.gps.Gps,
         "/gps"
     )
+
     # Optionally serve log files
     if app.config["SERVE_LOGS"]:
         api.add_resource(
@@ -152,9 +156,38 @@ def construct_app():
     return app, api
 
 
-app, _ = construct_app()
 
+app, api = construct_app()
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+db = SQLAlchemy(app)
+class TestModel(db.Model):
+    __tablename__ = 'tests'
 
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Integer, nullable=False)
+    test = db.Column(db.String(30), nullable=False)
+    success = db.Column(db.Boolean, nullable=False)
+
+    def to_json(self):
+        return {"date":self.date, "test" : self.test, "success":self.success}
+    
+db.create_all()
+
+import fprime_gds.flask.test
+api.add_resource(
+    fprime_gds.flask.test.Test,
+    "/test"
+)
+import fprime_gds.flask.test_history
+api.add_resource(
+    fprime_gds.flask.test_history.TestHistory,
+    "/testhistory"
+)
+import fprime_gds.flask.test_all
+api.add_resource(
+    fprime_gds.flask.test_all.TestAll,
+    "/testall"
+)
 @app.route("/js/<path:path>")
 def files_serve(path):
     """

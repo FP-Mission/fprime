@@ -103,7 +103,9 @@ Note: Vue.js annotations are used, as Vue is the data-to-view framework of choic
                         <dashboard     v-show="currentTab == 'Dashboard'"></dashboard>
                         <b-data :current="currentTab"  v-show="currentTab == 'Data'"></b-data>                  
                         <b-picture :current="currentTab"  v-show="currentTab == 'Picture'"></b-picture>                  
-                        <b-map :current="currentTab"  v-show="currentTab == 'Map'"></b-map>                  
+                        <b-map :current="currentTab"  v-show="currentTab == 'Map'"></b-map>
+                        <b-test v-show="currentTab == 'Test'"></b-test>
+                        <b-testhistory v-show="currentTab == 'TestHistory'"></b-testhistory>                  
 
 
                     </div>
@@ -512,6 +514,50 @@ Note: Vue.js annotations are used, as Vue is the data-to-view framework of choic
                         <h2>Map</h2>
                     </div>
                     <div ref="map" id="map" style="width: 600px; height: 400px;"></div>
+                </div>
+            </template>
+
+            <template id="test-template">
+                <div class="fp-flex-repeater">
+                    <div class="fp-flex-header">
+                        <h2>Sending Test: {{ selected }}</h2>
+                        <div class="form-row">
+                            <div class="form-group col-4">
+                                <label for="mnemonic">Tests name</label>
+                                <v-select id="mnemonic" style="flex: 1 1 auto;"
+                                          :clearable="false" :searchable="true"
+                                          :filterable="true"  :options="tests" v-model="selected">
+                                </v-select>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <button type="button"  class="col-2 btn btn-primary" v-on:click="sendTest">
+                                Send Test
+                            </button>
+                        </div>
+                        <div class="row no-gutters">
+                            <fp-table :header-columns="['Test Time', 'Test Name', 'Test success']"
+                            :items="testHist"
+                            :item-to-columns="columnify"
+                            :item-to-unique="keyify"
+                            :filter-text="filterText"
+                            :clickAction='historyTest'
+                ></fp-table>
+            </div>
+                    </div>
+                </div>
+            </template>
+            <template id="testhistory-template">
+                <div class="fp-flex-repeater">
+                    <div class="fp-flex-header">
+                        <h2>Test History</h2>
+                        <fp-table :header-columns="['Test Time', 'Test Name', 'Test success']"
+                        :items="tests"
+                        :item-to-columns="columnify"
+                        :item-to-unique="keyify"
+                        :filter-text="filterText"
+              ></fp-table>
+                    </div>
                 </div>
             </template>
         </div>

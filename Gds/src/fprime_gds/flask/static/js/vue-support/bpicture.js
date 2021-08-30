@@ -28,6 +28,6 @@ Vue.component("b-picture", {
   },
   mounted() {
     this.caller()
-    setInterval(this.caller,10000)
+    //setInterval(this.caller,10000)
   }
 });

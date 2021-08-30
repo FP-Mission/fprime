@@ -16,6 +16,8 @@ export let config = {
     dataSuccessIcon: "/img/success.svg",
     // Set the icon for the condition when there is a data-flow error
     dataErrorIcon: "/img/error.svg",
+    // Set the icon for the condition when there is a data-flow loading
+    dataLoading: "/img/1488.gif",
     // Data polling interval in milliseconds
     dataPollIntervalMs: 1000
 };
