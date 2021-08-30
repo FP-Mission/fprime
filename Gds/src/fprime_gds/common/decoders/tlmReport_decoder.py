@@ -135,7 +135,7 @@ class TlmReportDecoder(Decoder):
                 #self.save_data(Gps_Position, report_time,"../data/gps.txt" )
                 #self.send_gps(Gps_Position, report_time)
 
-                return [BD_Cycles, CommandDispatched, CommandErrors, TempProb_ExternalHighTemperature, TempProb_ExternalHighTemperature,TempProb_ExternalTemperature ,BAROMETER_TEMP, BAROMETER_PRESS]
+                return [BD_Cycles, CommandDispatched, CommandErrors, TempProb_ExternalLowTemperature, TempProb_ExternalHighTemperature,TempProb_ExternalTemperature ,BAROMETER_TEMP, BAROMETER_PRESS]
                 
             else:
                 LOGGER.warning("TlmReport id 0x{:02X} does not exist".format(report_id))
