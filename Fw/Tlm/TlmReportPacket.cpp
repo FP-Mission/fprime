@@ -69,11 +69,15 @@ namespace Fw {
                     return stat;
                 }
                 //*/
-                stat = buffer.serialize(this->data.RckBlck_RSSI);
+                /*stat = buffer.serialize(this->data.RckBlck_RSSI);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
+                }*/
+                stat = buffer.serialize(this->data.TempProb_ExternalHighTemperature);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
-                stat = buffer.serialize(this->data.TempProb_InternalTemperature);
+                stat = buffer.serialize(this->data.TempProb_ExternalLowTemperature);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
@@ -101,11 +105,11 @@ namespace Fw {
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
-                stat = buffer.serialize(this->data.BAROMETER_ALT);
+                /*stat = buffer.serialize(this->data.BAROMETER_ALT);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
-                }
-                stat = buffer.serialize(this->data.Gps_Position);
+                }*/
+                /*stat = buffer.serialize(this->data.Gps_Position);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
@@ -116,8 +120,7 @@ namespace Fw {
                 stat = buffer.serialize(this->data.PiCam_PictureCnt);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
-                }
-
+                }*/
                 break;
             case 0:
                 // default id
@@ -179,11 +182,16 @@ namespace Fw {
                     return stat;
                 }
                 //*/
+                /*
                 stat = buffer.deserialize(this->data.RckBlck_RSSI);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
+                }*/
+                stat = buffer.deserialize(this->data.TempProb_ExternalHighTemperature);
+                if (stat != FW_SERIALIZE_OK) {
+                    return stat;
                 }
-                stat = buffer.deserialize(this->data.TempProb_InternalTemperature);
+                stat = buffer.deserialize(this->data.TempProb_ExternalLowTemperature);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
@@ -211,6 +219,7 @@ namespace Fw {
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
+                /*
                 stat = buffer.deserialize(this->data.BAROMETER_ALT);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
@@ -227,6 +236,7 @@ namespace Fw {
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
+                */
                 break;
             case 0:
                 // default id

@@ -44,7 +44,8 @@ namespace Fw {
                 U16 BD_Cycles;
                 U16 PR_NumPings;
                 U16 Eps_BatteryVoltage;
-                I16 TempProb_InternalTemperature;
+                I16 TempProb_ExternalHighTemperature;
+                I16 TempProb_ExternalLowTemperature;
                 I16 TempProb_ExternalTemperature;
                 F32 THERMOMETER_TEMP;
                 F32 THERMOMETER_HUMI;

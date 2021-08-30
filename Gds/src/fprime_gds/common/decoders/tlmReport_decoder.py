@@ -98,7 +98,7 @@ class TlmReportDecoder(Decoder):
         try:
             if report_id == ReportIds.DEBUG_REPORT: 
 
-                (ptr, PR_NumPings) = self.decode_ch(0x4e, data, ptr, report_time)
+                (ptr, PR_NumPings) = self.decode_ch(0x4c, data, ptr, report_time)
                 (ptr, BD_Cycles) = self.decode_ch(0x4c, data, ptr, report_time)
 
                 return [PR_NumPings, BD_Cycles]
@@ -106,34 +106,36 @@ class TlmReportDecoder(Decoder):
                 (ptr, BD_Cycles) = self.decode_ch(0x4e, data, ptr, report_time)
                 self.debug_report(BD_Cycles)
                 (ptr, CommandDispatched) = self.decode_ch(0x3, data, ptr, report_time)
-                self.debug_report(BD_Cycles)
+                self.debug_report(CommandDispatched)
                 (ptr, CommandErrors) = self.decode_ch(0x4, data, ptr, report_time)
                 self.debug_report(CommandErrors)
-                (ptr, RckBlck_RSSI) = self.decode_ch(0x96, data, ptr, report_time)
-                self.debug_report(RckBlck_RSSI)
-                (ptr, TempProb_InternalTemperature) = self.decode_ch(0xa0, data, ptr, report_time)
-                self.debug_report(TempProb_InternalTemperature)
-                (ptr, TempProb_ExternalTemperature) = self.decode_ch(0xa1, data, ptr, report_time)
+                #(ptr, RckBlck_RSSI) = self.decode_ch(0x96, data, ptr, report_time)
+                #self.debug_report(RckBlck_RSSI)
+                (ptr, TempProb_ExternalHighTemperature) = self.decode_ch(0xa0, data, ptr, report_time)
+                self.debug_report(TempProb_ExternalHighTemperature)
+                (ptr, TempProb_ExternalLowTemperature) = self.decode_ch(0xa1, data, ptr, report_time)
+                self.debug_report(TempProb_ExternalLowTemperature)
+                (ptr, TempProb_ExternalTemperature) = self.decode_ch(0xa2, data, ptr, report_time)
                 self.debug_report(TempProb_ExternalTemperature)
                 (ptr, BAROMETER_TEMP) = self.decode_ch(0xc8, data, ptr, report_time)
                 self.debug_report(BAROMETER_TEMP)
                 (ptr, BAROMETER_PRESS) = self.decode_ch(0xc9, data, ptr, report_time)
                 self.debug_report(BAROMETER_PRESS)
-                (ptr, BAROMETER_ALT) = self.decode_ch(0xca, data, ptr, report_time)
-                self.debug_report(BAROMETER_ALT)
-                (ptr, Gps_Position) = self.decode_ch(0x78, data, ptr, report_time)
-                self.debug_report(Gps_Position)
-                (ptr, Gps_LockState) = self.decode_ch(0x79, data, ptr, report_time)
-                self.debug_report(Gps_LockState)
-                (ptr, PiCam_PictureCnt) = self.decode_ch(0x82, data, ptr, report_time)
-                self.debug_report(PiCam_PictureCnt)
+                #(ptr, BAROMETER_ALT) = self.decode_ch(0xca, data, ptr, report_time)
+                #self.debug_report(BAROMETER_ALT)
+                #(ptr, Gps_Position) = self.decode_ch(0x78, data, ptr, report_time)
+                #self.debug_report(Gps_Position)
+                #(ptr, Gps_LockState) = self.decode_ch(0x79, data, ptr, report_time)
+                #self.debug_report(Gps_LockState)
+                #(ptr, PiCam_PictureCnt) = self.decode_ch(0x82, data, ptr, report_time)
+                #self.debug_report(PiCam_PictureCnt)
 
                 self.save_data(BAROMETER_PRESS, report_time,"../data/pressure.txt" )
-                self.save_data(BAROMETER_ALT, report_time,"../data/altitude.txt" )
-                self.save_data(Gps_Position, report_time,"../data/gps.txt" )
-                self.send_gps(Gps_Position, report_time)
+                #self.save_data(BAROMETER_ALT, report_time,"../data/altitude.txt" )
+                #self.save_data(Gps_Position, report_time,"../data/gps.txt" )
+                #self.send_gps(Gps_Position, report_time)
 
-                return [BD_Cycles, CommandDispatched, CommandErrors, RckBlck_RSSI, TempProb_InternalTemperature, TempProb_ExternalTemperature, BAROMETER_TEMP, BAROMETER_PRESS, BAROMETER_ALT, Gps_Position, Gps_LockState, PiCam_PictureCnt]
+                return [BD_Cycles, CommandDispatched, CommandErrors, TempProb_ExternalHighTemperature, TempProb_ExternalHighTemperature,TempProb_ExternalTemperature ,BAROMETER_TEMP, BAROMETER_PRESS]
                 
             else:
                 LOGGER.warning("TlmReport id 0x{:02X} does not exist".format(report_id))

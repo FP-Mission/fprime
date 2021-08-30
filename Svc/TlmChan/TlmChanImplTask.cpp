@@ -96,14 +96,16 @@ namespace Svc {
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.BD_Cycles = u16Val;
                     break;
-                case DICT_TLM_Eps_BatteryVoltage:
+                /*case DICT_TLM_Eps_BatteryVoltage:
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.Eps_BatteryVoltage = u16Val;
                     break;
+                */
                 case DICT_TLM_PingLateWarnings:
                     p_entry->buffer.deserialize(u8Val);
                     m_tlmReportPacket.data.Ping_lateWarning = u8Val;
                     break;
+                /*
                 case DICT_TLM_Gps_Position:
                     p_entry->buffer.deserialize(position);
                     m_tlmReportPacket.data.Gps_Position = position;
@@ -116,14 +118,20 @@ namespace Svc {
                     p_entry->buffer.deserialize(u8Val);
                     m_tlmReportPacket.data.RckBlck_RSSI = u8Val;
                     break;
-                case DICT_TLM_TempProb_InternalTemperature:
+                */
+                case DICT_TLM_TempProb_ExternalHighTemperature:
                     p_entry->buffer.deserialize(i16Val);
-                    m_tlmReportPacket.data.TempProb_InternalTemperature = i16Val;
+                    m_tlmReportPacket.data.TempProb_ExternalHighTemperature = i16Val;
+                    break;
+                case DICT_TLM_TempProb_ExternalLowTemperature:
+                    p_entry->buffer.deserialize(i16Val);
+                    m_tlmReportPacket.data.TempProb_ExternalHighTemperature = i16Val;
                     break;
                 case DICT_TLM_TempProb_ExternalTemperature:
                     p_entry->buffer.deserialize(i16Val);
                     m_tlmReportPacket.data.TempProb_ExternalTemperature = i16Val;
-                    break;
+                    break;                
+                /*
                 case DICT_TLM_THERMOMETER_TEMP:
                     p_entry->buffer.deserialize(f32Val);
                     m_tlmReportPacket.data.THERMOMETER_TEMP = f32Val;
@@ -132,6 +140,7 @@ namespace Svc {
                     p_entry->buffer.deserialize(f32Val);
                     m_tlmReportPacket.data.THERMOMETER_HUMI = f32Val;
                     break;
+                */
                 case DICT_TLM_BAROMETER_TEMP:
                     p_entry->buffer.deserialize(f32Val);
                     m_tlmReportPacket.data.BAROMETER_TEMP = f32Val;
@@ -140,6 +149,7 @@ namespace Svc {
                     p_entry->buffer.deserialize(f32Val);
                     m_tlmReportPacket.data.BAROMETER_PRESS = f32Val;
                     break;
+                /*
                 case DICT_TLM_BAROMETER_ALT:
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.BAROMETER_ALT = u16Val;
@@ -148,6 +158,7 @@ namespace Svc {
                     p_entry->buffer.deserialize(u8Val);
                     m_tlmReportPacket.data.PiCam_PictureCnt = u8Val;
                     break;
+                */
                 default:
                     break;
                 }
@@ -185,7 +196,7 @@ namespace Svc {
 
         outFileTelemetry << stringTime.str() <<","<<m_tlmReportPacket.data.BD_Cycles <<"," <<m_tlmReportPacket.data.Ping_lateWarning <<","<< m_tlmReportPacket.data.Gps_Position.getlatitude() << 
         ","<<m_tlmReportPacket.data.Gps_Position.getlongitude()<<","<< m_tlmReportPacket.data.BAROMETER_TEMP <<","<< m_tlmReportPacket.data.BAROMETER_PRESS <<  
-            ","<< m_tlmReportPacket.data.BAROMETER_ALT << ","<< m_tlmReportPacket.data.TempProb_InternalTemperature << ","<< m_tlmReportPacket.data.TempProb_ExternalTemperature << ","<< m_tlmReportPacket.data.Eps_BatteryVoltage <<
+            ","<< m_tlmReportPacket.data.BAROMETER_ALT << ","<< m_tlmReportPacket.data.TempProb_ExternalTemperature << ","<< m_tlmReportPacket.data.Eps_BatteryVoltage <<
             ","<< m_tlmReportPacket.data.PiCam_PictureCnt <<","<<m_tlmReportPacket.data.THERMOMETER_HUMI <<"\n";
 
         outFileTelemetry.close();
