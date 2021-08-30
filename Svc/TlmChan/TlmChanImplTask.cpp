@@ -125,7 +125,7 @@ namespace Svc {
                     break;
                 case DICT_TLM_TempProb_ExternalLowTemperature:
                     p_entry->buffer.deserialize(i16Val);
-                    m_tlmReportPacket.data.TempProb_ExternalHighTemperature = i16Val;
+                    m_tlmReportPacket.data.TempProb_ExternalLowTemperature = i16Val;
                     break;
                 case DICT_TLM_TempProb_ExternalTemperature:
                     p_entry->buffer.deserialize(i16Val);
