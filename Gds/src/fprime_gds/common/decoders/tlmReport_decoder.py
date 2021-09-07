@@ -193,14 +193,12 @@ class TlmReportDecoder(Decoder):
         val = data.get_val()
         epoch = epoch.seconds
         current_time = time.localtime(epoch)
-        """
         if current_time.tm_hour != 12:
             self.telemetry_cycle = 0
             return
         self.telemetry_cycle +=1
         if self.telemetry_cycle > 3:
             return
-        """
         format_date = f"{current_time.tm_hour}:{current_time.tm_min}:{current_time.tm_sec}"
         json_data = []
         tmp = {"x":format_date,"y":int(val)}

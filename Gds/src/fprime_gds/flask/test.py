@@ -1,9 +1,10 @@
 import flask_restful
 import json
-from os import listdir
+from os import listdir, remove
 from os.path import isfile, join
 from fprime_gds.flask.app import db, TestModel
 import time
+
 
 class Test(flask_restful.Resource):
 
@@ -26,12 +27,17 @@ class Test(flask_restful.Resource):
 
     def post(self):
         data = self.parser_post.parse_args()
-        success = False
+        success = True
+        exec(open(f"{self.script_path}{data['script']}").read())
         try:
-            exec(open(f"{self.script_path}{data['script']}").read())
-            success = True
+            with open('../data/success.txt', 'r') as file:
+               if file.read == '1':
+                   success=False
+            remove('../data/success.txt')
         except:
-            success = False
+            pass
+
+    
 
         test = TestModel(date=time.time(), test=data['script'],success=success)
         db.session.add(test)

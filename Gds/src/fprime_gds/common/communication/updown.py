@@ -12,6 +12,7 @@ is represented by a single thread, as it is not dealing with multiple streams of
 import threading
 from queue import Queue, Full, Empty
 import logging
+import smtplib
 
 from fprime.common.models.serialize.numerical_types import U32Type
 from fprime_gds.common.utils.data_desc_type import DataDescType
@@ -170,6 +171,36 @@ class Uplinker:
         self.th_uplink = threading.Thread(target=self.uplink)
         self.th_uplink.daemon = True
         self.th_uplink.start()
+    
+    @staticmethod
+    def sendMail():
+        gmail_user = 'fpmission.hearc@gmail.com'
+        gmail_password = 'fpmission12'
+
+        sent_from = gmail_user
+        to = ['francois.tieche@he-arc.ch']
+        subject = 'Error FPmission system test'
+        body = 'Error with FPrime, check the raspberry Zero'
+
+        email_text = """
+        From: %s
+        To: %s
+        Subject: %s
+
+        %s
+        """ % (sent_from, ", ".join(to), subject, body)
+
+        try:
+            server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+            server.ehlo()
+            server.login(gmail_user, gmail_password)
+            server.sendmail(sent_from, to, email_text)
+            server.close()
+
+            print("email sent")
+        except Exception as e:
+            print(e)
+            print('Something went wrong...')
 
     def uplink(self):
         """Runs uplink of data from ground to FSW
@@ -199,6 +230,11 @@ class Uplinker:
                             "Uplink failed to send %d bytes of data after %d retries",
                             len(framed), Uplinker.RETRY_COUNT 
                         )
+                        Uplinker.sendMail()
+                        with open('../data/success.txt', 'w') as file:
+                            file.write('1')
+                        
+
         # An OSError might occur during shutdown and is harmless. If we are not shutting down, this error should be
         # propagated up the stack.
         except OSError:
