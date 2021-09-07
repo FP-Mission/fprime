@@ -116,11 +116,11 @@ namespace Fw {
                 stat = buffer.serialize(this->data.Gps_LockState);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
-                }
+                }*/
                 stat = buffer.serialize(this->data.PiCam_PictureCnt);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
-                }*/
+                }
                 break;
             case 0:
                 // default id
@@ -231,12 +231,12 @@ namespace Fw {
                 stat = buffer.deserialize(this->data.Gps_LockState);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
-                }
+                }*/
                 stat = buffer.deserialize(this->data.PiCam_PictureCnt);
                 if (stat != FW_SERIALIZE_OK) {
                     return stat;
                 }
-                */
+                
                 break;
             case 0:
                 // default id

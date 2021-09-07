@@ -54,7 +54,7 @@ namespace Fw {
                 U16 BAROMETER_ALT;
                 App::PositionSerCustom Gps_Position;
                 U8 Gps_LockState;
-                U8 PiCam_PictureCnt;
+                U32 PiCam_PictureCnt;
             } data;
             
         PROTECTED:

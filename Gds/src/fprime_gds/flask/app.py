@@ -24,6 +24,8 @@ import fprime_gds.flask.logs
 import fprime_gds.flask.updown
 import fprime_gds.flask.pictures
 import fprime_gds.flask.pressures
+import fprime_gds.flask.externaltemp
+import fprime_gds.flask.internaltemp
 import fprime_gds.flask.altitudes
 import fprime_gds.flask.gps
 
@@ -136,7 +138,14 @@ def construct_app():
         fprime_gds.flask.pressures.Pressure,
         "/pressures"
     )
-
+    api.add_resource(
+        fprime_gds.flask.externaltemp.ExternalTemp,
+        "/external"
+    )
+    api.add_resource(
+        fprime_gds.flask.internaltemp.InternalTemp,
+        "/internal"
+    )
     api.add_resource(
         fprime_gds.flask.altitudes.Altitude,
         "/altitudes"

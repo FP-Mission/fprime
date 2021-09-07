@@ -60,6 +60,7 @@ class TlmReportDecoder(Decoder):
 
         self.__dict = ch_dict
         self.id_obj = config.get_type("ch_id")
+        self.telemetry_cycle=0
 
     def debug_report(self, value):
         # print(value)
@@ -127,15 +128,17 @@ class TlmReportDecoder(Decoder):
                 #self.debug_report(Gps_Position)
                 #(ptr, Gps_LockState) = self.decode_ch(0x79, data, ptr, report_time)
                 #self.debug_report(Gps_LockState)
-                #(ptr, PiCam_PictureCnt) = self.decode_ch(0x82, data, ptr, report_time)
-                #self.debug_report(PiCam_PictureCnt)
+                (ptr, PiCam_PictureCnt) = self.decode_ch(0x82, data, ptr, report_time)
+                self.debug_report(PiCam_PictureCnt)
 
                 self.save_data(BAROMETER_PRESS, report_time,"../data/pressure.txt" )
+                self.save_data(BAROMETER_PRESS, report_time,"../data/internalTemp.txt" )
+                self.save_data(TempProb_ExternalTemperature, report_time,"../data/externalTemp.txt" )
                 #self.save_data(BAROMETER_ALT, report_time,"../data/altitude.txt" )
                 #self.save_data(Gps_Position, report_time,"../data/gps.txt" )
                 #self.send_gps(Gps_Position, report_time)
 
-                return [BD_Cycles, CommandDispatched, CommandErrors, TempProb_ExternalLowTemperature, TempProb_ExternalHighTemperature,TempProb_ExternalTemperature ,BAROMETER_TEMP, BAROMETER_PRESS]
+                return [BD_Cycles, CommandDispatched, CommandErrors, TempProb_ExternalLowTemperature, TempProb_ExternalHighTemperature,TempProb_ExternalTemperature ,BAROMETER_TEMP, BAROMETER_PRESS, PiCam_PictureCnt]
                 
             else:
                 LOGGER.warning("TlmReport id 0x{:02X} does not exist".format(report_id))
@@ -190,6 +193,14 @@ class TlmReportDecoder(Decoder):
         val = data.get_val()
         epoch = epoch.seconds
         current_time = time.localtime(epoch)
+        """
+        if current_time.tm_hour != 12:
+            self.telemetry_cycle = 0
+            return
+        self.telemetry_cycle +=1
+        if self.telemetry_cycle > 3:
+            return
+        """
         format_date = f"{current_time.tm_hour}:{current_time.tm_min}:{current_time.tm_sec}"
         json_data = []
         tmp = {"x":format_date,"y":val}

@@ -91,6 +91,9 @@ namespace Svc {
             this->m_filteredIDs[DICT_LOG_RckBlck_RingAlert - 1] = 0;
             // this->m_filteredIDs[DICT_LOG_RckBlck_CommandSent - 1] = 0;
             // this->m_filteredIDs[DICT_LOG_RckBlck_Response - 1] = 0;
+            this->m_filteredIDs[DICT_LOG_TempPro_HighExternalWarning - 1] = 0;
+            this->m_filteredIDs[DICT_LOG_TempPro_LowExternalWarning - 1] = 0;
+            this->m_filteredIDs[DICT_LOG_TempPro_TempsSet - 1] = 0;
         }
     }
 

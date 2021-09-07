@@ -31,7 +31,7 @@ Vue.component("b-map", {
     },
     watch:{
       current(val){
-        this.caller()
+        //this.caller()
       }
     },
     mounted() {
@@ -40,7 +40,7 @@ Vue.component("b-map", {
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(this.map);
-        this.getGpsPos(false);
+        //this.getGpsPos(false);
         //setInterval(this.caller,10000);
     }
   });

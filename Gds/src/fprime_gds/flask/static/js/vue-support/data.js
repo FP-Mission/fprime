@@ -5,37 +5,43 @@ Vue.component("b-data", {
     data: () => ({
         pressures:[],
         labelsPressure:[],
-        altitudes:[],
-        labelsAltitude:[],
+        internalTemp:[],
+        externalTemp:[],
+        labelsTemp:[],
         chartPressure:"",
         chartAltitude:""
     }),
     methods:{
         async getData(){
           let dataPressure = await (await fetch('http://127.0.0.1:5000/pressures')).json();
-          let dataAltitude = await (await fetch('http://127.0.0.1:5000/altitudes')).json();
+          let internalTemp = await (await fetch('http://127.0.0.1:5000/internaltemp')).json();
+          let externalTemp = await (await fetch('http://127.0.0.1:5000/externaltemp')).json();
             if(dataPressure[0] != -1){
                 for(let i=0; i<dataPressure.length; ++i){
-                  if(i%10 == 0){
-                    this.pressures.push(dataPressure[i]["y"]);
-                    this.labelsPressure.push(dataPressure[i]["x"]);
-                  }
+                  this.pressures.push(dataPressure[i]["y"]);
+                  this.labelsPressure.push(dataPressure[i]["x"]);
                 }
             }
-            if(dataAltitude[0] != -1){
-              for(let i=0; i<dataAltitude.length; ++i){
-                if(i%10 == 0){
-                  this.altitudes.push(dataAltitude[i]["y"]);
-                  this.labelsAltitude.push(dataAltitude[i]["x"]);
-                }
+            if(internalTemp[0] != -1){
+              for(let i=0; i<internalTemp.length; ++i){
+                this.internalTemp.push(internalTemp[i]["y"]);
+                this.labelsTemp.push(internalTemp[i]["x"]);
+                
               }
+              
           }
+          if(externalTemp[0] != -1){
+            for(let i=0; i<externalTemp.length; ++i){
+              this.externalTemp.push(externalTemp[i]["y"]);            
+            }
+            
+        }
 
         },
         async createGraph(){
             await this.getData();
             let ctxPressure = this.$refs['chartPressure'].getContext('2d')
-            let ctxAltitude = this.$refs['chartAltitude'].getContext('2d')
+            let ctxTemp = this.$refs['chartTemp'].getContext('2d')
             this.chartPressure = new Chart(ctxPressure, {
                 type: 'line',
                 data: {
@@ -59,13 +65,13 @@ Vue.component("b-data", {
                     },
                   
             });
-            this.chartAltitude = new Chart(ctxAltitude, {
+            this.chartAltitude = new Chart(ctxTemp, {
               type: 'line',
               data: {
                   labels:this.labelsAltitude,
                   datasets: [{
-                      label:"altitudes",
-                      data: this.altitudes,
+                      label:"Internal temperatures",
+                      data: this.internalTemp,
                       tension: 0.4,
                       backgroundColor: [
                         'rgba(54, 162, 235, 0.2)',
@@ -74,7 +80,19 @@ Vue.component("b-data", {
                         'rgba(54, 162, 235, 1)',
                       ],
                       borderWidth: 1
-                  }]
+                  },
+                  {
+                    label:"External temperatures",
+                    data: this.externalTemp,
+                    tension: 0.4,
+                    backgroundColor: [
+                      'rgba(54, 162, 235, 0.2)',
+                    ],
+                    borderColor: [
+                      'rgba(54, 162, 235, 1)',
+                    ],
+                    borderWidth: 1
+                }]
               },
                options: {
                     responsive: true,

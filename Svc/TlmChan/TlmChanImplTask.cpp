@@ -154,11 +154,11 @@ namespace Svc {
                     p_entry->buffer.deserialize(u16Val);
                     m_tlmReportPacket.data.BAROMETER_ALT = u16Val;
                     break;
+                */
                 case DICT_TLM_PiCam_PictureCnt:
-                    p_entry->buffer.deserialize(u8Val);
+                    p_entry->buffer.deserialize(u32Val);
                     m_tlmReportPacket.data.PiCam_PictureCnt = u8Val;
                     break;
-                */
                 default:
                     break;
                 }

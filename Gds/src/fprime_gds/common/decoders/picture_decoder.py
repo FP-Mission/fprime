@@ -102,7 +102,7 @@ class PictureDecoder(Decoder):
             with open(f'../data/picture.txt', 'a') as file: 
                 file.write(f"{picture_id}\n")
             
-            self.send_picture(picture_id)
+            #self.send_picture(picture_id)
 
         return 1
 
