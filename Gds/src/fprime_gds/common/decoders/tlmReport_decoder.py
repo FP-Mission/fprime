@@ -132,7 +132,7 @@ class TlmReportDecoder(Decoder):
                 self.debug_report(PiCam_PictureCnt)
 
                 self.save_data(BAROMETER_PRESS, report_time,"../data/pressure.txt" )
-                self.save_data(BAROMETER_PRESS, report_time,"../data/internalTemp.txt" )
+                self.save_data(BAROMETER_TEMP, report_time,"../data/internalTemp.txt" )
                 self.save_data(TempProb_ExternalTemperature, report_time,"../data/externalTemp.txt" )
                 #self.save_data(BAROMETER_ALT, report_time,"../data/altitude.txt" )
                 #self.save_data(Gps_Position, report_time,"../data/gps.txt" )
@@ -203,7 +203,7 @@ class TlmReportDecoder(Decoder):
         """
         format_date = f"{current_time.tm_hour}:{current_time.tm_min}:{current_time.tm_sec}"
         json_data = []
-        tmp = {"x":format_date,"y":val}
+        tmp = {"x":format_date,"y":int(val)}
         try:
             with open(path) as json_file:
                 json_data = json.load(json_file)

@@ -14,8 +14,8 @@ Vue.component("b-data", {
     methods:{
         async getData(){
           let dataPressure = await (await fetch('http://127.0.0.1:5000/pressures')).json();
-          let internalTemp = await (await fetch('http://127.0.0.1:5000/internaltemp')).json();
-          let externalTemp = await (await fetch('http://127.0.0.1:5000/externaltemp')).json();
+          let internalTemp = await (await fetch('http://127.0.0.1:5000/internal')).json();
+          let externalTemp = await (await fetch('http://127.0.0.1:5000/external')).json();
             if(dataPressure[0] != -1){
                 for(let i=0; i<dataPressure.length; ++i){
                   this.pressures.push(dataPressure[i]["y"]);
@@ -68,7 +68,7 @@ Vue.component("b-data", {
             this.chartAltitude = new Chart(ctxTemp, {
               type: 'line',
               data: {
-                  labels:this.labelsAltitude,
+                  labels:this.labelsTemp,
                   datasets: [{
                       label:"Internal temperatures",
                       data: this.internalTemp,
@@ -86,26 +86,16 @@ Vue.component("b-data", {
                     data: this.externalTemp,
                     tension: 0.4,
                     backgroundColor: [
-                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 99, 132, 0.2)',
                     ],
                     borderColor: [
-                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 99, 132, 1)',
                     ],
                     borderWidth: 1
                 }]
               },
                options: {
                     responsive: true,
-                    scales: {
-                      yAxes: [{
-                        display: true,
-                        ticks: {
-                            beginAtZero: true,
-                            steps: 100,
-                            max: 40000
-                        }
-                    }]
-                  }
                   },
                 
           });
